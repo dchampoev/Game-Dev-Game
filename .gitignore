@@ -3,6 +3,7 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
+<<<<<<< HEAD
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -10,6 +11,15 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+=======
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+>>>>>>> b839a18bcd41d2d897bb0ee043b95af7f6e8318e
 *.log
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
@@ -32,7 +42,11 @@
 *.DotSettings.user
 
 # Visual Studio cache directory
+<<<<<<< HEAD
 .vscode/
+=======
+.vs/
+>>>>>>> b839a18bcd41d2d897bb0ee043b95af7f6e8318e
 
 # Gradle cache directory
 .gradle/
@@ -97,6 +111,9 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+<<<<<<< HEAD
 
 .DS_Store
 **/.DS_Store
+=======
+>>>>>>> b839a18bcd41d2d897bb0ee043b95af7f6e8318e
