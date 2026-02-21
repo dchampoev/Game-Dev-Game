@@ -1,0 +1,1794 @@
+fileFormatVersion: 2
+guid: 48061d81146d14aa78951b64715944d4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6230547293376588399
+    second: Gray Hats Sprite Sheet_0
+  - first:
+      213: -129995989936701933
+    second: Gray Hats Sprite Sheet_1
+  - first:
+      213: -174058899886297861
+    second: Gray Hats Sprite Sheet_2
+  - first:
+      213: 6803107093374349930
+    second: Gray Hats Sprite Sheet_3
+  - first:
+      213: 4767961570693197773
+    second: Gray Hats Sprite Sheet_4
+  - first:
+      213: 6834721470635667864
+    second: Gray Hats Sprite Sheet_5
+  - first:
+      213: -3778793282003019473
+    second: Gray Hats Sprite Sheet_6
+  - first:
+      213: -2400354375168775028
+    second: Gray Hats Sprite Sheet_7
+  - first:
+      213: 7867280855735097846
+    second: Gray Hats Sprite Sheet_8
+  - first:
+      213: -7977481515520766874
+    second: Gray Hats Sprite Sheet_9
+  - first:
+      213: -3957937180234240598
+    second: Gray Hats Sprite Sheet_10
+  - first:
+      213: 738272451486167298
+    second: Gray Hats Sprite Sheet_11
+  - first:
+      213: 4883577358855318574
+    second: Gray Hats Sprite Sheet_12
+  - first:
+      213: -6255741269316036398
+    second: Gray Hats Sprite Sheet_13
+  - first:
+      213: 1447990754616726540
+    second: Gray Hats Sprite Sheet_14
+  - first:
+      213: 3364261124195669297
+    second: Gray Hats Sprite Sheet_15
+  - first:
+      213: -6275761166660432092
+    second: Gray Hats Sprite Sheet_16
+  - first:
+      213: -1246889659879421328
+    second: Gray Hats Sprite Sheet_17
+  - first:
+      213: 346092338776408629
+    second: Gray Hats Sprite Sheet_18
+  - first:
+      213: -4638080660250099815
+    second: Gray Hats Sprite Sheet_19
+  - first:
+      213: 6000997976689759695
+    second: Gray Hats Sprite Sheet_20
+  - first:
+      213: -2038252868837242816
+    second: Gray Hats Sprite Sheet_21
+  - first:
+      213: 7471018109174752032
+    second: Gray Hats Sprite Sheet_22
+  - first:
+      213: -2952124090176583835
+    second: Gray Hats Sprite Sheet_23
+  - first:
+      213: -3731491706996394313
+    second: Gray Hats Sprite Sheet_24
+  - first:
+      213: -3399373376822367249
+    second: Gray Hats Sprite Sheet_25
+  - first:
+      213: -1263865294868196190
+    second: Gray Hats Sprite Sheet_26
+  - first:
+      213: -9164717377117104153
+    second: Gray Hats Sprite Sheet_27
+  - first:
+      213: -2294608310672055826
+    second: Gray Hats Sprite Sheet_28
+  - first:
+      213: 5352793133391020468
+    second: Gray Hats Sprite Sheet_29
+  - first:
+      213: -31201036120657241
+    second: Gray Hats Sprite Sheet_30
+  - first:
+      213: -6445912349299364039
+    second: Gray Hats Sprite Sheet_31
+  - first:
+      213: 8212297614363721075
+    second: Gray Hats Sprite Sheet_32
+  - first:
+      213: 6939716437140513854
+    second: Gray Hats Sprite Sheet_33
+  - first:
+      213: -8490500558985545996
+    second: Gray Hats Sprite Sheet_34
+  - first:
+      213: -7595742930517754229
+    second: Gray Hats Sprite Sheet_35
+  - first:
+      213: 5506057126878283749
+    second: Gray Hats Sprite Sheet_36
+  - first:
+      213: -9189906552491458845
+    second: Gray Hats Sprite Sheet_37
+  - first:
+      213: 7109065608235503843
+    second: Gray Hats Sprite Sheet_38
+  - first:
+      213: 8463872624398140491
+    second: Gray Hats Sprite Sheet_39
+  - first:
+      213: 3143348973816048760
+    second: Gray Hats Sprite Sheet_40
+  - first:
+      213: 9176831069705870370
+    second: Gray Hats Sprite Sheet_41
+  - first:
+      213: 1811747974321017507
+    second: Gray Hats Sprite Sheet_42
+  - first:
+      213: -6676507032023441227
+    second: Gray Hats Sprite Sheet_43
+  - first:
+      213: 234753412046329301
+    second: Gray Hats Sprite Sheet_44
+  - first:
+      213: -5352234761508076502
+    second: Gray Hats Sprite Sheet_45
+  - first:
+      213: -8542952527450042009
+    second: Gray Hats Sprite Sheet_46
+  - first:
+      213: 851017081306134422
+    second: Gray Hats Sprite Sheet_47
+  - first:
+      213: 4131247150932386748
+    second: Gray Hats Sprite Sheet_48
+  - first:
+      213: 7645345007324549001
+    second: Gray Hats Sprite Sheet_49
+  - first:
+      213: -7462431904264442402
+    second: Gray Hats Sprite Sheet_50
+  - first:
+      213: 4204408757125823710
+    second: Gray Hats Sprite Sheet_51
+  - first:
+      213: -3052743572417597488
+    second: Gray Hats Sprite Sheet_52
+  - first:
+      213: -8239041378835626906
+    second: Gray Hats Sprite Sheet_53
+  - first:
+      213: 8569430209796888904
+    second: Gray Hats Sprite Sheet_54
+  - first:
+      213: 8037423251421273144
+    second: Gray Hats Sprite Sheet_55
+  - first:
+      213: 3440728867392484926
+    second: Gray Hats Sprite Sheet_56
+  - first:
+      213: 6069151898448481362
+    second: Gray Hats Sprite Sheet_57
+  - first:
+      213: -176346638475954720
+    second: Gray Hats Sprite Sheet_58
+  - first:
+      213: -415283546420449746
+    second: Gray Hats Sprite Sheet_59
+  - first:
+      213: 5463696338783710214
+    second: Gray Hats Sprite Sheet_60
+  - first:
+      213: -4195633517597792762
+    second: Gray Hats Sprite Sheet_61
+  - first:
+      213: 8327260214368192634
+    second: Gray Hats Sprite Sheet_62
+  - first:
+      213: -7186869697501358349
+    second: Gray Hats Sprite Sheet_63
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 25
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 484
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6aabf1a0c9577650800000000000000
+      internalID: 6230547293376588399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 474
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31ef89df559223ef0800000000000000
+      internalID: -129995989936701933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 474
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfc284e4a5e959df0800000000000000
+      internalID: -174058899886297861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 481
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a62b4856bdd796e50800000000000000
+      internalID: 6803107093374349930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 485
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcfa1eb69c33b2240800000000000000
+      internalID: 4767961570693197773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 479
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89179f337fec9de50800000000000000
+      internalID: 6834721470635667864
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 485
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f29d39ae7870f8bc0800000000000000
+      internalID: -3778793282003019473
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 484
+        width: 18
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8ca205d96a30bed0800000000000000
+      internalID: -2400354375168775028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 421
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6f9525271423e2d60800000000000000
+      internalID: 7867280855735097846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 418
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66cc32104da4a4190800000000000000
+      internalID: -7977481515520766874
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 419
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aada3d8ca159219c0800000000000000
+      internalID: -3957937180234240598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 419
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2013a4212eede3a00800000000000000
+      internalID: 738272451486167298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 417
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2c26bbcbb3f5c340800000000000000
+      internalID: 4883577358855318574
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 415
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d89aabb5742f29a0800000000000000
+      internalID: -6255741269316036398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 419
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c04daf66beb481410800000000000000
+      internalID: 1447990754616726540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 420
+        width: 18
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 135d657faa140be20800000000000000
+      internalID: 3364261124195669297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 354
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42f8306287408e8a0800000000000000
+      internalID: -6275761166660432092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 354
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07a87cce57822bee0800000000000000
+      internalID: -1246889659879421328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 353
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 532804006219dc400800000000000000
+      internalID: 346092338776408629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 354
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99ffe2e863a32afb0800000000000000
+      internalID: -4638080660250099815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 353
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc55e6a7dd3d74350800000000000000
+      internalID: 6000997976689759695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 350
+        y: 350
+        width: 18
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 048098e90dba6b3e0800000000000000
+      internalID: -2038252868837242816
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 355
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0232fdb13636ea760800000000000000
+      internalID: 7471018109174752032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 355
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 567c620f7c2f707d0800000000000000
+      internalID: -2952124090176583835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 290
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7b6f9221014173cc0800000000000000
+      internalID: -3731491706996394313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 290
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: feb2597aceff2d0d0800000000000000
+      internalID: -3399373376822367249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 289
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a4df67e539d57ee0800000000000000
+      internalID: -1263865294868196190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 290
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e7d51e2a1260d080800000000000000
+      internalID: -9164717377117104153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 289
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee1abb716e9e720e0800000000000000
+      internalID: -2294608310672055826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 286
+        width: 18
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4b10ce79ef0f84a40800000000000000
+      internalID: 5352793133391020468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 291
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a2776da2d6219ff0800000000000000
+      internalID: -31201036120657241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 291
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93f25b6ced48b86a0800000000000000
+      internalID: -6445912349299364039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 227
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 37dffed6b21f7f170800000000000000
+      internalID: 8212297614363721075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 228
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3423b5d453de4060800000000000000
+      internalID: 6939716437140513854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 228
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f63968e9beab2a80800000000000000
+      internalID: -8490500558985545996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 227
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8efd457c00869690800000000000000
+      internalID: -7595742930517754229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 228
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e78698d8c1796c40800000000000000
+      internalID: 5506057126878283749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 228
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee36b34ea4e67080800000000000000
+      internalID: -9189906552491458845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 230
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e0d2d7518978a260800000000000000
+      internalID: 7109065608235503843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 471
+        y: 230
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b448761fe47b57570800000000000000
+      internalID: 8463872624398140491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 163
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87ce46dcc3b6f9b20800000000000000
+      internalID: 3143348973816048760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 164
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22c1699ac37aa5f70800000000000000
+      internalID: 9176831069705870370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 165
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a210fffe2f942910800000000000000
+      internalID: 1811747974321017507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 163
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b068df5a384853a0800000000000000
+      internalID: -6676507032023441227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 164
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d515d60cf2024300800000000000000
+      internalID: 234753412046329301
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_45
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 165
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2440dd77da09b5b0800000000000000
+      internalID: -5352234761508076502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_46
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 166
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 761905450f5517980800000000000000
+      internalID: -8542952527450042009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_47
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 166
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 697ba0dc68b6fcb00800000000000000
+      internalID: 851017081306134422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_48
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 98
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb36bae3563255930800000000000000
+      internalID: 4131247150932386748
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_49
+      rect:
+        serializedVersion: 2
+        x: 87
+        y: 98
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98fc2e207c8b91a60800000000000000
+      internalID: 7645345007324549001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_50
+      rect:
+        serializedVersion: 2
+        x: 151
+        y: 99
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edda6c188bd107890800000000000000
+      internalID: -7462431904264442402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_51
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 98
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: edcb60b1d7f095a30800000000000000
+      internalID: 4204408757125823710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_52
+      rect:
+        serializedVersion: 2
+        x: 279
+        y: 98
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0df21bf15e972a5d0800000000000000
+      internalID: -3052743572417597488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_53
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 98
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66402cca48b09ad80800000000000000
+      internalID: -8239041378835626906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_54
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 103
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 849d17e7f5bbce670800000000000000
+      internalID: 8569430209796888904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_55
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 103
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83c1e62fcd9aa8f60800000000000000
+      internalID: 8037423251421273144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_56
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 34
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e367c55dcacefbf20800000000000000
+      internalID: 3440728867392484926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_57
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 34
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25cc8e2fe75f93450800000000000000
+      internalID: 6069151898448481362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_58
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 35
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0e57e48aaad7d8df0800000000000000
+      internalID: -176346638475954720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_59
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 34
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2e6b8690dd9c3af0800000000000000
+      internalID: -415283546420449746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_60
+      rect:
+        serializedVersion: 2
+        x: 280
+        y: 34
+        width: 17
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60c2ec94fd2f2db40800000000000000
+      internalID: 5463696338783710214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_61
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 34
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6066cdf8b8d16c5c0800000000000000
+      internalID: -4195633517597792762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_62
+      rect:
+        serializedVersion: 2
+        x: 406
+        y: 39
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a78c8a59b0f509370800000000000000
+      internalID: 8327260214368192634
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Gray Hats Sprite Sheet_63
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 39
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f69969761c134c90800000000000000
+      internalID: -7186869697501358349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Gray Hats Sprite Sheet_0: 6230547293376588399
+      Gray Hats Sprite Sheet_1: -129995989936701933
+      Gray Hats Sprite Sheet_10: -3957937180234240598
+      Gray Hats Sprite Sheet_11: 738272451486167298
+      Gray Hats Sprite Sheet_12: 4883577358855318574
+      Gray Hats Sprite Sheet_13: -6255741269316036398
+      Gray Hats Sprite Sheet_14: 1447990754616726540
+      Gray Hats Sprite Sheet_15: 3364261124195669297
+      Gray Hats Sprite Sheet_16: -6275761166660432092
+      Gray Hats Sprite Sheet_17: -1246889659879421328
+      Gray Hats Sprite Sheet_18: 346092338776408629
+      Gray Hats Sprite Sheet_19: -4638080660250099815
+      Gray Hats Sprite Sheet_2: -174058899886297861
+      Gray Hats Sprite Sheet_20: 6000997976689759695
+      Gray Hats Sprite Sheet_21: -2038252868837242816
+      Gray Hats Sprite Sheet_22: 7471018109174752032
+      Gray Hats Sprite Sheet_23: -2952124090176583835
+      Gray Hats Sprite Sheet_24: -3731491706996394313
+      Gray Hats Sprite Sheet_25: -3399373376822367249
+      Gray Hats Sprite Sheet_26: -1263865294868196190
+      Gray Hats Sprite Sheet_27: -9164717377117104153
+      Gray Hats Sprite Sheet_28: -2294608310672055826
+      Gray Hats Sprite Sheet_29: 5352793133391020468
+      Gray Hats Sprite Sheet_3: 6803107093374349930
+      Gray Hats Sprite Sheet_30: -31201036120657241
+      Gray Hats Sprite Sheet_31: -6445912349299364039
+      Gray Hats Sprite Sheet_32: 8212297614363721075
+      Gray Hats Sprite Sheet_33: 6939716437140513854
+      Gray Hats Sprite Sheet_34: -8490500558985545996
+      Gray Hats Sprite Sheet_35: -7595742930517754229
+      Gray Hats Sprite Sheet_36: 5506057126878283749
+      Gray Hats Sprite Sheet_37: -9189906552491458845
+      Gray Hats Sprite Sheet_38: 7109065608235503843
+      Gray Hats Sprite Sheet_39: 8463872624398140491
+      Gray Hats Sprite Sheet_4: 4767961570693197773
+      Gray Hats Sprite Sheet_40: 3143348973816048760
+      Gray Hats Sprite Sheet_41: 9176831069705870370
+      Gray Hats Sprite Sheet_42: 1811747974321017507
+      Gray Hats Sprite Sheet_43: -6676507032023441227
+      Gray Hats Sprite Sheet_44: 234753412046329301
+      Gray Hats Sprite Sheet_45: -5352234761508076502
+      Gray Hats Sprite Sheet_46: -8542952527450042009
+      Gray Hats Sprite Sheet_47: 851017081306134422
+      Gray Hats Sprite Sheet_48: 4131247150932386748
+      Gray Hats Sprite Sheet_49: 7645345007324549001
+      Gray Hats Sprite Sheet_5: 6834721470635667864
+      Gray Hats Sprite Sheet_50: -7462431904264442402
+      Gray Hats Sprite Sheet_51: 4204408757125823710
+      Gray Hats Sprite Sheet_52: -3052743572417597488
+      Gray Hats Sprite Sheet_53: -8239041378835626906
+      Gray Hats Sprite Sheet_54: 8569430209796888904
+      Gray Hats Sprite Sheet_55: 8037423251421273144
+      Gray Hats Sprite Sheet_56: 3440728867392484926
+      Gray Hats Sprite Sheet_57: 6069151898448481362
+      Gray Hats Sprite Sheet_58: -176346638475954720
+      Gray Hats Sprite Sheet_59: -415283546420449746
+      Gray Hats Sprite Sheet_6: -3778793282003019473
+      Gray Hats Sprite Sheet_60: 5463696338783710214
+      Gray Hats Sprite Sheet_61: -4195633517597792762
+      Gray Hats Sprite Sheet_62: 8327260214368192634
+      Gray Hats Sprite Sheet_63: -7186869697501358349
+      Gray Hats Sprite Sheet_7: -2400354375168775028
+      Gray Hats Sprite Sheet_8: 7867280855735097846
+      Gray Hats Sprite Sheet_9: -7977481515520766874
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
