@@ -19,9 +19,17 @@ public class PlayerAnimator : MonoBehaviour
     void Update()
     {
         Vector2 input = pm.moveInput;
+        float speed = input.sqrMagnitude;
 
+        animator.SetFloat("Speed", speed);
+
+        //Move direction(for walking animation)
         animator.SetFloat("MoveX", input.x);
         animator.SetFloat("MoveY", input.y);
-        animator.SetFloat("Speed", input.sqrMagnitude);
+
+        //Look direction(for idle + aiming)
+        Vector2 look = speed > 0.001f ? input : pm.lastMoveDirection;
+        animator.SetFloat("LookX", look.x);
+        animator.SetFloat("LookY", look.y);
     }
 }
