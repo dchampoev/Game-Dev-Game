@@ -8,29 +8,29 @@ public sealed class PlayerMovement : MonoBehaviour
     private const float DirectionEpsilon = 0.01f;
     [SerializeField] private float moveSpeed = 5f;
 
-    Rigidbody2D rb;
+    Rigidbody2D rigidBody;
     [HideInInspector]
-    public Vector2 lastMoveDirection = Vector2.down; // Default facing down
+    public Vector2 lastMoveDirection = Vector2.down;
     [HideInInspector]
-    public Vector2 moveInput;
+    public Vector2 movementInput;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rigidBody = GetComponent<Rigidbody2D>();
     }
 
     public void OnMove(InputValue value)
     {
-        moveInput = value.Get<Vector2>();
+        movementInput = value.Get<Vector2>();
 
-        if (moveInput.sqrMagnitude > DirectionEpsilon * DirectionEpsilon)
+        if (movementInput.sqrMagnitude > DirectionEpsilon * DirectionEpsilon)
         { 
-            lastMoveDirection = moveInput.normalized;   
+            lastMoveDirection = movementInput.normalized;   
         }
     }
 
     void FixedUpdate()
     {
-        rb.linearVelocity = moveInput.normalized * moveSpeed;
+        rigidBody.linearVelocity = movementInput.normalized * moveSpeed;
     }
 }

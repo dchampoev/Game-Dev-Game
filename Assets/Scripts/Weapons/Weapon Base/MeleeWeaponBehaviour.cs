@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class MeleeWeaponBehaviour : MonoBehaviour
 {
-    public float destroyAfterSeconds;
+    public float lifetimeSeconds;
 
     protected virtual void Start()
     {
-        Destroy(gameObject, destroyAfterSeconds);
+        Destroy(gameObject, lifetimeSeconds);
     }
 }

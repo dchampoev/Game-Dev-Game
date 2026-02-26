@@ -20,13 +20,13 @@ public class WeaponController : MonoBehaviour
     protected virtual void Start()
     {
         playerMovement = FindAnyObjectByType<PlayerMovement>();
-        currentCooldown = cooldownDuration; //At the start set the current cooldown to be the cooldown duration
+        currentCooldown = cooldownDuration;
     }
 
     protected virtual void Update()
     {
         currentCooldown -= Time.deltaTime;
-        if(currentCooldown <= 0f) // once the cooldown becomes 0, attack
+        if(currentCooldown <= 0f)
         {
             Attack();
         }
