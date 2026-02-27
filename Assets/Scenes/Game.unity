@@ -163,11 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9455a3f70b70443bfbcffa85f4191d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnifeController
-  prefab: {fileID: 4825764075009336762, guid: bc0272f1f1aac46e28a81ff7e5cbd3e3, type: 3}
-  damage: 0
-  speed: 10
-  cooldownDuration: 2
-  pierce: 0
+  weaponData: {fileID: 11400000, guid: 817f6e665e873480b9afe4dfbee70ad9, type: 2}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,11 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535d92fb752844d188aad59c4b4f5ba6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GarlicController
-  prefab: {fileID: 5162872629528780961, guid: 0cf8d7a614fa5472f8ca2836c1ee84bc, type: 3}
-  damage: 0
-  speed: 0
-  cooldownDuration: 3
-  pierce: 0
+  weaponData: {fileID: 11400000, guid: 1ba025f253d704159860249210c7f6cb, type: 2}
 --- !u!1 &1306882447
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,7 +456,7 @@ GameObject:
   - component: {fileID: 1306882449}
   - component: {fileID: 1306882448}
   m_Layer: 0
-  m_Name: Map Controller
+  m_Name: ChunkMapGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,19 +474,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00da2581a9bcd49f8a0583fd4c0ba039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapController
-  referenceCamera: {fileID: 519420031}
-  checkInterval: 0.5
-  terrainChunks:
+  worldCamera: {fileID: 519420031}
+  updateInterval: 0.5
+  chunkPrefabs:
   - {fileID: 7718754187242510777, guid: 77279e7ad3baa4ed4b88b4d41970e64e, type: 3}
   - {fileID: 7718754187242510777, guid: 293b58adbd893462091efd1280ec269c, type: 3}
   - {fileID: 7718754187242510777, guid: 77c9a57d6b6d6412f9a73e192dc63b45, type: 3}
   - {fileID: 7718754187242510777, guid: b1e37e04a81a64b3ab477f2315bee648, type: 3}
   - {fileID: 7718754187242510777, guid: 012ff33efd56c4d85a62eaec44cad2bf, type: 3}
-  chunkSize: {x: 20, y: 20}
-  terrainMask:
+  chunkWorldSize: {x: 20, y: 20}
+  chunkCollisionMask:
     serializedVersion: 2
     m_Bits: 64
-  deleteCulledChunks: 0
+  destroyCulledChunks: 0
 --- !u!4 &1306882449
 Transform:
   m_ObjectHideFlags: 0
@@ -647,6 +639,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1021039945329206698, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
       propertyPath: m_Name
       value: Bat

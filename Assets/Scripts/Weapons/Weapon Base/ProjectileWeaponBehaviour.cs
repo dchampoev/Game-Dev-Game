@@ -5,8 +5,24 @@ using UnityEngine;
 /// </summary>
 public class ProjectileWeaponBehaviour : MonoBehaviour
 {
+    public WeaponScriptableObject weaponData;
+
     protected Vector3 travelDirection;
     public float lifetimeSeconds;
+
+    //Current stats
+    protected float currentDamage;
+    protected float currentSpeed;
+    protected float currentCooldownDuration;
+    protected int currentPierce;
+
+    void Awake()
+    {
+        currentDamage = weaponData.Damage;
+        currentSpeed = weaponData.Speed;
+        currentCooldownDuration = weaponData.CooldownDuration;
+        currentPierce = weaponData.Pierce;
+    }
 
     protected virtual void Start()
     {
@@ -21,5 +37,22 @@ public class ProjectileWeaponBehaviour : MonoBehaviour
         angle -= 45f;
 
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Enemy"))
+        {
+            EnemyStats enemy = collision.GetComponent<EnemyStats>();
+            if(enemy != null)
+            {
+                enemy.TakeDamage(currentDamage);
+                currentPierce--;
+                if(currentPierce <= 0)
+                {
+                    Destroy(gameObject);
+                }
+            }
+        }
     }
 }
