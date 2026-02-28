@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealthPotion : MonoBehaviour, ICollectable
+public class HealthPotion : Pickup, ICollectable
 {
     public int healthToRestore;
 
@@ -10,7 +10,6 @@ public class HealthPotion : MonoBehaviour, ICollectable
         if (playerStats != null)
         {
             playerStats.Heal(healthToRestore);
-            Destroy(gameObject);
         }
     }
 }

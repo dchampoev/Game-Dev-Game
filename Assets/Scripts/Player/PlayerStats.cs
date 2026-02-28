@@ -3,14 +3,25 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public CharacterScriptableObject characterData;
+    CharacterScriptableObject characterData;
 
     //Curent stats
-    float currentHealth;
-    float currentRecovery;
-    float currentMoveSpeed;
-    float currentMight;
-    float currentProjectileSpeed;
+    [HideInInspector]
+    public float currentHealth;
+    [HideInInspector]
+    public float currentRecovery;
+    [HideInInspector]
+    public float currentMoveSpeed;
+    [HideInInspector]
+    public float currentMight;
+    [HideInInspector]
+    public float currentProjectileSpeed;
+    [HideInInspector]
+    public float currentMagnet;
+
+    //Spawned weapons
+    public List<GameObject> spawnedWeapons;
+
 
     //Experience and leveling
     [Header("Experience/Level")]
@@ -37,11 +48,18 @@ public class PlayerStats : MonoBehaviour
 
     void Awake()
     {
+        characterData = CharacterSelector.GetData();
+        CharacterSelector.instance.DestroySingleton();
+
         currentHealth = characterData.MaxHealth;
         currentRecovery = characterData.Recovery;
         currentMoveSpeed = characterData.MoveSpeed;
         currentMight = characterData.Might;
         currentProjectileSpeed = characterData.ProjectileSpeed;
+        currentMagnet = characterData.Magnet;
+
+        //Spawn the starting weapon
+        SpawnWeapon(characterData.StartingWeapon);
     }
 
     void Start()
@@ -59,6 +77,7 @@ public class PlayerStats : MonoBehaviour
                 isInvincible = false;
             }
         }
+        Recover();
     }
 
     public void IncreaseExperience(int amount)
@@ -108,17 +127,37 @@ public class PlayerStats : MonoBehaviour
     {
         Debug.Log("Player has died.");
     }
-    
+
     public void Heal(float amount)
     {
         if (currentHealth < characterData.MaxHealth)
         {
             currentHealth += amount;
-            
+
             if (currentHealth > characterData.MaxHealth)
             {
                 currentHealth = characterData.MaxHealth;
             }
         }
+    }
+
+    void Recover()
+    {
+        if (currentHealth < characterData.MaxHealth)
+        {
+            currentHealth += currentRecovery * Time.deltaTime;
+
+            if (currentHealth > characterData.MaxHealth)
+            {
+                currentHealth = characterData.MaxHealth;
+            }
+        }
+    }
+    
+    public void SpawnWeapon(GameObject weaponPrefab)
+    {
+        GameObject spawnedWeapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
+        spawnedWeapon.transform.SetParent(transform); //Set the player as the parent of the spawned weapon
+        spawnedWeapons.Add(spawnedWeapon);
     }
 }

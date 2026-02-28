@@ -13,10 +13,11 @@ public sealed class PlayerMovement : MonoBehaviour
     public Vector2 movementInput;
 
     Rigidbody2D rigidBody;
-    public CharacterScriptableObject characterData;
+    PlayerStats player;
 
     void Awake()
     {
+        player = GetComponent<PlayerStats>();
         rigidBody = GetComponent<Rigidbody2D>();
     }
 
@@ -32,6 +33,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigidBody.linearVelocity = movementInput.normalized * characterData.MoveSpeed;
+        rigidBody.linearVelocity = movementInput.normalized * player.currentMoveSpeed;
     }
 }

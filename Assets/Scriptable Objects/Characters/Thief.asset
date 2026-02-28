@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5fba169ef12b448ca9862317ebac7e3, type: 3}
   m_Name: Thief
   m_EditorClassIdentifier: Assembly-CSharp::CharacterScriptableObject
-  startingWeapon: {fileID: 0}
+  startingWeapon: {fileID: 6109573915449109977, guid: d272a84f7be854a7eb827db71f4770cf, type: 3}
   maxHealth: 1000
-  recovery: 0
+  recovery: 1
   moveSpeed: 5
   might: 0
   projectileSpeed: 0
+  magnet: 1.6

@@ -542,17 +542,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 870527064057402154, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5809257563570008688, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 3793074203517270595, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: pullSpeed
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: iFrameDuration
-      value: 0.5
+      propertyPath: characterData
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: m_Name
