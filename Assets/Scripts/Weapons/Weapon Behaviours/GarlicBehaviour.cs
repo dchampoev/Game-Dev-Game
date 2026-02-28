@@ -22,5 +22,13 @@ public class GarlicBehaviour : MeleeWeaponBehaviour
                 markedEnemies.Add(collision.gameObject); //Mark the enemy so it won't be damaged again by the same garlic instance
             }
         }
+        else if (collision.CompareTag("Prop") && !markedEnemies.Contains(collision.gameObject))
+        {
+            if (collision.gameObject.TryGetComponent(out BreakableProps breakable))
+            {
+                breakable.TakeDamage(currentDamage);
+                markedEnemies.Add(collision.gameObject); //Mark the prop so it won't be damaged again by the same garlic instance
+            }
+        }
     }
 }

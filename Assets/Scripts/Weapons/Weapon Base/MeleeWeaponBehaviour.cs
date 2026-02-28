@@ -39,5 +39,12 @@ public class MeleeWeaponBehaviour : MonoBehaviour
                 enemy.TakeDamage(currentDamage);
             }
         }
+        else if (collision.CompareTag("Prop"))
+        {
+            if (collision.gameObject.TryGetComponent(out BreakableProps breakable))
+            {
+                breakable.TakeDamage(currentDamage);
+            }
+        }
     }
 }

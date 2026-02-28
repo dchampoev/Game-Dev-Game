@@ -6,13 +6,14 @@ using UnityEngine.InputSystem;
 public sealed class PlayerMovement : MonoBehaviour
 {
     private const float DirectionEpsilon = 0.01f;
-    [SerializeField] private float moveSpeed = 5f;
 
-    Rigidbody2D rigidBody;
     [HideInInspector]
     public Vector2 lastMoveDirection = Vector2.down;
     [HideInInspector]
     public Vector2 movementInput;
+
+    Rigidbody2D rigidBody;
+    public CharacterScriptableObject characterData;
 
     void Awake()
     {
@@ -31,6 +32,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigidBody.linearVelocity = movementInput.normalized * moveSpeed;
+        rigidBody.linearVelocity = movementInput.normalized * characterData.MoveSpeed;
     }
 }
