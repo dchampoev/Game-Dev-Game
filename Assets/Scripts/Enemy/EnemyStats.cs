@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyStats : MonoBehaviour
@@ -11,6 +12,10 @@ public class EnemyStats : MonoBehaviour
     public float currentHealth;
     [HideInInspector]
     public float currentDamage;
+
+    public float despawnDistance = 20f; // Distance at which the enemy will be relocated near the player
+    Transform player;
+
     void Awake()
     {
         currentMoveSpeed = enemyData.MoveSpeed;
@@ -18,23 +23,31 @@ public class EnemyStats : MonoBehaviour
         currentDamage = enemyData.Damage;
     }
 
+    void Start()
+    {
+        player = FindAnyObjectByType<PlayerStats>().transform;
+    }
+
+    void Update()
+    {
+        if (Vector2.Distance(transform.position, player.position) >= despawnDistance)
+        {
+            RelocateNearPlayer();
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
-            Die();
+            Kill();
         }
-    }
-
-    void Die()
-    {
-        Destroy(gameObject);
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             PlayerStats player = collision.gameObject.GetComponent<PlayerStats>();
             if (player != null)
@@ -42,5 +55,18 @@ public class EnemyStats : MonoBehaviour
                 player.TakeDamage(currentDamage);
             }
         }
+    }
+
+    private void Kill()
+    {
+        EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
+        spawner.OnEnemyKilled();
+        Destroy(gameObject);
+    }
+
+    void RelocateNearPlayer()
+    {
+        EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
+        transform.position = player.position + spawner.relativeSpawnPoints[UnityEngine.Random.Range(0, spawner.relativeSpawnPoints.Count)].position;
     }
 }
