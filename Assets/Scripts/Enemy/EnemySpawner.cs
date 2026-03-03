@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     {
         public string waveName;
         public List<EnemyGroup> enemyGroups; // List of enemy groups to spawn in this wave
-        public int waveQuota; // Number of enemies to spawn in this wave
+        public int minEnemiesAlive; // Number of enemies to spawn in this wave
         public float spawnInterval; // Time between spawns in seconds
         public int spawnedCount; // Counter for already spawned enemies
     }
@@ -40,18 +40,33 @@ public class EnemySpawner : MonoBehaviour
 
 
     Transform player;
+    float waveTimer;
 
     void Start()
     {
         player = FindAnyObjectByType<PlayerStats>().transform;
-        CalculateWaveQuota();
+
+        waveTimer = 0f;
+        spawnTimer = 0f;
+
+        ResetCurrentWaveCounts();
+
+        SpawnedEnemies();
     }
 
     void Update()
     {
-        if (currentWaveIndex < waves.Count - 1 && waves[currentWaveIndex].spawnedCount == waves[currentWaveIndex].waveQuota) // Check if the current wave has ended and the next wave can begin
+        if (!player) return;
+        if(waves==null || waves.Count == 0) return;
+        if(currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
+
+        waveTimer += Time.deltaTime;
+
+        if (currentWaveIndex < waves.Count - 1 && waveTimer >= waveInterval) // Check if the current wave has ended and the next wave can begin
         {
-            StartCoroutine(BeginNextWave());
+            waveTimer = 0f;
+            currentWaveIndex++;
+            ResetCurrentWaveCounts();
         }
 
         spawnTimer += Time.deltaTime;
@@ -63,25 +78,17 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    IEnumerator BeginNextWave()
+    void ResetCurrentWaveCounts()
     {
-        yield return new WaitForSeconds(waveInterval);
-
-        if (currentWaveIndex < waves.Count - 1)
-        {
-            currentWaveIndex++;
-            CalculateWaveQuota();
-        }
-    }
-
-    void CalculateWaveQuota()
-    {
-        int currentWaveQuota = 0;
+        if(waves==null || waves.Count == 0) return;
+        if(currentWaveIndex<0 || currentWaveIndex >= waves.Count) return;
+        waves[currentWaveIndex].spawnedCount = 0;
+        if (waves[currentWaveIndex].enemyGroups == null) waves[currentWaveIndex].enemyGroups = new List<EnemyGroup>();
+        
         foreach (EnemyGroup group in waves[currentWaveIndex].enemyGroups)
         {
-            currentWaveQuota += group.enemyCount;
+            group.spawnedCount = 0;
         }
-        waves[currentWaveIndex].waveQuota = currentWaveQuota;
     }
 
     /// <summary>
@@ -91,36 +98,76 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnedEnemies()
     {
-        // Check if the minimum number of enemies for the current wave has been spawned
-        if (waves[currentWaveIndex].spawnedCount < waves[currentWaveIndex].waveQuota && !maxEnemiesReached)
+        if (!player) return;
+        if (relativeSpawnPoints == null || relativeSpawnPoints.Count == 0) return;
+
+        const int hardCap = 300;
+        if (enemiesAlive >= hardCap) return;
+
+        int allowedCap = maxEnemiesAllowed <= 0 ? hardCap : Mathf.Min(maxEnemiesAllowed, hardCap);
+
+        if (enemiesAlive >= allowedCap)
         {
-            // Spawn each type of enemy in the current wave until the quota for that type is met
-            foreach (EnemyGroup group in waves[currentWaveIndex].enemyGroups)
+            maxEnemiesReached = true;
+            return;
+        }
+        maxEnemiesReached = false;
+
+        Wave wave = waves[currentWaveIndex];
+        if (wave.enemyGroups == null || wave.enemyGroups.Count == 0) return;
+
+        int spawnBudget = allowedCap - enemiesAlive;
+        if (spawnBudget <= 0) return;
+
+        int minimumAlive = Math.Max(0, wave.minEnemiesAlive);
+
+        // If the minimum amount is not met, spawn until the minimum is met
+        if (enemiesAlive < minimumAlive)
+        {
+            int deficit = minimumAlive - enemiesAlive;
+            int toSpawn = Math.Min(deficit, spawnBudget);
+
+            for (int i = 0; i < toSpawn; i++)
             {
-                // Check if the minimum number of this type of enemy has been spawned
-                if (group.spawnedCount < group.enemyCount)
-                {
-                    // Limit the number of enemis that can be spawned at once
-                    if (enemiesAlive >= maxEnemiesAllowed)
-                    {
-                        maxEnemiesReached = true;
-                        return;
-                    }
+                EnemyGroup groupToSpawn = wave.enemyGroups[UnityEngine.Random.Range(0, wave.enemyGroups.Count)];
+                if (!groupToSpawn.enemyPrefab) continue;
 
-                    //Spawn the enemy at a random spawn point around the player
-                    Instantiate(group.enemyPrefab, player.position + relativeSpawnPoints[UnityEngine.Random.Range(0, relativeSpawnPoints.Count)].position, Quaternion.identity);
+                Transform spawnPoint = relativeSpawnPoints[UnityEngine.Random.Range(0, relativeSpawnPoints.Count)];
+                Instantiate(groupToSpawn.enemyPrefab, player.position + spawnPoint.position, Quaternion.identity);
 
-                    group.spawnedCount++;
-                    waves[currentWaveIndex].spawnedCount++;
-                    enemiesAlive++;
-                }
+                groupToSpawn.spawnedCount++;
+                wave.spawnedCount++;
+                enemiesAlive++;
             }
+
+            return;
+        }
+        // If more enemies than the minimum amount are present, spawn one of each type
+        int typesToSpawn = Mathf.Min(wave.enemyGroups.Count, spawnBudget);
+
+        // Shuffle the indices so "one of each type" isn't always in the same order.
+        List<int> indices = new List<int>(wave.enemyGroups.Count);
+        for (int i = 0; i < wave.enemyGroups.Count; i++)
+        {
+            indices.Add(i);
         }
 
-        // Reset the flag if the number of alive enemies is below the maximum allowed
-        if (enemiesAlive < maxEnemiesAllowed)
+        for (int i = 0; i < typesToSpawn; i++)
         {
-            maxEnemiesReached = false;
+            int randomIndex = UnityEngine.Random.Range(i, indices.Count);
+            int temp = indices[i];
+            indices[i] = indices[randomIndex];
+            indices[randomIndex] = temp;
+
+            EnemyGroup groupToSpawn = wave.enemyGroups[indices[i]];
+            if (!groupToSpawn.enemyPrefab) continue;
+
+            Transform spawnPoint = relativeSpawnPoints[UnityEngine.Random.Range(0, relativeSpawnPoints.Count)];
+            Instantiate(groupToSpawn.enemyPrefab, player.position + spawnPoint.position, Quaternion.identity);
+
+            groupToSpawn.spawnedCount++;
+            wave.spawnedCount++;
+            enemiesAlive++;
         }
     }
 
@@ -129,5 +176,6 @@ public class EnemySpawner : MonoBehaviour
     {
         // Decrease the count of alive enemies
         enemiesAlive--;
+        if(enemiesAlive < 0) enemiesAlive = 0;
     }
 }

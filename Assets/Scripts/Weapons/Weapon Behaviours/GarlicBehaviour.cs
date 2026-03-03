@@ -18,7 +18,7 @@ public class GarlicBehaviour : MeleeWeaponBehaviour
             EnemyStats enemy = collision.GetComponent<EnemyStats>();
             if (enemy != null)
             {
-                enemy.TakeDamage(currentDamage);
+                enemy.TakeDamage(GetCurrentDamage());
                 markedEnemies.Add(collision.gameObject); //Mark the enemy so it won't be damaged again by the same garlic instance
             }
         }
@@ -26,7 +26,7 @@ public class GarlicBehaviour : MeleeWeaponBehaviour
         {
             if (collision.gameObject.TryGetComponent(out BreakableProps breakable))
             {
-                breakable.TakeDamage(currentDamage);
+                breakable.TakeDamage(GetCurrentDamage());
                 markedEnemies.Add(collision.gameObject); //Mark the prop so it won't be damaged again by the same garlic instance
             }
         }

@@ -168,4 +168,4 @@ MonoBehaviour:
   drops:
   - dropName: Health Potion
     dropPrefab: {fileID: 2621639212542214925, guid: a430dbdb901ce4390b1e4d009892b9e3, type: 3}
-    dropRate: 0
+    dropRate: 50
