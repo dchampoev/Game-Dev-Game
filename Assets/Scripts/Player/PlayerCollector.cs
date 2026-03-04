@@ -17,15 +17,17 @@ public class PlayerCollector : MonoBehaviour
         playerCollector.radius = player.currentMagnet;
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out ICollectable collectable))
+        Rigidbody2D rigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
+        if (rigidbody != null)
         {
-            Rigidbody2D rigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
-            Vector2 forceDirection = (transform.position - collision.transform.position).normalized;
-            rigidbody.AddForce(forceDirection * pullSpeed, ForceMode2D.Force);
+            Vector2 currentPosition = collision.transform.position;
+            Vector2 targetPosition = transform.position;
+            float step = pullSpeed * Time.deltaTime;
 
-            collectable.Collect();
+            Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
+            rigidbody.MovePosition(newPosition);
         }
     }
 }

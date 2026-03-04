@@ -27,7 +27,7 @@ public class InventoryManager : MonoBehaviour
         passiveItemUISlots[slotIndex].sprite = passiveItem.passiveItemData.Icon; // Update the UI image for the passive item slot
     }
 
-    public void levelUpWeapon(int slotIndex)
+    public void LevelUpWeapon(int slotIndex)
     {
         if (weaponSlots.Count > slotIndex)
         { 
@@ -48,7 +48,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
     
-    public void levelUpPassiveItem(int slotIndex)
+    public void LevelUpPassiveItem(int slotIndex)
     {
         if (passiveItemSlots.Count > slotIndex)
         { 
