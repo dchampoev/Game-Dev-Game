@@ -23,6 +23,8 @@ public sealed class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
+        if(GameManager.instance.isGameOver) return;
+
         movementInput = value.Get<Vector2>();
 
         if (movementInput.sqrMagnitude > DirectionEpsilon * DirectionEpsilon)
@@ -33,6 +35,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigidBody.linearVelocity = movementInput.normalized * player.currentMoveSpeed;
+        rigidBody.linearVelocity = movementInput.normalized * player.CurrentMoveSpeed;
     }
 }

@@ -1,0 +1,184 @@
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager instance;
+
+    //Define the game states
+    public enum GameState
+    {
+        Gameplay,
+        Paused,
+        GameOver
+    }
+
+    public GameState currentState;
+
+    public GameState previousState;
+
+    [Header("Screens")]
+    public GameObject pauseMenu;
+    public GameObject resultsScreen;
+
+    [Header("Current Stat Displays")]
+    public TextMeshProUGUI currentHealthDisplay;
+    public TextMeshProUGUI currentRecoveryDisplay;
+    public TextMeshProUGUI currentMoveSpeedDisplay;
+    public TextMeshProUGUI currentMightDisplay;
+    public TextMeshProUGUI currentProjectileSpeedDisplay;
+    public TextMeshProUGUI currentMagnetDisplay;
+
+    [Header("Result Screen Displays")]
+    public Image chosenCharacterImage;
+    public TextMeshProUGUI chosenCharacterName;
+    public TextMeshProUGUI levelReachedDisplay;
+    public List<Image> chosenWeaponsUI = new List<Image>(6);
+    public List<Image> chosenPassiveItemsUI = new List<Image>(6);
+
+    public bool isGameOver = false;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DisableScreens();
+    }
+
+    void Update()
+    {
+        switch (currentState)
+        {
+            case GameState.Gameplay:
+                // Handle gameplay logic
+                CheckForPauseAndResume();
+                break;
+            case GameState.Paused:
+                // Handle paused logic
+                CheckForPauseAndResume();
+                break;
+            case GameState.GameOver:
+                // Handle game over logic
+                if (!isGameOver)
+                {
+                    isGameOver = true;
+                    Time.timeScale = 0f;
+                    DisplayResults();
+                }
+                break;
+            default:
+                Debug.LogWarning("Unhandled game state: " + currentState);
+                break;
+        }
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        currentState = newState;
+    }
+    public void PauseGame()
+    {
+        if (currentState != GameState.Paused)
+        {
+            previousState = currentState;
+            ChangeState(GameState.Paused);
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if (currentState == GameState.Paused)
+        {
+            ChangeState(previousState);
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+        }
+    }
+
+    void CheckForPauseAndResume()
+    {
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            if (currentState == GameState.Gameplay)
+            {
+                PauseGame();
+            }
+            else if (currentState == GameState.Paused)
+            {
+                ResumeGame();
+            }
+        }
+    }
+
+    void DisableScreens()
+    {
+        pauseMenu.SetActive(false);
+        resultsScreen.SetActive(false);
+    }
+
+    public void GameOver()
+    {
+        ChangeState(GameState.GameOver);
+    }
+
+    void DisplayResults()
+    {
+        resultsScreen.SetActive(true);
+    }
+
+    public void AssignChosenCharacterUI(CharacterScriptableObject chosenCharacter)
+    {
+        chosenCharacterImage.sprite = chosenCharacter.Icon;
+        chosenCharacterName.text = chosenCharacter.name;
+    }
+
+    public void AssignLevelReachedUI(int levelReached)
+    {
+        levelReachedDisplay.text = levelReached.ToString();
+    }
+
+    public void AssignChosenWeaponsAndPassiveItemsUI(List<Image> chosenWeapons, List<Image> chosenPassiveItems)
+    {
+        if (chosenWeapons.Count != chosenWeaponsUI.Count || chosenPassiveItems.Count != chosenPassiveItemsUI.Count)
+        {
+            Debug.LogError("Chosen weapons or passive items count does not match the UI slots count.");
+            return;
+        }
+
+        for (int i = 0; i < chosenWeapons.Count; i++)
+        {
+            if (chosenWeapons[i].sprite)
+            {
+                chosenWeaponsUI[i].enabled = true;
+                chosenWeaponsUI[i].sprite = chosenWeapons[i].sprite;
+            }
+            else
+            {
+                chosenWeaponsUI[i].enabled = false;
+            }
+        }
+        for (int i = 0; i < chosenPassiveItems.Count; i++)
+        {
+            if (chosenPassiveItems[i].sprite)
+            {
+                chosenPassiveItemsUI[i].enabled = true;
+                chosenPassiveItemsUI[i].sprite = chosenPassiveItems[i].sprite;
+            }
+            else
+            {
+                chosenPassiveItemsUI[i].enabled = false;
+            }
+        }
+    }
+}
