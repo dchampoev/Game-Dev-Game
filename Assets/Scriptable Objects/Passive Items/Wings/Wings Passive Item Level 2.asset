@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemScriptableObject
   multiplier: 75
   level: 2
-  nextLevelPrefab: {fileID: 0}
+  nextLevelPrefab: {fileID: 4972447377370073038, guid: 8bb43e834f0d443f3b7b03ac0e2f8181, type: 3}
+  name: Wings Level 2
+  description: Increases Movement Speed by 75%
   icon: {fileID: 21300000, guid: 8c1aef00932eb42209226a59963f9fc5, type: 3}

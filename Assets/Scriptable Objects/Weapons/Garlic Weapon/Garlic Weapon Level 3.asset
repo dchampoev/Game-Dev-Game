@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d81318c7a1fa54eac95fee37787ba372, type: 3}
-  m_Name: Garlic Weapon
+  m_Name: Garlic Weapon Level 3
   m_EditorClassIdentifier: Assembly-CSharp::WeaponScriptableObject
-  prefab: {fileID: 5162872629528780961, guid: 0cf8d7a614fa5472f8ca2836c1ee84bc, type: 3}
-  damage: 5
+  prefab: {fileID: 5162872629528780961, guid: 8edaad1edce1347479e42b0e2df8072a, type: 3}
+  damage: 7
   speed: 0
-  cooldownDuration: 3
+  cooldownDuration: 2.5
   pierce: 0
-  level: 1
-  nextLevelPrefab: {fileID: 7429028512478703734, guid: 36768524d66884d6ca2242d3784d6a84, type: 3}
-  name: Garlic
-  description: Emits an aura around the player that deals contact damage
+  level: 3
+  nextLevelPrefab: {fileID: 0}
+  name: Garlic Level 3
+  description: The damage is increased by 2
   icon: {fileID: 948669204, guid: ee8514ee803b9490d86927983331eb33, type: 3}

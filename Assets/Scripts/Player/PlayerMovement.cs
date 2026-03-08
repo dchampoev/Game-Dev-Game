@@ -23,7 +23,10 @@ public sealed class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        if(GameManager.instance.isGameOver) return;
+        if(GameManager.instance.currentState != GameManager.GameState.Gameplay)
+        {
+            return;
+        }
 
         movementInput = value.Get<Vector2>();
 

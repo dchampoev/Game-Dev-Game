@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 434cccee76ac44a5e8ccc424317917ff, type: 3}
-  m_Name: Spinach Passive Item
+  m_Name: Spinach Passive Item Level 3
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemScriptableObject
-  multiplier: 100
-  level: 1
-  nextLevelPrefab: {fileID: 9150660653785296089, guid: a17db42b932544c8b84262c843e02ced, type: 3}
-  name: Spinach
-  description: Increases Might by 100%
+  multiplier: 200
+  level: 3
+  nextLevelPrefab: {fileID: 0}
+  name: Spinach Level 3
+  description: Increases Might by 200%
   icon: {fileID: 21300000, guid: f35469f975430402daf653b3170933fe, type: 3}

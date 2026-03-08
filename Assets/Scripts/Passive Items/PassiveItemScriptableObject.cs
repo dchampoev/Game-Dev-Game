@@ -16,6 +16,14 @@ public class PassiveItemScriptableObject : ScriptableObject
     public GameObject NextLevelPrefab { get => nextLevelPrefab; private set => nextLevelPrefab = value; }
 
     [SerializeField]
+    new string name;
+    public string Name { get => name; private set => name = value; }
+
+    [SerializeField]
+    string description; // What is the desctription of the passive item? [If it is upgrade show what the upgrade does]
+    public string Description { get => description; private set => description = value; }
+
+    [SerializeField]
     Sprite icon; // Not meant to be modified in the game [Only in Editor]
     public Sprite Icon { get => icon; private set => icon = value; }
 }

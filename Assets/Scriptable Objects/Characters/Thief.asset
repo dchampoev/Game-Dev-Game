@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a86b1158c7a594554852073d0a7316eb, type: 3}
   name: Thief
   startingWeapon: {fileID: 6109573915449109977, guid: d272a84f7be854a7eb827db71f4770cf, type: 3}
-  maxHealth: 100
+  maxHealth: 1000
   recovery: 1
   moveSpeed: 5
   might: 1

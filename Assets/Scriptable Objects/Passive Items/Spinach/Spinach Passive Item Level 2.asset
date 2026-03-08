@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PassiveItemScriptableObject
   multiplier: 150
   level: 2
-  nextLevelPrefab: {fileID: 0}
+  nextLevelPrefab: {fileID: 9150660653785296089, guid: f6416b9c383694dcdaab33578583316d, type: 3}
+  name: Spinach Level 2
+  description: Increases Might by 150%
   icon: {fileID: 21300000, guid: f35469f975430402daf653b3170933fe, type: 3}
