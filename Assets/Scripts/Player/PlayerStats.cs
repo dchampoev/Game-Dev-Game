@@ -228,7 +228,10 @@ public class PlayerStats : MonoBehaviour
 
             UpdateLevelText();
 
-            GameManager.instance.StartLevelUp();
+            if (GameManager.instance != null)
+            {
+                GameManager.instance.StartLevelUp();
+            }
         }
     }
 
