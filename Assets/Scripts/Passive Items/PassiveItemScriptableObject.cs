@@ -8,11 +8,11 @@ public class PassiveItemScriptableObject : ScriptableObject
     public float Multiplier { get => multiplier; private set => multiplier = value; }
 
     [SerializeField]
-    int level; // Not meant to be modified in the game [Only in Editor]
+    private int level;
     public int Level { get => level; private set => level = value; }
 
     [SerializeField]
-    GameObject nextLevelPrefab; // The prefab for the next level of the passive item, used for upgrading
+    GameObject nextLevelPrefab;
     public GameObject NextLevelPrefab { get => nextLevelPrefab; private set => nextLevelPrefab = value; }
 
     [SerializeField]
@@ -20,10 +20,10 @@ public class PassiveItemScriptableObject : ScriptableObject
     public string Name { get => name; private set => name = value; }
 
     [SerializeField]
-    string description; // What is the desctription of the passive item? [If it is upgrade show what the upgrade does]
+    string description;
     public string Description { get => description; private set => description = value; }
 
     [SerializeField]
-    Sprite icon; // Not meant to be modified in the game [Only in Editor]
+    private Sprite icon;
     public Sprite Icon { get => icon; private set => icon = value; }
 }

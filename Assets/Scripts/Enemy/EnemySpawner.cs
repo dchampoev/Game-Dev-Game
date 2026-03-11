@@ -9,34 +9,34 @@ public class EnemySpawner : MonoBehaviour
     public class Wave
     {
         public string waveName;
-        public List<EnemyGroup> enemyGroups; // List of enemy groups to spawn in this wave
-        public int minEnemiesAlive; // Number of enemies to spawn in this wave
-        public float spawnInterval; // Time between spawns in seconds
-        public int spawnedCount; // Counter for already spawned enemies
+        public List<EnemyGroup> enemyGroups;
+        public int minEnemiesAlive;
+        public float spawnInterval;
+        public int spawnedCount;
     }
 
     [System.Serializable]
     public class EnemyGroup
     {
         public string enemyName;
-        public int enemyCount; // Number of each enemy type to spawn
-        public int spawnedCount; // The number of enemies of this type already spawned in the current wave
+        public int enemyCount;
+        public int spawnedCount;
         public GameObject enemyPrefab;
     }
 
-    public List<Wave> waves; // List of all the waves in the game
-    public int currentWaveIndex = 0; // Index of the current wave
+    public List<Wave> waves;
+    public int currentWaveIndex = 0;
 
     [Header("Spawner Attributes")]
-    float spawnTimer; // Timer to track time between spawns
-    public int enemiesAlive; // Counter for currently alive enemies
-    public int maxEnemiesAllowed; // Maximum number of enemies allowed on the map at once
-    public bool maxEnemiesReached = false; // A flag to indicate if the maximum number of enemies has been reached
-    public float waveInterval; // The interval between waves in seconds
+    float spawnTimer;
+    public int enemiesAlive;
+    public int maxEnemiesAllowed;
+    public bool maxEnemiesReached = false;
+    public float waveInterval;
 
 
     [Header("Spawn Positions")]
-    public List<Transform> relativeSpawnPoints; // List of relative spawn points around the player
+    public List<Transform> relativeSpawnPoints;
 
 
     Transform player;
@@ -62,7 +62,7 @@ public class EnemySpawner : MonoBehaviour
 
         waveTimer += Time.deltaTime;
 
-        if (currentWaveIndex < waves.Count - 1 && waveTimer >= waveInterval) // Check if the current wave has ended and the next wave can begin
+        if (currentWaveIndex < waves.Count - 1 && waveTimer >= waveInterval)
         {
             waveTimer = 0f;
             currentWaveIndex++;
@@ -121,7 +121,6 @@ public class EnemySpawner : MonoBehaviour
 
         int minimumAlive = Math.Max(0, wave.minEnemiesAlive);
 
-        // If the minimum amount is not met, spawn until the minimum is met
         if (enemiesAlive < minimumAlive)
         {
             int deficit = minimumAlive - enemiesAlive;
@@ -171,10 +170,8 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // Call the method when an enemy is killed
     public void OnEnemyKilled()
     {
-        // Decrease the count of alive enemies
         enemiesAlive--;
         if(enemiesAlive < 0) enemiesAlive = 0;
     }

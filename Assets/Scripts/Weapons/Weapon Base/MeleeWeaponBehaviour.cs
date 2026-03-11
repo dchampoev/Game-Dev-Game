@@ -10,7 +10,6 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     public WeaponScriptableObject weaponData;
     public float lifetimeSeconds;
 
-    //Current stats
     protected float currentDamage;
     protected float currentSpeed;
     protected float currentCooldownDuration;

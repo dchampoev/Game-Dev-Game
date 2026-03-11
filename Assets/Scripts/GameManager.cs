@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    //Define the game states
     public enum GameState
     {
         Gameplay,
@@ -43,17 +42,14 @@ public class GameManager : MonoBehaviour
     public List<Image> chosenPassiveItemsUI = new List<Image>(6);
 
     [Header("Stopwatch")]
-    public float timeLimit; // Time limit in seconds
-    float stopwatchTime; // Current time in elapsed since the game started
+    public float timeLimit;
+    float stopwatchTime;
     public TextMeshProUGUI stopwatchDisplay;
 
-    // Flag to check if the game is over
     public bool isGameOver = false;
 
-    // Flag to check if the level up screen is active
     public bool choosingUpgrade;
 
-    // Reference to the player object
     public GameObject playerObject;
 
     void Awake()

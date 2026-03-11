@@ -10,7 +10,6 @@ public class ProjectileWeaponBehaviour : MonoBehaviour
     protected Vector3 travelDirection;
     public float lifetimeSeconds;
 
-    //Current stats
     protected float currentDamage;
     protected float currentSpeed;
     protected float currentCooldownDuration;

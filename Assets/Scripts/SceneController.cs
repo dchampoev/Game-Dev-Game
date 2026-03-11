@@ -6,6 +6,6 @@ public class SceneController : MonoBehaviour
     public void SceneChange(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-        Time.timeScale = 1f; // Ensure time scale is reset when changing scenes
+        Time.timeScale = 1f;
     }
 }

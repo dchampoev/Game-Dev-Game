@@ -7,7 +7,6 @@ public class PlayerStats : MonoBehaviour
 {
     CharacterScriptableObject characterData;
 
-    //Curent stats
     float currentHealth;
     float currentRecovery;
     float currentMoveSpeed;
@@ -113,13 +112,11 @@ public class PlayerStats : MonoBehaviour
     }
     #endregion
 
-    //Experience and leveling
     [Header("Experience/Level")]
     public int experience = 0;
     public int level = 1;
     public int experienceCap;
 
-    //Class for defining level ranges and their corresponding experience cap increases
     [System.Serializable]
     public class LevelRange
     {
@@ -128,7 +125,6 @@ public class PlayerStats : MonoBehaviour
         public int experienceCapIncrease;
     }
 
-    //I-Frames
     [Header("I-Frames")]
     public float iFrameDuration;
     float iFrameTimer;
@@ -150,7 +146,16 @@ public class PlayerStats : MonoBehaviour
     void Awake()
     {
         characterData = CharacterSelector.GetData();
-        CharacterSelector.instance.DestroySingleton();
+
+        if(characterData == null)
+        {
+            Debug.LogError("No character data found! Make sure to select a character in the Character Selector scene.");
+            return;
+        }
+        if (CharacterSelector.instance != null)
+        {
+            CharacterSelector.instance.DestroySingleton();
+        }
 
         inventory = GetComponent<InventoryManager>();
 
@@ -172,7 +177,6 @@ public class PlayerStats : MonoBehaviour
     {
         experienceCap = levelRanges[0].experienceCapIncrease; //Set initial experience cap based on the first level range
 
-        //Set the current stats
         GameManager.instance.currentHealthDisplay.text = "Health: " + Mathf.RoundToInt(CurrentHealth).ToString();
         GameManager.instance.currentRecoveryDisplay.text = "Recovery: " + CurrentRecovery.ToString("F1");
         GameManager.instance.currentMoveSpeedDisplay.text = "Move Speed: " + CurrentMoveSpeed.ToString("F1");
@@ -321,7 +325,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         GameObject spawnedWeapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
-        spawnedWeapon.transform.SetParent(transform); //Set the player as the parent of the spawned weapon
+        spawnedWeapon.transform.SetParent(transform);
         inventory.AddWeapon(weaponIndex, spawnedWeapon.GetComponent<WeaponController>());
 
         weaponIndex++;
@@ -336,7 +340,7 @@ public class PlayerStats : MonoBehaviour
         }
 
         GameObject spawnedPassiveItem = Instantiate(passiveItemPrefab, transform.position, Quaternion.identity);
-        spawnedPassiveItem.transform.SetParent(transform); //Set the player as the parent of the spawned passive item
+        spawnedPassiveItem.transform.SetParent(transform);
         inventory.AddPassiveItem(passiveItemIndex, spawnedPassiveItem.GetComponent<PassiveItem>());
 
         passiveItemIndex++;

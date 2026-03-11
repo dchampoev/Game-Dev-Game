@@ -13,7 +13,7 @@ public class EnemyStats : MonoBehaviour
     [HideInInspector]
     public float currentDamage;
 
-    public float despawnDistance = 20f; // Distance at which the enemy will be relocated near the player
+    public float relocateDistance = 20f;
     Transform player;
 
     void Awake()
@@ -30,7 +30,7 @@ public class EnemyStats : MonoBehaviour
 
     void Update()
     {
-        if (Vector2.Distance(transform.position, player.position) >= despawnDistance)
+        if (Vector2.Distance(transform.position, player.position) >= relocateDistance)
         {
             RelocateNearPlayer();
         }
