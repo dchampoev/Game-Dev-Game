@@ -137,12 +137,6 @@ public class InventoryManager : MonoBehaviour
 
         foreach (UpgradeUI upgradeOption in upgradeUIOptions)
         {
-            if (availablePassiveItemUpgrades.Count == 0 && availableWeaponUpgrades.Count == 0)
-            {
-                GameManager.instance.EndLevelUp();
-                return;
-            }
-
             int upgradeType;
             if (availablePassiveItemUpgrades.Count == 0)
             {
@@ -182,7 +176,6 @@ public class InventoryManager : MonoBehaviour
                                 }
 
                                 upgradeOption.upgradeButton.onClick.AddListener(() => LevelUpWeapon(i, chosenWeaponUpgrade.weaponUpgradeIndex));
-                                //Set the description and name of the upgrade option to the next level of the weapon
                                 upgradeOption.upgradeDescriptionDisplay.text = chosenWeaponUpgrade.weaponData.NextLevelPrefab.GetComponent<WeaponController>().weaponData.Description;
                                 upgradeOption.upgradeNameDisplay.text = chosenWeaponUpgrade.weaponData.NextLevelPrefab.GetComponent<WeaponController>().weaponData.Name;
                             }
@@ -193,10 +186,9 @@ public class InventoryManager : MonoBehaviour
                             newWeapon = true;
                         }
                     }
-                    if (newWeapon) // Spawn a new weapon
+                    if (newWeapon)
                     {
                         upgradeOption.upgradeButton.onClick.AddListener(() => player.SpawnWeapon(chosenWeaponUpgrade.initialWeapon));
-                        //Set the description and name of the upgrade option to the initial level of the weapon
                         upgradeOption.upgradeDescriptionDisplay.text = chosenWeaponUpgrade.weaponData.Description;
                         upgradeOption.upgradeNameDisplay.text = chosenWeaponUpgrade.weaponData.Name;
                     }
@@ -229,7 +221,6 @@ public class InventoryManager : MonoBehaviour
                                 }
 
                                 upgradeOption.upgradeButton.onClick.AddListener(() => LevelUpPassiveItem(i, chosenPassiveItemUpgrade.passiveItemUpgradeIndex));
-                                //Set the description and name of the upgrade option to the next level of the passive item
                                 upgradeOption.upgradeDescriptionDisplay.text = chosenPassiveItemUpgrade.passiveItemData.NextLevelPrefab.GetComponent<PassiveItem>().passiveItemData.Description;
                                 upgradeOption.upgradeNameDisplay.text = chosenPassiveItemUpgrade.passiveItemData.NextLevelPrefab.GetComponent<PassiveItem>().passiveItemData.Name;
                             }
@@ -243,7 +234,6 @@ public class InventoryManager : MonoBehaviour
                     if (newPassiveItem)
                     {
                         upgradeOption.upgradeButton.onClick.AddListener(() => player.SpawnPassiveItem(chosenPassiveItemUpgrade.initialPassiveItem));
-                        //Set the description and name of the upgrade option to the initial level of the passive item
                         upgradeOption.upgradeDescriptionDisplay.text = chosenPassiveItemUpgrade.passiveItemData.Description;
                         upgradeOption.upgradeNameDisplay.text = chosenPassiveItemUpgrade.passiveItemData.Name;
                     }

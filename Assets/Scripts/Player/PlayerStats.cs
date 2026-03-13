@@ -141,7 +141,7 @@ public class PlayerStats : MonoBehaviour
     public Image expBar;
     public TextMeshProUGUI levelText;
 
-    public GameObject firstPassiveItem, secondPassiveItem, secondWeaponTest;
+    public GameObject firstPassiveItemTest;
 
     void Awake()
     {
@@ -166,16 +166,13 @@ public class PlayerStats : MonoBehaviour
         CurrentProjectileSpeed = characterData.ProjectileSpeed;
         CurrentMagnet = characterData.Magnet;
 
-        //Spawn the starting weapon
         SpawnWeapon(characterData.StartingWeapon);
-        //SpawnWeapon(secondWeaponTest);
-        //SpawnPassiveItem(firstPassiveItem);
-        SpawnPassiveItem(secondPassiveItem);
+        SpawnPassiveItem(firstPassiveItemTest);
     }
 
     void Start()
     {
-        experienceCap = levelRanges[0].experienceCapIncrease; //Set initial experience cap based on the first level range
+        experienceCap = levelRanges[0].experienceCapIncrease;
 
         GameManager.instance.currentHealthDisplay.text = "Health: " + Mathf.RoundToInt(CurrentHealth).ToString();
         GameManager.instance.currentRecoveryDisplay.text = "Recovery: " + CurrentRecovery.ToString("F1");
