@@ -141,7 +141,6 @@ public class PlayerStats : MonoBehaviour
     public Image expBar;
     public TextMeshProUGUI levelText;
 
-    public GameObject firstPassiveItemTest;
 
     void Awake()
     {
@@ -167,7 +166,6 @@ public class PlayerStats : MonoBehaviour
         CurrentMagnet = characterData.Magnet;
 
         SpawnWeapon(characterData.StartingWeapon);
-        SpawnPassiveItem(firstPassiveItemTest);
     }
 
     void Start()

@@ -10019,6 +10019,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420031}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponEvolutions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: 'weaponUISlots.Array.data[0]'
       value: 
       objectReference: {fileID: 1729333030}
@@ -10042,6 +10046,10 @@ PrefabInstance:
       propertyPath: 'weaponUISlots.Array.data[5]'
       value: 
       objectReference: {fileID: 1440557212}
+    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: 'weaponEvolutions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 703bc66d80c604e9d8c63e015164792c, type: 2}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: 'passiveItemUISlots.Array.data[0]'
       value: 
@@ -10196,6 +10204,63 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
   m_PrefabInstance: {fileID: 6801395813023021869}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6937025977265905391
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4254462943046021590, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+      propertyPath: m_Name
+      value: Treasure Chest
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
 --- !u!4 &7482094410598706125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8998368394483529027, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
@@ -10215,3 +10280,4 @@ SceneRoots:
   - {fileID: 865535114}
   - {fileID: 18642179}
   - {fileID: 361517097}
+  - {fileID: 6937025977265905391}
