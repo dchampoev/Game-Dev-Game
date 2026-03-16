@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1494938ad6743462ab36a4da184890b8, type: 3}
   m_Name: Knife + Spinach
   m_EditorClassIdentifier: GameStats::WeaponEvolutionBlueprint
-  weaponToEvolveData: {fileID: 11400000, guid: 26cff79653aca4b87b30b0451b6ba00b, type: 2}
+  weaponToEvolveData: {fileID: 11400000, guid: 8fbebcc1782074b64951a1c2288b9dce, type: 2}
   catalystPassiveItemData: {fileID: 11400000, guid: da74ba86a307840a08cd01e1b2b197f0, type: 2}
   evolvedWeaponData: {fileID: 11400000, guid: 43a650af7b1fe4d67a8976b22cd1f1b1, type: 2}
   evolvedWeapon: {fileID: 6109573915449109977, guid: 8318c5c3412ad43dd98aec7f65c123ea, type: 3}

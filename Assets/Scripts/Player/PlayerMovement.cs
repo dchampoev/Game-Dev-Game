@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInput))]
 public sealed class PlayerMovement : MonoBehaviour

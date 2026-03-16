@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 public class PropRandomizer : MonoBehaviour
 {
     public List<GameObject> propSpawnPoints;
