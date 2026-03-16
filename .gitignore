@@ -11,6 +11,7 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+[Cc]ode[Cc]overage/
 =======
 /[Ll]ibrary/
 /[Tt]emp/
@@ -19,6 +20,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/[Cc]ode[Cc]overage/
 >>>>>>> b839a18bcd41d2d897bb0ee043b95af7f6e8318e
 *.log
 
