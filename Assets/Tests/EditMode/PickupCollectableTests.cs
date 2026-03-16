@@ -9,6 +9,11 @@ public class PickupCollectableTests
     [SetUp]
     public void Setup()
     {
+        foreach (var existingPlayer in Object.FindObjectsByType<PlayerStats>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(existingPlayer.gameObject);
+        }
+
         playerObject = new GameObject("Player");
         playerStats = playerObject.AddComponent<PlayerStats>();
         playerObject.tag = "Player";
@@ -27,7 +32,16 @@ public class PickupCollectableTests
     [TearDown]
     public void TearDown()
     {
-        Object.DestroyImmediate(playerObject);
+        if (playerObject != null)
+        {
+            Object.DestroyImmediate(playerObject);
+        }
+
+        foreach (var existingPlayer in Object.FindObjectsByType<PlayerStats>(FindObjectsSortMode.None))
+        {
+            if (existingPlayer != null)
+                Object.DestroyImmediate(existingPlayer.gameObject);
+        }
     }
 
     [Test]

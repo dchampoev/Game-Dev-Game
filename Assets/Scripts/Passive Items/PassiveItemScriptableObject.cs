@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 [CreateAssetMenu(fileName = "PassiveItemScriptableObject", menuName = "Scriptable Objects/Passive Item")]
 public class PassiveItemScriptableObject : ScriptableObject
 {

@@ -35,4 +35,31 @@ public class GarlicControllerTests
         Object.DestroyImmediate(garlicPrefab);
         Object.DestroyImmediate(weaponData);
     }
+    [Test]
+    public void Attack_WhenPrefabExists_ShouldInstantiateObject()
+    {
+        GameObject weaponObject = new GameObject("GarlicController");
+        TestGarlicController controller = weaponObject.AddComponent<TestGarlicController>();
+
+        GameObject garlicPrefab = new GameObject("Garlic");
+
+        WeaponScriptableObject weaponData = ScriptableObject.CreateInstance<WeaponScriptableObject>();
+        var so = new UnityEditor.SerializedObject(weaponData);
+        so.FindProperty("prefab").objectReferenceValue = garlicPrefab;
+        so.ApplyModifiedProperties();
+
+        controller.weaponData = weaponData;
+
+        int before = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None).Length;
+
+        controller.CallAttack();
+
+        int after = Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None).Length;
+
+        Assert.Greater(after, before);
+
+        Object.DestroyImmediate(weaponObject);
+        Object.DestroyImmediate(garlicPrefab);
+        Object.DestroyImmediate(weaponData);
+    }
 }

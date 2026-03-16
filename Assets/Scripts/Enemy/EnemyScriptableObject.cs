@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 [CreateAssetMenu(fileName = "EnemyScriptableObject", menuName = "Scriptable Objects/Enemy")]
 public class EnemyScriptableObject : ScriptableObject
 {

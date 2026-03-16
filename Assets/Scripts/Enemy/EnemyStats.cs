@@ -16,11 +16,20 @@ public class EnemyStats : MonoBehaviour
     public float relocateDistance = 20f;
     Transform player;
 
-    void Awake()
-    {
+    public void InitializeStats()
+    { 
         currentMoveSpeed = enemyData.MoveSpeed;
         currentHealth = enemyData.MaxHealth;
         currentDamage = enemyData.Damage;
+    }
+
+    void Awake()
+    {
+        if (enemyData == null)
+        {
+            return;
+        }
+        InitializeStats();
     }
 
     void Start()
