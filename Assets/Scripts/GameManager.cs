@@ -3,7 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;

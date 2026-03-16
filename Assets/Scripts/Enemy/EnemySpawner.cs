@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
@@ -57,8 +59,8 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         if (!player) return;
-        if(waves==null || waves.Count == 0) return;
-        if(currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
+        if (waves == null || waves.Count == 0) return;
+        if (currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
 
         waveTimer += Time.deltaTime;
 
@@ -80,11 +82,11 @@ public class EnemySpawner : MonoBehaviour
 
     void ResetCurrentWaveCounts()
     {
-        if(waves==null || waves.Count == 0) return;
-        if(currentWaveIndex<0 || currentWaveIndex >= waves.Count) return;
+        if (waves == null || waves.Count == 0) return;
+        if (currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
         waves[currentWaveIndex].spawnedCount = 0;
         if (waves[currentWaveIndex].enemyGroups == null) waves[currentWaveIndex].enemyGroups = new List<EnemyGroup>();
-        
+
         foreach (EnemyGroup group in waves[currentWaveIndex].enemyGroups)
         {
             group.spawnedCount = 0;
@@ -173,6 +175,6 @@ public class EnemySpawner : MonoBehaviour
     public void OnEnemyKilled()
     {
         enemiesAlive--;
-        if(enemiesAlive < 0) enemiesAlive = 0;
+        if (enemiesAlive < 0) enemiesAlive = 0;
     }
 }

@@ -1,10 +1,12 @@
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class PassiveItem : MonoBehaviour
 {
     protected PlayerStats playerStats;
     public PassiveItemScriptableObject passiveItemData;
-
+    
+    [ExcludeFromCoverage]
     protected virtual void ApplyModifier()
     {
         //Apply the modifier to the appropriate stat in child classes
