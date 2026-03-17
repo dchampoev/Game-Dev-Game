@@ -10,7 +10,7 @@ public class MeleeWeaponBehaviourTests
         public void CallOnTriggerEnter2D(Collider2D collider)
         {
             typeof(MeleeWeaponBehaviour)
-                .GetMethod("OnTriggerEnter2D", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                .GetMethod("OnTriggerEnter2D", BindingFlags.Instance | BindingFlags.NonPublic)
                 ?.Invoke(this, new object[] { collider });
         }
     }
@@ -40,21 +40,21 @@ public class MeleeWeaponBehaviourTests
     private void SetPrivateFloat(MeleeWeaponBehaviour behaviour, string fieldName, float value)
     {
         typeof(MeleeWeaponBehaviour)
-            .GetField(fieldName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
             .SetValue(behaviour, value);
     }
 
     private void SetPrivateInt(MeleeWeaponBehaviour behaviour, string fieldName, int value)
     {
         typeof(MeleeWeaponBehaviour)
-            .GetField(fieldName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
             .SetValue(behaviour, value);
     }
 
     private void InitializeStats(MeleeWeaponBehaviour behaviour)
     {
         typeof(MeleeWeaponBehaviour)
-            .GetMethod("InitializeStats", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)
+            .GetMethod("InitializeStats", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
             ?.Invoke(behaviour, null);
     }
     [TearDown]

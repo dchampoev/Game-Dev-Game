@@ -20,7 +20,7 @@ public class DropRateManager : MonoBehaviour
             return;
         }
 
-        float randomNumber = UnityEngine.Random.Range(0f, 100f);
+        float randomNumber = Random.Range(0f, 100f);
         List<Drops> possibleDrops = new List<Drops>();
 
         foreach (Drops drop in drops)
@@ -32,7 +32,7 @@ public class DropRateManager : MonoBehaviour
         }
         if (possibleDrops.Count > 0)
         {
-            Drops drop = possibleDrops[UnityEngine.Random.Range(0, possibleDrops.Count)];
+            Drops drop = possibleDrops[Random.Range(0, possibleDrops.Count)];
             Instantiate(drop.dropPrefab, transform.position, Quaternion.identity);
         }
     }

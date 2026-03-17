@@ -148,11 +148,11 @@ public class ProjectileWeaponBehaviourTests
         behaviour.weaponData = ScriptableObject.CreateInstance<WeaponScriptableObject>();
 
         typeof(ProjectileWeaponBehaviour)
-            .GetField("currentDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            .GetField("currentDamage", BindingFlags.NonPublic | BindingFlags.Instance)
             .SetValue(behaviour, 2f);
 
         typeof(ProjectileWeaponBehaviour)
-            .GetField("currentPierce", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            .GetField("currentPierce", BindingFlags.NonPublic | BindingFlags.Instance)
             .SetValue(behaviour, 2);
 
         GameObject prop = new GameObject();
@@ -163,7 +163,7 @@ public class ProjectileWeaponBehaviourTests
         breakable.health = 10f;
 
         typeof(ProjectileWeaponBehaviour)
-            .GetMethod("OnTriggerEnter2D", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            .GetMethod("OnTriggerEnter2D", BindingFlags.NonPublic | BindingFlags.Instance)
             .Invoke(behaviour, new object[] { collider });
 
         Assert.AreEqual(8f, breakable.health);

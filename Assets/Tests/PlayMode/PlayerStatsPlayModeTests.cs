@@ -140,36 +140,36 @@ public class PlayerStatsPlayModeTests
 
     private GameManager CreateGameManager()
     {
-        GameObject go = new GameObject("GameManager");
-        go.SetActive(false);
+        GameObject gameObject = new GameObject("GameManager");
+        gameObject.SetActive(false);
 
-        GameManager gm = go.AddComponent<GameManager>();
+        GameManager gameManager = gameObject.AddComponent<GameManager>();
 
-        gm.pauseMenu = new GameObject("PauseMenu");
-        gm.resultsScreen = new GameObject("ResultsScreen");
-        gm.levelUpScreen = new GameObject("LevelUpScreen");
+        gameManager.pauseMenu = new GameObject("PauseMenu");
+        gameManager.resultsScreen = new GameObject("ResultsScreen");
+        gameManager.levelUpScreen = new GameObject("LevelUpScreen");
 
-        gm.currentHealthDisplay = (TextMeshProUGUI)CreateText("CurrentHealthDisplay");
-        gm.currentRecoveryDisplay = (TextMeshProUGUI)CreateText("CurrentRecoveryDisplay");
-        gm.currentMoveSpeedDisplay = (TextMeshProUGUI)CreateText("CurrentMoveSpeedDisplay");
-        gm.currentMightDisplay = (TextMeshProUGUI)CreateText("CurrentMightDisplay");
-        gm.currentProjectileSpeedDisplay = (TextMeshProUGUI)CreateText("CurrentProjectileSpeedDisplay");
-        gm.currentMagnetDisplay = (TextMeshProUGUI)CreateText("CurrentMagnetDisplay");
+        gameManager.currentHealthDisplay = (TextMeshProUGUI)CreateText("CurrentHealthDisplay");
+        gameManager.currentRecoveryDisplay = (TextMeshProUGUI)CreateText("CurrentRecoveryDisplay");
+        gameManager.currentMoveSpeedDisplay = (TextMeshProUGUI)CreateText("CurrentMoveSpeedDisplay");
+        gameManager.currentMightDisplay = (TextMeshProUGUI)CreateText("CurrentMightDisplay");
+        gameManager.currentProjectileSpeedDisplay = (TextMeshProUGUI)CreateText("CurrentProjectileSpeedDisplay");
+        gameManager.currentMagnetDisplay = (TextMeshProUGUI)CreateText("CurrentMagnetDisplay");
 
-        gm.chosenCharacterImage = CreateImage("ChosenCharacterImage");
-        gm.chosenCharacterName = (TextMeshProUGUI)CreateText("ChosenCharacterName");
-        gm.levelReachedDisplay = (TextMeshProUGUI)CreateText("LevelReachedDisplay");
-        gm.timeSurvivedDisplay = (TextMeshProUGUI)CreateText("TimeSurvivedDisplay");
-        gm.stopwatchDisplay = (TextMeshProUGUI)CreateText("StopwatchDisplay");
+        gameManager.chosenCharacterImage = CreateImage("ChosenCharacterImage");
+        gameManager.chosenCharacterName = (TextMeshProUGUI)CreateText("ChosenCharacterName");
+        gameManager.levelReachedDisplay = (TextMeshProUGUI)CreateText("LevelReachedDisplay");
+        gameManager.timeSurvivedDisplay = (TextMeshProUGUI)CreateText("TimeSurvivedDisplay");
+        gameManager.stopwatchDisplay = (TextMeshProUGUI)CreateText("StopwatchDisplay");
 
         for (int i = 0; i < 6; i++)
         {
-            gm.chosenWeaponsUI.Add(CreateImage($"ChosenWeaponUI_{i}"));
-            gm.chosenPassiveItemsUI.Add(CreateImage($"ChosenPassiveUI_{i}"));
+            gameManager.chosenWeaponsUI.Add(CreateImage($"ChosenWeaponUI_{i}"));
+            gameManager.chosenPassiveItemsUI.Add(CreateImage($"ChosenPassiveUI_{i}"));
         }
 
-        go.SetActive(true);
-        return gm;
+        gameObject.SetActive(true);
+        return gameManager;
     }
 
     private InventoryManager CreateInventory(GameObject playerObject)

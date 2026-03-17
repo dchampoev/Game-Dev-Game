@@ -6,13 +6,11 @@ public class PlayerAnimator : MonoBehaviour
 {
     Animator animator;
     PlayerMovement playerMovement;
-    SpriteRenderer spriteRenderer;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()

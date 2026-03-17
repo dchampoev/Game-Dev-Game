@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.TestTools;
 
 public class PlayerAndInventoryTests
 {
@@ -106,15 +105,15 @@ public class PlayerAndInventoryTests
         GameObject inventoryGO = new GameObject("Inventory");
         InventoryManager inventoryManager = inventoryGO.AddComponent<InventoryManager>();
 
-        inventoryManager.passiveItemSlots = new System.Collections.Generic.List<PassiveItem>() { null, null, null, null, null, null };
-        inventoryManager.passiveItemUISlots = new System.Collections.Generic.List<UnityEngine.UI.Image>()
+        inventoryManager.passiveItemSlots = new List<PassiveItem>() { null, null, null, null, null, null };
+        inventoryManager.passiveItemUISlots = new List<Image>()
         {
-            new GameObject().AddComponent<UnityEngine.UI.Image>(),
-            new GameObject().AddComponent<UnityEngine.UI.Image>(),
-            new GameObject().AddComponent<UnityEngine.UI.Image>(),
-            new GameObject().AddComponent<UnityEngine.UI.Image>(),
-            new GameObject().AddComponent<UnityEngine.UI.Image>(),
-            new GameObject().AddComponent<UnityEngine.UI.Image>()
+            new GameObject().AddComponent<Image>(),
+            new GameObject().AddComponent<Image>(),
+            new GameObject().AddComponent<Image>(),
+            new GameObject().AddComponent<Image>(),
+            new GameObject().AddComponent<Image>(),
+            new GameObject().AddComponent<Image>()
         };
 
         GameObject passiveGO = new GameObject("PassiveItem");

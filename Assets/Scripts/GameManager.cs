@@ -72,16 +72,13 @@ public class GameManager : MonoBehaviour
         switch (currentState)
         {
             case GameState.Gameplay:
-                // Handle gameplay logic
                 CheckForPauseAndResume();
                 UpdateStopwatch();
                 break;
             case GameState.Paused:
-                // Handle paused logic
                 CheckForPauseAndResume();
                 break;
             case GameState.GameOver:
-                // Handle game over logic
                 if (!isGameOver)
                 {
                     isGameOver = true;
@@ -90,7 +87,6 @@ public class GameManager : MonoBehaviour
                 }
                 break;
             case GameState.LevelUp:
-                // Handle level up logic
                 if (!choosingUpgrade)
                 {
                     choosingUpgrade = true;

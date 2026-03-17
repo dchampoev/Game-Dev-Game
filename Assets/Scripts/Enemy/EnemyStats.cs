@@ -5,7 +5,6 @@ public class EnemyStats : MonoBehaviour
 {
     public EnemyScriptableObject enemyData;
 
-    //Current stats
     [HideInInspector]
     public float currentMoveSpeed;
     [HideInInspector]

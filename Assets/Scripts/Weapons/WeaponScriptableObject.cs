@@ -8,7 +8,7 @@ public class WeaponScriptableObject : ScriptableObject
     [SerializeField]
     GameObject prefab;
     public GameObject Prefab { get => prefab; private set => prefab = value; }
-    //Base stats for weapons
+    
     [SerializeField]
     float damage;
     public float Damage { get => damage; private set => damage = value; }

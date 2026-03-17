@@ -49,13 +49,6 @@ public class EnemyStatsTests
             ?.GetValue(stats);
     }
 
-    private void SetPrivatePlayer(EnemyStats stats, Transform player)
-    {
-        typeof(EnemyStats)
-            .GetField("player", BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(stats, player);
-    }
-
     [TearDown]
     public void TearDown()
     {
