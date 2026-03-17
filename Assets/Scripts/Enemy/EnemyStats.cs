@@ -34,11 +34,15 @@ public class EnemyStats : MonoBehaviour
 
     void Start()
     {
-        player = FindAnyObjectByType<PlayerStats>().transform;
+        PlayerStats foundPlayer = FindAnyObjectByType<PlayerStats>();
+        if (foundPlayer == null) return;
+        player = foundPlayer.transform;
     }
 
     void Update()
     {
+        if(player == null) return;
+
         if (Vector2.Distance(transform.position, player.position) >= relocateDistance)
         {
             RelocateNearPlayer();

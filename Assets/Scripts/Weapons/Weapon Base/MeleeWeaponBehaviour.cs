@@ -15,7 +15,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
     protected float currentCooldownDuration;
     protected int currentPierce;
 
-    void Awake()
+    public void InitializeStats()
     {
         currentDamage = weaponData.Damage;
         currentSpeed = weaponData.Speed;
@@ -23,8 +23,18 @@ public class MeleeWeaponBehaviour : MonoBehaviour
         currentPierce = weaponData.Pierce;
     }
 
-    public float GetCurrentDamage(){
-        return currentDamage *= FindAnyObjectByType<PlayerStats>().CurrentMight;
+    void Awake()
+    {
+        if (weaponData == null) return;
+
+        InitializeStats();
+    }
+
+    public float GetCurrentDamage()
+    {
+        PlayerStats player = FindAnyObjectByType<PlayerStats>();
+        float might = player != null ? player.CurrentMight : 1f;
+        return currentDamage * might;
     }
 
     protected virtual void Start()

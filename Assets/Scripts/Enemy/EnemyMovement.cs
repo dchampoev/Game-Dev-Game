@@ -14,6 +14,6 @@ public class EnemyMovement : MonoBehaviour
 
     protected void Update()
     {
-        transform.position = Vector2.MoveTowards(transform.position, player.position, enemy.currentMoveSpeed * Time.deltaTime); //Constantly move towards the player
+        transform.position = Vector2.MoveTowards(transform.position, player.position, enemy.currentMoveSpeed * Time.deltaTime);
     }
 }
