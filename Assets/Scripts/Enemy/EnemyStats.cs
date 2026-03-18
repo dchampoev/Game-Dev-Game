@@ -5,7 +5,6 @@ public class EnemyStats : MonoBehaviour
 {
     public EnemyScriptableObject enemyData;
 
-    //Current stats
     [HideInInspector]
     public float currentMoveSpeed;
     [HideInInspector]
@@ -16,20 +15,33 @@ public class EnemyStats : MonoBehaviour
     public float relocateDistance = 20f;
     Transform player;
 
-    void Awake()
-    {
+    public void InitializeStats()
+    { 
         currentMoveSpeed = enemyData.MoveSpeed;
         currentHealth = enemyData.MaxHealth;
         currentDamage = enemyData.Damage;
     }
 
+    void Awake()
+    {
+        if (enemyData == null)
+        {
+            return;
+        }
+        InitializeStats();
+    }
+
     void Start()
     {
-        player = FindAnyObjectByType<PlayerStats>().transform;
+        PlayerStats foundPlayer = FindAnyObjectByType<PlayerStats>();
+        if (foundPlayer == null) return;
+        player = foundPlayer.transform;
     }
 
     void Update()
     {
+        if(player == null) return;
+
         if (Vector2.Distance(transform.position, player.position) >= relocateDistance)
         {
             RelocateNearPlayer();

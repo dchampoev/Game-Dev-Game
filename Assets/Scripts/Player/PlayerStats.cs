@@ -215,14 +215,19 @@ public class PlayerStats : MonoBehaviour
             level++;
 
             int experienceCapIncrease = 0;
-            foreach (LevelRange range in levelRanges)
+
+            if (levelRanges != null)
             {
-                if (level >= range.startLevel && level <= range.endLevel)
+                foreach (LevelRange range in levelRanges)
                 {
-                    experienceCapIncrease = range.experienceCapIncrease;
-                    break;
+                    if (level >= range.startLevel && level <= range.endLevel)
+                    {
+                        experienceCapIncrease = range.experienceCapIncrease;
+                        break;
+                    }
                 }
             }
+            
             experienceCap += experienceCapIncrease;
 
             UpdateLevelText();
@@ -287,6 +292,7 @@ public class PlayerStats : MonoBehaviour
 
     public void Heal(float amount)
     {
+        if (characterData == null) return;
         if (CurrentHealth < characterData.MaxHealth)
         {
             CurrentHealth += amount;

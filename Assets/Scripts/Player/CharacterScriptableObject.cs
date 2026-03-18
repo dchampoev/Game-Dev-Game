@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 [CreateAssetMenu(fileName = "CharacterScriptableObject", menuName = "Scriptable Objects/Character")]
 public class CharacterScriptableObject : ScriptableObject
 {

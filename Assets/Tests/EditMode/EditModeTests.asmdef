@@ -1,10 +1,11 @@
 {
-    "name": "Tests",
+    "name": "EditModeTests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "GameStats"
+        "GameStats",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

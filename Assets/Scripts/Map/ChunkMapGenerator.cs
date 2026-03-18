@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 public class ChunkMapGenerator : MonoBehaviour
 {
 

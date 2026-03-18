@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 public class EnemySpawner : MonoBehaviour
 {
     [System.Serializable]
@@ -57,8 +59,8 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         if (!player) return;
-        if(waves==null || waves.Count == 0) return;
-        if(currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
+        if (waves == null || waves.Count == 0) return;
+        if (currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
 
         waveTimer += Time.deltaTime;
 
@@ -80,21 +82,16 @@ public class EnemySpawner : MonoBehaviour
 
     void ResetCurrentWaveCounts()
     {
-        if(waves==null || waves.Count == 0) return;
-        if(currentWaveIndex<0 || currentWaveIndex >= waves.Count) return;
+        if (waves == null || waves.Count == 0) return;
+        if (currentWaveIndex < 0 || currentWaveIndex >= waves.Count) return;
         waves[currentWaveIndex].spawnedCount = 0;
         if (waves[currentWaveIndex].enemyGroups == null) waves[currentWaveIndex].enemyGroups = new List<EnemyGroup>();
-        
+
         foreach (EnemyGroup group in waves[currentWaveIndex].enemyGroups)
         {
             group.spawnedCount = 0;
         }
     }
-
-    /// <summary>
-    /// This method will stop spawning enemies if the amount of enemies on the map is maximum.
-    /// The method will only spawn enemies in a particular wave until it is time for the next wave's enemies to be spawned.
-    /// </summary>
 
     void SpawnedEnemies()
     {
@@ -141,10 +138,9 @@ public class EnemySpawner : MonoBehaviour
 
             return;
         }
-        // If more enemies than the minimum amount are present, spawn one of each type
+        
         int typesToSpawn = Mathf.Min(wave.enemyGroups.Count, spawnBudget);
 
-        // Shuffle the indices so "one of each type" isn't always in the same order.
         List<int> indices = new List<int>(wave.enemyGroups.Count);
         for (int i = 0; i < wave.enemyGroups.Count; i++)
         {
@@ -173,6 +169,6 @@ public class EnemySpawner : MonoBehaviour
     public void OnEnemyKilled()
     {
         enemiesAlive--;
-        if(enemiesAlive < 0) enemiesAlive = 0;
+        if (enemiesAlive < 0) enemiesAlive = 0;
     }
 }
