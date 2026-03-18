@@ -138,6 +138,7 @@ public class EnemySpawner : MonoBehaviour
 
             return;
         }
+        
         int typesToSpawn = Mathf.Min(wave.enemyGroups.Count, spawnBudget);
 
         List<int> indices = new List<int>(wave.enemyGroups.Count);
