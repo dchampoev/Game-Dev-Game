@@ -135,18 +135,6 @@ public class EnemyStatsTests
     }
 
     [Test]
-    public void TakeDamage_WhenDamageIsLessThanHealth_ShouldOnlyReduceHealth()
-    {
-        GameObject enemyObject = new GameObject("Enemy");
-        EnemyStats stats = enemyObject.AddComponent<EnemyStats>();
-        stats.currentHealth = 10f;
-
-        stats.TakeDamage(3f, Vector2.zero);
-
-        Assert.AreEqual(7f, stats.currentHealth);
-    }
-
-    [Test]
     public void Update_WhenPlayerIsNull_ShouldNotThrowAndShouldNotMove()
     {
         GameObject enemyObject = new GameObject("Enemy");

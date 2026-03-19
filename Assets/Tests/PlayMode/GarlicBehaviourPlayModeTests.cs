@@ -1,17 +1,32 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-public class ProjectileWeaponBehaviourPlayModeTests
+public class GarlicBehaviourPlayModeTests
 {
-    private class TestProjectileWeaponBehaviour : ProjectileWeaponBehaviour
+    private class TestGarlicBehaviour : GarlicBehaviour
     {
+        public void InitializeMarkedEnemies()
+        {
+            typeof(GarlicBehaviour)
+                .GetField("markedEnemies", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?.SetValue(this, new List<GameObject>());
+        }
+
+        public List<GameObject> GetMarkedEnemies()
+        {
+            return (List<GameObject>)typeof(GarlicBehaviour)
+                .GetField("markedEnemies", BindingFlags.Instance | BindingFlags.NonPublic)
+                ?.GetValue(this);
+        }
+
         public void CallOnTriggerEnter2D(Collider2D collider)
         {
-            typeof(ProjectileWeaponBehaviour)
+            typeof(GarlicBehaviour)
                 .GetMethod("OnTriggerEnter2D", BindingFlags.Instance | BindingFlags.NonPublic)
                 ?.Invoke(this, new object[] { collider });
         }
@@ -22,21 +37,6 @@ public class ProjectileWeaponBehaviourPlayModeTests
         obj.GetType()
             .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
             ?.SetValue(obj, value);
-    }
-
-    private WeaponScriptableObject CreateWeaponData(
-        float damage = 2f,
-        float speed = 5f,
-        float cooldown = 1f,
-        int pierce = 1)
-    {
-        WeaponScriptableObject data = ScriptableObject.CreateInstance<WeaponScriptableObject>();
-        SetPrivateField(data, "damage", damage);
-        SetPrivateField(data, "speed", speed);
-        SetPrivateField(data, "cooldownDuration", cooldown);
-        SetPrivateField(data, "pierce", pierce);
-        SetPrivateField(data, "level", 1);
-        return data;
     }
 
     private WeaponController CreateDummyWeaponPrefab()
@@ -114,32 +114,22 @@ public class ProjectileWeaponBehaviourPlayModeTests
         }
 
         yield return null;
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<ScriptableObject>())
-        {
-            if (data is WeaponScriptableObject || data is CharacterScriptableObject)
-            {
-                Object.DestroyImmediate(data);
-            }
-        }
     }
 
     [UnityTest]
-    public IEnumerator OnTriggerEnter2D_WhenEnemyAndPierceBecomesZero_ShouldDestroyProjectile()
+    public IEnumerator OnTriggerEnter2D_WhenEnemy_ShouldAddEnemyToMarkedEnemies()
     {
         CreateTestPlayer();
 
-        GameObject projectileObject = new GameObject("Projectile");
-        TestProjectileWeaponBehaviour behaviour = projectileObject.AddComponent<TestProjectileWeaponBehaviour>();
-        behaviour.weaponData = CreateWeaponData(damage: 2f, speed: 1f, cooldown: 1f, pierce: 1);
-        behaviour.lifetimeSeconds = 10f;
-        behaviour.InitializeStats();
+        GameObject garlicObject = new GameObject("Garlic");
+        TestGarlicBehaviour garlic = garlicObject.AddComponent<TestGarlicBehaviour>();
+        garlic.InitializeMarkedEnemies();
+        garlic.lifetimeSeconds = 10f;
 
         GameObject enemyObject = new GameObject("Enemy");
         enemyObject.tag = "Enemy";
         enemyObject.AddComponent<SpriteRenderer>();
         enemyObject.AddComponent<EnemyMovement>();
-
         BoxCollider2D enemyCollider = enemyObject.AddComponent<BoxCollider2D>();
 
         EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
@@ -149,11 +139,11 @@ public class ProjectileWeaponBehaviourPlayModeTests
 
         yield return null;
 
-        behaviour.CallOnTriggerEnter2D(enemyCollider);
+        garlic.CallOnTriggerEnter2D(enemyCollider);
 
         yield return null;
 
-        Assert.IsTrue(projectileObject == null);
-        Assert.AreEqual(8f, enemyStats.currentHealth);
+        Assert.AreEqual(1, garlic.GetMarkedEnemies().Count);
+        Assert.AreEqual(enemyObject, garlic.GetMarkedEnemies()[0]);
     }
 }

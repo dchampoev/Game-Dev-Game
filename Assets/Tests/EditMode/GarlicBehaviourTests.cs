@@ -30,29 +30,6 @@ public class GarlicBehaviourTests
     }
 
     [Test]
-    public void OnTriggerEnter2D_WhenEnemy_ShouldAddEnemyToMarkedEnemies()
-    {
-        GameObject garlicObject = new GameObject("Garlic");
-        TestGarlicBehaviour garlic = garlicObject.AddComponent<TestGarlicBehaviour>();
-        garlic.InitializeMarkedEnemies();
-
-        GameObject enemyObject = new GameObject("Enemy");
-        enemyObject.tag = "Enemy";
-        BoxCollider2D enemyCollider = enemyObject.AddComponent<BoxCollider2D>();
-
-        EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
-        enemyStats.currentHealth = 10f;
-
-        garlic.CallOnTriggerEnter2D(enemyCollider);
-
-        Assert.AreEqual(1, garlic.GetMarkedEnemies().Count);
-        Assert.AreEqual(enemyObject, garlic.GetMarkedEnemies()[0]);
-
-        Object.DestroyImmediate(enemyObject);
-        Object.DestroyImmediate(garlicObject);
-    }
-
-    [Test]
     public void OnTriggerEnter2D_WhenProp_ShouldAddPropToMarkedEnemies()
     {
         GameObject garlicObject = new GameObject("Garlic");

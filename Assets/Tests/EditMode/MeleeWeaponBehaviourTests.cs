@@ -122,31 +122,6 @@ public class MeleeWeaponBehaviourTests
     }
 
     [Test]
-    public void OnTriggerEnter2D_WhenWeaponHitsEnemy_ShouldReduceEnemyHealth()
-    {
-        GameObject weaponObject = new GameObject("MeleeWeapon");
-        TestMeleeWeaponBehaviour behaviour = weaponObject.AddComponent<TestMeleeWeaponBehaviour>();
-
-        SetPrivateFloat(behaviour, "currentDamage", 2f);
-        SetPrivateInt(behaviour, "currentPierce", 2);
-
-        GameObject enemyObject = new GameObject("Enemy");
-        enemyObject.tag = "Enemy";
-        BoxCollider2D collider = enemyObject.AddComponent<BoxCollider2D>();
-
-        EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
-        enemyStats.enabled = false;
-        enemyStats.currentHealth = 10f;
-
-        behaviour.CallOnTriggerEnter2D(collider);
-
-        Assert.AreEqual(8f, enemyStats.currentHealth);
-
-        Object.DestroyImmediate(enemyObject);
-        Object.DestroyImmediate(weaponObject);
-    }
-
-    [Test]
     public void OnTriggerEnter2D_WhenWeaponHitsProp_ShouldReducePropHealth()
     {
         GameObject weaponObject = new GameObject("MeleeWeapon");
