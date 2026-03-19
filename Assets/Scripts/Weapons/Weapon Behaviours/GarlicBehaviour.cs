@@ -18,7 +18,7 @@ public class GarlicBehaviour : MeleeWeaponBehaviour
             EnemyStats enemy = collision.GetComponent<EnemyStats>();
             if (enemy != null)
             {
-                enemy.TakeDamage(GetCurrentDamage());
+                enemy.TakeDamage(GetCurrentDamage(),transform.position);
                 markedEnemies.Add(collision.gameObject);
             }
         }

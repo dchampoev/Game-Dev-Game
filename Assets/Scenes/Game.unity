@@ -10147,6 +10147,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 539827743}
     - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: damageEffect
+      value: 
+      objectReference: {fileID: 7198592785103293147, guid: aa61292d38f9c4a6596307b61b9e7b57, type: 3}
+    - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: firstPassiveItemTest
       value: 
       objectReference: {fileID: 9150660653785296089, guid: dc3a0fc5cae564bcd9f98ebd1b7b6ff5, type: 3}

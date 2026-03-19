@@ -21,4 +21,5 @@ MonoBehaviour:
   nextLevelPrefab: {fileID: 7429028512478703734, guid: 36768524d66884d6ca2242d3784d6a84, type: 3}
   name: Garlic
   description: Emits an aura around the player that deals contact damage
-  icon: {fileID: 948669204, guid: ee8514ee803b9490d86927983331eb33, type: 3}
+  icon: {fileID: 21300000, guid: 6355ef6ba19204341be9a48f29fd9cb4, type: 3}
+  evolvedUpgradeToRemove: 0

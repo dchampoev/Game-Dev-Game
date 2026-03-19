@@ -136,7 +136,7 @@ public class EnemyStatsPlayModeTests
 
         yield return null;
 
-        enemy.TakeDamage(2f);
+        enemy.TakeDamage(2f, Vector2.zero);
 
         yield return null;
 

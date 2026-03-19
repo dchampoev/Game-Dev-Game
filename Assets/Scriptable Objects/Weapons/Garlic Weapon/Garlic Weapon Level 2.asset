@@ -21,4 +21,5 @@ MonoBehaviour:
   nextLevelPrefab: {fileID: 7429028512478703734, guid: 32d171439cc43403186290a5575c984a, type: 3}
   name: Garlic Level 2
   description: The cooldown duration is reduced by 0.5
-  icon: {fileID: 948669204, guid: ee8514ee803b9490d86927983331eb33, type: 3}
+  icon: {fileID: 21300000, guid: 6355ef6ba19204341be9a48f29fd9cb4, type: 3}
+  evolvedUpgradeToRemove: 0

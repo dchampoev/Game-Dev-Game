@@ -141,7 +141,7 @@ public class EnemyStatsTests
         EnemyStats stats = enemyObject.AddComponent<EnemyStats>();
         stats.currentHealth = 10f;
 
-        stats.TakeDamage(3f);
+        stats.TakeDamage(3f, Vector2.zero);
 
         Assert.AreEqual(7f, stats.currentHealth);
     }

@@ -49,7 +49,7 @@ public class MeleeWeaponBehaviour : MonoBehaviour
             EnemyStats enemy = collision.GetComponent<EnemyStats>();
             if (enemy != null)
             {
-                enemy.TakeDamage(GetCurrentDamage());
+                enemy.TakeDamage(GetCurrentDamage(), transform.position);
             }
         }
         else if (collision.CompareTag("Prop"))

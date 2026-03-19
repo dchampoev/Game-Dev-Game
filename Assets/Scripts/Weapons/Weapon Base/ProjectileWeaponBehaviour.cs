@@ -60,7 +60,7 @@ public class ProjectileWeaponBehaviour : MonoBehaviour
             EnemyStats enemy = collision.GetComponent<EnemyStats>();
             if (enemy != null)
             {
-                enemy.TakeDamage(GetCurrentDamage());
+                enemy.TakeDamage(GetCurrentDamage(),transform.position);
                 reducePierce();
             }
         }

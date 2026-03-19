@@ -112,6 +112,8 @@ public class PlayerStats : MonoBehaviour
     }
     #endregion
 
+    public ParticleSystem damageEffect;
+
     [Header("Experience/Level")]
     public int experience = 0;
     public int level = 1;
@@ -261,6 +263,8 @@ public class PlayerStats : MonoBehaviour
         {
             CurrentHealth -= damage;
 
+            if (damageEffect) Instantiate(damageEffect, transform.position, Quaternion.identity);
+
             iFrameTimer = iFrameDuration;
             isInvincible = true;
 
@@ -302,6 +306,7 @@ public class PlayerStats : MonoBehaviour
                 CurrentHealth = characterData.MaxHealth;
             }
         }
+        UpdateHealthBar();
     }
 
     void Recover()
@@ -315,6 +320,7 @@ public class PlayerStats : MonoBehaviour
                 CurrentHealth = characterData.MaxHealth;
             }
         }
+        UpdateHealthBar();
     }
 
     public void SpawnWeapon(GameObject weaponPrefab)
