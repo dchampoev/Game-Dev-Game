@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -66,6 +65,8 @@ public class EnemyStats : MonoBehaviour
     {
         currentHealth -= damage;
         StartCoroutine(DamageFlash());
+
+        if(damage > 0) GameManager.GenerateFloatingText(Mathf.FloorToInt(damage).ToString(), transform);
 
         if (knockbackForce > 0)
         {

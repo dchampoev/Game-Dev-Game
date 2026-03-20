@@ -1718,6 +1718,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   currentState: 0
   previousState: 0
+  damageTextCanvas: {fileID: 865535113}
+  textFontSize: 50
+  damageTextFont: {fileID: 11400000, guid: 81c7d12d7075841ad9d44a2aad62b9dd, type: 2}
+  referenceCamera: {fileID: 519420031}
   pauseMenu: {fileID: 384614469}
   resultsScreen: {fileID: 913106350}
   levelUpScreen: {fileID: 1225737953}
