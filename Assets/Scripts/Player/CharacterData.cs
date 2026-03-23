@@ -21,7 +21,7 @@ public class CharacterData : ScriptableObject
         public float maxHealth, recovery, moveSpeed;
         public float might, speed, magnet;
 
-        public Stats(float maxHealth = 1000, float recovery = 0, float moveSpeed = 1f, float might = 1f, float speed = 1f, float magnet = 5f)
+        public Stats(float maxHealth = 1000, float recovery = 0, float moveSpeed = 1f, float might = 1f, float speed = 1f, float magnet = 2f)
         {
             this.maxHealth = maxHealth;
             this.recovery = recovery;

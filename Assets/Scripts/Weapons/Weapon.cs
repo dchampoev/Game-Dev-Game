@@ -27,12 +27,16 @@ public abstract class Weapon : Item
         public static Stats operator +(Stats s1, Stats s2)
         {
             Stats result = new Stats();
-            result.name = s2.name ?? s1.name;
-            result.description = s2.description ?? s1.description;
-            result.projectilePrefab = s2.projectilePrefab ?? s1.projectilePrefab;
-            result.auraPrefab = s2.auraPrefab ?? s1.auraPrefab;
-            result.hitEffect = s2.hitEffect == null ? s1.hitEffect : s2.hitEffect;
+
+            result.name = string.IsNullOrEmpty(s2.name) ? s1.name : s2.name;
+            result.description = string.IsNullOrEmpty(s2.description) ? s1.description : s2.description;
+
+            result.projectilePrefab = s2.projectilePrefab != null ? s2.projectilePrefab : s1.projectilePrefab;
+            result.auraPrefab = s2.auraPrefab != null ? s2.auraPrefab : s1.auraPrefab;
+            result.hitEffect = s2.hitEffect != null ? s2.hitEffect : s1.hitEffect;
+
             result.spawnVariance = s2.spawnVariance;
+
             result.lifespan = s1.lifespan + s2.lifespan;
             result.damage = s1.damage + s2.damage;
             result.damageVariance = s1.damageVariance + s2.damageVariance;
@@ -41,6 +45,11 @@ public abstract class Weapon : Item
             result.cooldown = s1.cooldown + s2.cooldown;
             result.projectileInterval = s1.projectileInterval + s2.projectileInterval;
             result.knockback = s1.knockback + s2.knockback;
+
+            result.number = s1.number + s2.number;
+            result.piercing = s1.piercing + s2.piercing;
+            result.maxInstances = s1.maxInstances + s2.maxInstances;
+            
             return result;
         }
 
