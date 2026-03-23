@@ -10023,6 +10023,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 519420031}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: weaponEvolutions.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -10205,7 +10209,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7482094410598706126}
   m_SourcePrefab: {fileID: 100100000, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
 --- !u!1 &6801395813023021870 stripped
 GameObject:
@@ -10274,6 +10281,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8998368394483529027, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
   m_PrefabInstance: {fileID: 6801395813023021869}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7482094410598706126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6801395813023021870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5e530cca32f43ea9beaa58b5498178, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameStats::PlayerInventory
+  weaponSlots:
+  - item: {fileID: 0}
+    image: {fileID: 1729333030}
+  - item: {fileID: 0}
+    image: {fileID: 423658754}
+  - item: {fileID: 0}
+    image: {fileID: 627437776}
+  - item: {fileID: 0}
+    image: {fileID: 339925820}
+  - item: {fileID: 0}
+    image: {fileID: 1003007138}
+  - item: {fileID: 0}
+    image: {fileID: 1440557212}
+  passiveSlots:
+  - item: {fileID: 0}
+    image: {fileID: 1420605269}
+  - item: {fileID: 0}
+    image: {fileID: 1208808744}
+  - item: {fileID: 0}
+    image: {fileID: 1213519350}
+  - item: {fileID: 0}
+    image: {fileID: 1746742715}
+  - item: {fileID: 0}
+    image: {fileID: 465629061}
+  - item: {fileID: 0}
+    image: {fileID: 697645483}
+  availableWeapons:
+  - {fileID: 11400000, guid: 5a63623787aa74babb551adfb7cff0a0, type: 2}
+  - {fileID: 11400000, guid: 61a31eae5c0304324a6f83d814abdd66, type: 2}
+  availablePassives:
+  - {fileID: 11400000, guid: 8c082b7b461c647a682ceb3f63654cf5, type: 2}
+  - {fileID: 11400000, guid: 8f64e9589461f4c2c8630c0e203bd2f3, type: 2}
+  - {fileID: 11400000, guid: 12c738a3d6d25416e9e3b3c289ddcc90, type: 2}
+  upgradeUIOptions:
+  - upgradeNameDisplay: {fileID: 2091514139}
+    upgradeDescriptionDisplay: {fileID: 688606092}
+    upgradeIcon: {fileID: 1883663508}
+    upgradeButton: {fileID: 373458809}
+  - upgradeNameDisplay: {fileID: 1423724716}
+    upgradeDescriptionDisplay: {fileID: 1144242909}
+    upgradeIcon: {fileID: 1557244235}
+    upgradeButton: {fileID: 1484408853}
+  - upgradeNameDisplay: {fileID: 358040543}
+    upgradeDescriptionDisplay: {fileID: 1656711305}
+    upgradeIcon: {fileID: 509398392}
+    upgradeButton: {fileID: 1436270539}
+  - upgradeNameDisplay: {fileID: 1117332880}
+    upgradeDescriptionDisplay: {fileID: 1255999612}
+    upgradeIcon: {fileID: 2139150554}
+    upgradeButton: {fileID: 1228303704}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

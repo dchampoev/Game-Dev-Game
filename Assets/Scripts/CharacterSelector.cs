@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 public class CharacterSelector : MonoBehaviour
 {
     public static CharacterSelector instance;
-    public CharacterScriptableObject selectedCharacter;
+    public CharacterData selectedCharacter;
 
     void Awake()
     {
@@ -21,12 +21,24 @@ public class CharacterSelector : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public static CharacterScriptableObject GetData()
+    public static CharacterData GetData()
     {
-        return instance.selectedCharacter;
+        if (instance && instance.selectedCharacter)
+        {
+            return instance.selectedCharacter;
+        }
+        else
+        {
+            CharacterData[] characters = Resources.FindObjectsOfTypeAll<CharacterData>();
+            if (characters.Length > 0)
+            {
+                return characters[Random.Range(0, characters.Length)];
+            }
+        }
+        return null;
     }
 
-    public void SelectCharacter(CharacterScriptableObject character)
+    public void SelectCharacter(CharacterData character)
     {
         selectedCharacter = character;
     }

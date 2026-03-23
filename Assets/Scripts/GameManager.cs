@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
         resultsScreen.SetActive(true);
     }
 
-    public void AssignChosenCharacterUI(CharacterScriptableObject chosenCharacter)
+    public void AssignChosenCharacterUI(CharacterData chosenCharacter)
     {
         chosenCharacterImage.sprite = chosenCharacter.Icon;
         chosenCharacterName.text = chosenCharacter.name;

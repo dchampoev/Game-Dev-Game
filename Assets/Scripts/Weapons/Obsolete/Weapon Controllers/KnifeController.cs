@@ -1,0 +1,19 @@
+using UnityEngine;
+
+[System.Obsolete("KnifeController is no longer used.")]
+public class KnifeController : WeaponController
+{
+
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+    protected override void Attack()
+    {
+        base.Attack();
+        GameObject spawnedKnife = Instantiate(weaponData.Prefab);
+        spawnedKnife.transform.position = transform.position;
+        spawnedKnife.GetComponent<KnifeBehaviour>().DirectionChecker(playerMovement.lastMoveDirection);
+    }
+}
