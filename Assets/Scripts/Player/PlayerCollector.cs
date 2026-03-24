@@ -21,15 +21,12 @@ public class PlayerCollector : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collision)
     {
+        if (!collision.CompareTag("Pickup")) return;
         Rigidbody2D rigidbody = collision.gameObject.GetComponent<Rigidbody2D>();
         if (rigidbody != null)
         {
-            Vector2 currentPosition = collision.transform.position;
-            Vector2 targetPosition = transform.position;
-            float step = pullSpeed * Time.deltaTime;
-
-            Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, step);
-            rigidbody.MovePosition(newPosition);
+            Vector2 direction = ((Vector2)transform.position - rigidbody.position).normalized;
+            rigidbody.linearVelocity = direction * pullSpeed;
         }
     }
 }

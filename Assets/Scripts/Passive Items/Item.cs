@@ -89,7 +89,9 @@ public class Item : MonoBehaviour
 
     public virtual bool DoLevelUp()
     {
-        foreach(ItemData.Evolution evolution in evolutionData)
+        if(evolutionData==null || evolutionData.Length == 0) return true;
+
+        foreach (ItemData.Evolution evolution in evolutionData)
         {
             if (evolution.condition == ItemData.Evolution.Condition.auto)
             {

@@ -360,7 +360,10 @@ public class PlayerInventory : MonoBehaviour
                 continue;
 
             if (weapon.currentLevel >= weaponData.maxLevel)
-                return false;
+            {
+                DisableUpgradeUI(ui);
+                return true;
+            }
 
             int slotIndex = i;
             Weapon.Stats nextLevel = weaponData.GetLevelData(weapon.currentLevel + 1);
@@ -389,7 +392,10 @@ public class PlayerInventory : MonoBehaviour
     {
         PassiveData selectedPassive = TakeRandomPassive(passivePool);
         if (selectedPassive == null)
+        {
+            DisableUpgradeUI(ui);
             return;
+        }
 
         EnableUpgradeUI(ui);
 
@@ -419,7 +425,10 @@ public class PlayerInventory : MonoBehaviour
                 continue;
 
             if (passive.currentLevel >= passiveData.maxLevel)
-                return false;
+            {
+                DisableUpgradeUI(ui);
+                return true;
+            }
 
             int slotIndex = i;
             Passive.Modifier nextLevel = passiveData.GetLevelData(passive.currentLevel + 1);

@@ -14,12 +14,12 @@ public abstract class Weapon : Item
         public string name, description;
 
         [Header("Visuals")]
+        public Projectile projectilePrefab;
+        public Aura auraPrefab;
         public ParticleSystem hitEffect;
         public Rect spawnVariance;
 
         [Header("Values")]
-        public Projectile projectilePrefab;
-        public Aura auraPrefab;
         public float lifespan;
         public float damage, damageVariance, area, speed, cooldown, projectileInterval, knockback;
         public int number, piercing, maxInstances;

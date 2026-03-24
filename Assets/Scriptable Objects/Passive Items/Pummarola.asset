@@ -14,6 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::PassiveData
   icon: {fileID: 21300000, guid: 608f032b18384430887362d2fbe23a2b, type: 3}
   maxLevel: 5
+  evolutionData:
+  - name: Soul Eater
+    condition: 1
+    consumes: 2
+    evolutionLevel: 5
+    catalysts:
+    - itemType: {fileID: 11400000, guid: 61a31eae5c0304324a6f83d814abdd66, type: 2}
+      level: 8
+    outcome:
+      itemType: {fileID: 11400000, guid: a4c6e0f082a2649178f57128e428ab3e, type: 2}
+      level: 1
   baseStats:
     name: Pummarola
     description: '"Character recovers 0.2 HP per second."'

@@ -176,7 +176,7 @@ public class GameManager : MonoBehaviour
         levelReachedDisplay.text = levelReached.ToString();
     }
 
-    public void AssignChosenWeaponsAndPassiveItemsUI(List<Image> chosenWeapons, List<Image> chosenPassiveItems)
+    public void AssignChosenWeaponsAndPassiveItemsUI(List<PlayerInventory.Slot> chosenWeapons, List<PlayerInventory.Slot> chosenPassiveItems)
     {
         if (chosenWeapons.Count != chosenWeaponsUI.Count || chosenPassiveItems.Count != chosenPassiveItemsUI.Count)
         {
@@ -186,10 +186,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < chosenWeapons.Count; i++)
         {
-            if (chosenWeapons[i].sprite)
+            if (chosenWeapons[i].image.sprite)
             {
                 chosenWeaponsUI[i].enabled = true;
-                chosenWeaponsUI[i].sprite = chosenWeapons[i].sprite;
+                chosenWeaponsUI[i].sprite = chosenWeapons[i].image.sprite;
             }
             else
             {
@@ -198,10 +198,10 @@ public class GameManager : MonoBehaviour
         }
         for (int i = 0; i < chosenPassiveItems.Count; i++)
         {
-            if (chosenPassiveItems[i].sprite)
+            if (chosenPassiveItems[i].image.sprite)
             {
                 chosenPassiveItemsUI[i].enabled = true;
-                chosenPassiveItemsUI[i].sprite = chosenPassiveItems[i].sprite;
+                chosenPassiveItemsUI[i].sprite = chosenPassiveItems[i].image.sprite;
             }
             else
             {
@@ -251,9 +251,6 @@ public class GameManager : MonoBehaviour
         RectTransform rectTransform = floatingTextObj.AddComponent<RectTransform>();
         TextMeshProUGUI textComponent = floatingTextObj.AddComponent<TextMeshProUGUI>();
 
-        floatingTextObj.transform.SetParent(instance.damageTextCanvas.transform, false);
-        floatingTextObj.transform.SetAsFirstSibling();
-
         textComponent.text = text;
         textComponent.horizontalAlignment = HorizontalAlignmentOptions.Center;
         textComponent.verticalAlignment = VerticalAlignmentOptions.Middle;
@@ -268,30 +265,34 @@ public class GameManager : MonoBehaviour
 
         rectTransform.position = referenceCamera.WorldToScreenPoint(worldPos);
 
+        Destroy(floatingTextObj, duration);
+
+        floatingTextObj.transform.SetParent(instance.damageTextCanvas.transform, false);
+        floatingTextObj.transform.SetAsFirstSibling();
+
         WaitForEndOfFrame wait = new WaitForEndOfFrame();
         float elapsedTime = 0f;
         float yOffset = 0f;
+        Vector3 lastKnownPosition = target.position;
 
         while (elapsedTime < duration)
         {
-            yield return wait;
-
             if (floatingTextObj == null || rectTransform == null || textComponent == null)
                 yield break;
 
-            elapsedTime += Time.deltaTime;
-
             if (target != null)
-                worldPos = target.position;
-
-            yOffset += speed * Time.deltaTime;
-
-            rectTransform.position = referenceCamera.WorldToScreenPoint(
-                worldPos + new Vector3(0f, yOffset, 0f)
-            );
+                lastKnownPosition = target.position;
 
             Color c = textComponent.color;
             textComponent.color = new Color(c.r, c.g, c.b, 1f - elapsedTime / duration);
+
+            yOffset += speed * Time.deltaTime;
+            rectTransform.position = referenceCamera.WorldToScreenPoint(
+                lastKnownPosition + new Vector3(0f, yOffset, 0f)
+            );
+
+            yield return wait;
+            elapsedTime += Time.deltaTime;
         }
 
         if (floatingTextObj != null)

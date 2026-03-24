@@ -469,7 +469,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -617,6 +617,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc116991db3b049bcaa2e4370c338496, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  baseStats:
+    maxHealth: 0
+    recovery: 0
+    moveSpeed: 0
+    might: 0
+    speed: 0
+    magnet: 0
+  actualStats:
+    maxHealth: 0
+    recovery: 0
+    moveSpeed: 0
+    might: 0
+    speed: 0
+    magnet: 0
+  damageEffect: {fileID: 0}
   experience: 0
   level: 1
   experienceCap: 0
@@ -631,9 +646,8 @@ MonoBehaviour:
   weaponIndex: 0
   passiveItemIndex: 0
   healthBar: {fileID: 5320416108489413824}
-  firstPassiveItem: {fileID: 9150660653785296089, guid: dc3a0fc5cae564bcd9f98ebd1b7b6ff5, type: 3}
-  secondPassiveItem: {fileID: 4972447377370073038, guid: 040bf73d2026d4bd5abd9d88264e7571, type: 3}
-  secondWeaponTest: {fileID: 7429028512478703734, guid: 42de94e3705db45d788b1f0076b0bc36, type: 3}
+  expBar: {fileID: 0}
+  levelText: {fileID: 0}
 --- !u!114 &4606284639121836779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -707,6 +721,7 @@ MonoBehaviour:
     upgradeDescriptionDisplay: {fileID: 0}
     upgradeIcon: {fileID: 0}
     upgradeButton: {fileID: 0}
+  weaponEvolutions: []
 --- !u!1 &7980684270985565153
 GameObject:
   m_ObjectHideFlags: 0

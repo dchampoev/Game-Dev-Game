@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -29,11 +31,20 @@ public class CharacterSelector : MonoBehaviour
         }
         else
         {
-            CharacterData[] characters = Resources.FindObjectsOfTypeAll<CharacterData>();
-            if (characters.Length > 0)
+#if UNITY_EDITOR
+            string[] allAssetPaths = AssetDatabase.GetAllAssetPaths();
+            List<CharacterData> characters = new List<CharacterData>();
+            foreach (string assetPath in allAssetPaths)
             {
-                return characters[Random.Range(0, characters.Length)];
+                if (assetPath.EndsWith(".asset"))
+                {
+                    CharacterData character = AssetDatabase.LoadAssetAtPath<CharacterData>(assetPath);
+                    if (character) characters.Add(character);
+                }
             }
+
+            if (characters.Count > 0) return characters[Random.Range(0, characters.Count)];
+#endif
         }
         return null;
     }
@@ -42,7 +53,7 @@ public class CharacterSelector : MonoBehaviour
     {
         selectedCharacter = character;
     }
-    
+
     public void DestroySingleton()
     {
         instance = null;

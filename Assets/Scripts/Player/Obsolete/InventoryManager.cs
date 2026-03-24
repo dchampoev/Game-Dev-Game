@@ -333,11 +333,11 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void RemoveAndApplyUpgrades()
-    {
-        RemoveUpgradeOptions();
-        ApplyUpgradeOptions();
-    }
+    // public void RemoveAndApplyUpgrades()
+    // {
+    //     RemoveUpgradeOptions();
+    //     ApplyUpgradeOptions();
+    // }
 
     void EnableUpgradeUI(UpgradeUI ui)
     {
