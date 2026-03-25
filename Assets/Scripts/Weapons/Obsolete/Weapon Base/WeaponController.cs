@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+[ExcludeFromCodeCoverage]
 [System.Obsolete("WeaponController is no longer used.")]
 public class WeaponController : MonoBehaviour
 {

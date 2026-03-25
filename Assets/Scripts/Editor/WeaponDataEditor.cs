@@ -2,7 +2,9 @@ using UnityEditor;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
+[ExcludeFromCodeCoverage]
 [CustomEditor(typeof(WeaponData))]
 public class WeaponDataEditor : Editor
 {

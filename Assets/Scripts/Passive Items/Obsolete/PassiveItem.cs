@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.TestTools;
 
+[ExcludeFromCoverage]
 [System.Obsolete("This class is no longer used. Please use the new PassiveItem class instead.")]
 public class PassiveItem : MonoBehaviour
 {

@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExcludeFromCodeCoverage]
 [System.Obsolete("This class is no longer used. It has been replaced by PlayerInventory and related classes.")]
 public class InventoryManager : MonoBehaviour
 {

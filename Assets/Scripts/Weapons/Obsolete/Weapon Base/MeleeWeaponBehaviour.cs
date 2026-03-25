@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+[ExcludeFromCodeCoverage]
 [System.Obsolete("MeleeWeaponBehaviour is no longer used.")]
 public class MeleeWeaponBehaviour : MonoBehaviour
 {

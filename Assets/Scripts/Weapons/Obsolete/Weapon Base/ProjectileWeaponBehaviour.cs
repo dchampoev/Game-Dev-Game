@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
+[ExcludeFromCodeCoverage]
 [System.Obsolete("ProjectileWeaponBehaviour is no longer used. Use Projectile instead.")]
 public class ProjectileWeaponBehaviour : MonoBehaviour
 {

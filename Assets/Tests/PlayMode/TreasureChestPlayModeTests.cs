@@ -3,37 +3,27 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 public class TreasureChestPlayModeTests
 {
     [UnityTest]
     public IEnumerator OnTriggerEnter2D_WhenPlayerTouchesChest_ShouldDestroyChest()
     {
-        GameObject inventoryObject = new GameObject("Inventory");
-        InventoryManager inventory = inventoryObject.AddComponent<InventoryManager>();
-
-        inventory.weaponSlots = new List<WeaponController> { null, null, null, null, null, null };
-        inventory.passiveItemSlots = new List<PassiveItem> { null, null, null, null, null, null };
-        inventory.weaponUISlots = new List<Image>();
-        inventory.passiveItemUISlots = new List<Image>();
-        inventory.weaponEvolutions = new List<WeaponEvolutionBlueprint>();
-
-        for (int i = 0; i < 6; i++)
-        {
-            inventory.weaponUISlots.Add(new GameObject($"WeaponUI{i}").AddComponent<Image>());
-            inventory.passiveItemUISlots.Add(new GameObject($"PassiveUI{i}").AddComponent<Image>());
-        }
-
         GameObject player = new GameObject("Player");
         player.tag = "Player";
+
         player.AddComponent<BoxCollider2D>();
+
         Rigidbody2D playerRb = player.AddComponent<Rigidbody2D>();
         playerRb.gravityScale = 0f;
         playerRb.bodyType = RigidbodyType2D.Kinematic;
 
+        PlayerInventory inventory = player.AddComponent<PlayerInventory>();
+        inventory.weaponSlots = new List<PlayerInventory.Slot>();
+
         GameObject chestObject = new GameObject("Chest");
-        chestObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        BoxCollider2D chestCollider = chestObject.AddComponent<BoxCollider2D>();
+        chestCollider.isTrigger = true;
         chestObject.AddComponent<TreasureChest>();
 
         chestObject.transform.position = Vector2.zero;
@@ -48,7 +38,7 @@ public class TreasureChestPlayModeTests
 
         Assert.IsTrue(chestObject == null);
 
-        Object.Destroy(inventoryObject);
-        Object.Destroy(player);
+        if (player != null)
+            Object.Destroy(player);
     }
 }
