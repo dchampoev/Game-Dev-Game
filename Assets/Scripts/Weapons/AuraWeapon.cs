@@ -27,6 +27,8 @@ public class AuraWeapon : Weapon
     {
         if (!base.DoLevelUp()) return false;
 
+        OnEquip();
+
         if (currentAura)
         {
             currentAura.transform.localScale = new Vector3(currentStats.area, currentStats.area, currentStats.area);
