@@ -1,4 +1,3 @@
-using Codice.CM.Common;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +15,7 @@ public abstract class Weapon : Item
         [Header("Visuals")]
         public Projectile projectilePrefab;
         public Aura auraPrefab;
-        public ParticleSystem hitEffect;
+        public ParticleSystem hitEffect,procEffect;
         public Rect spawnVariance;
 
         [Header("Values")]
@@ -34,6 +33,7 @@ public abstract class Weapon : Item
             result.projectilePrefab = s2.projectilePrefab != null ? s2.projectilePrefab : s1.projectilePrefab;
             result.auraPrefab = s2.auraPrefab != null ? s2.auraPrefab : s1.auraPrefab;
             result.hitEffect = s2.hitEffect != null ? s2.hitEffect : s1.hitEffect;
+            result.procEffect = s2.procEffect != null ? s2.procEffect : s1.procEffect;
 
             result.spawnVariance = s2.spawnVariance;
 

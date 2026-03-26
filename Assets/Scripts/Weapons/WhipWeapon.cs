@@ -28,6 +28,11 @@ public class WhipWeapon : ProjectileWeapon
             currentSpawnYOffset
         );
 
+        if (currentStats.procEffect)
+        {
+            Destroy(Instantiate(currentStats.procEffect, owner.transform), 5f);
+        }
+
         Projectile prefab = Instantiate(
             currentStats.projectilePrefab,
             owner.transform.position + (Vector3)spawnOffset,

@@ -1,9 +1,11 @@
+using UnityEngine;
 using UnityEditor;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
+#if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
 [CustomEditor(typeof(WeaponData))]
 public class WeaponDataEditor : Editor
@@ -41,3 +43,4 @@ public class WeaponDataEditor : Editor
         }
     }
 }
+#endif
