@@ -93,6 +93,66 @@ public class PlayerInventoryPassiveUpgradeTests
             .SetValue(target, value);
     }
 
+    private PlayerStats CreatePlayerStats(PlayerInventory inventory)
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
+        GameObject collectorObject = new GameObject("Collector");
+        collectorObject.transform.SetParent(playerObject.transform);
+        collectorObject.AddComponent<CircleCollider2D>();
+        PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
+        collector.enabled = false;
+
+        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            moveSpeed = 5f,
+            might = 1f,
+            speed = 1f,
+            magnet = 1f
+        };
+
+        playerStats.baseStats = stats;
+
+        SetPrivateField(playerStats, "inventory", inventory);
+        SetPrivateField(playerStats, "collector", collector);
+        SetPrivateField(playerStats, "characterData", characterData);
+        SetPrivateField(playerStats, "actualStats", stats);
+        SetPrivateField(playerStats, "health", 20f);
+
+        return playerStats;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (var passiveData in Resources.FindObjectsOfTypeAll<PassiveData>())
+        {
+            Object.DestroyImmediate(passiveData, true);
+        }
+
+        foreach (var characterData in Resources.FindObjectsOfTypeAll<CharacterData>())
+        {
+            Object.DestroyImmediate(characterData, true);
+        }
+        foreach (var characterData in Resources.FindObjectsOfTypeAll<CharacterData>())
+        {
+            Object.DestroyImmediate(characterData, true);
+        }
+    }
+
     [Test]
     public void TryConfigureExistingPassiveLevelUp_WhenMatchingPassiveExists_ShouldReturnTrueAndPopulateUi()
     {
@@ -166,12 +226,9 @@ public class PlayerInventoryPassiveUpgradeTests
         PlayerInventory inventory = CreateInventory();
         PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
 
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        PlayerStats playerStats = CreatePlayerStats(inventory);
 
         SetPrivateField(inventory, "player", playerStats);
-        SetPrivateField(playerStats, "inventory", inventory);
-        SetPrivateField(playerStats, "characterData", ScriptableObject.CreateInstance<CharacterData>());
 
         PassiveData passiveData = CreatePassiveData("HollowHeart", 5);
 

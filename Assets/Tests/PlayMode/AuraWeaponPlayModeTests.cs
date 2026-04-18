@@ -1,10 +1,13 @@
 using System.Collections;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
 public class AuraWeaponPlayModeTests
 {
+    private readonly List<ScriptableObject> createdScriptableObjects = new List<ScriptableObject>();
+
     private class TestAuraWeapon : AuraWeapon
     {
         public void SetCurrentStats(Weapon.Stats stats)
@@ -28,6 +31,22 @@ public class AuraWeaponPlayModeTests
         }
     }
 
+    private PlayerStats CreateInactivePlayerStats()
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
+        owner.enabled = false;
+        return owner;
+    }
+
+    private WeaponData CreateWeaponData()
+    {
+        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        createdScriptableObjects.Add(data);
+        return data;
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -37,14 +56,22 @@ public class AuraWeaponPlayModeTests
         }
 
         yield return null;
+
+        foreach (var obj in createdScriptableObjects)
+        {
+            if (obj != null)
+            {
+                Object.DestroyImmediate(obj, true);
+            }
+        }
+
+        createdScriptableObjects.Clear();
     }
 
     [UnityTest]
     public IEnumerator OnEquip_WhenAuraPrefabExists_ShouldInstantiateAuraAndAssignFields()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
+        PlayerStats owner = CreateInactivePlayerStats();
 
         GameObject auraPrefabObject = new GameObject("AuraPrefab");
         Aura auraPrefab = auraPrefabObject.AddComponent<Aura>();
@@ -95,7 +122,7 @@ public class AuraWeaponPlayModeTests
         TestAuraWeapon weapon = weaponObject.AddComponent<TestAuraWeapon>();
         weapon.enabled = false;
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        WeaponData data = CreateWeaponData();
         data.maxLevel = 2;
         data.baseStats = new Weapon.Stats
         {
@@ -103,10 +130,10 @@ public class AuraWeaponPlayModeTests
         };
         data.linearGrowth = new Weapon.Stats[]
         {
-        new Weapon.Stats
-        {
-            area = 2f
-        }
+            new Weapon.Stats
+            {
+                area = 2f
+            }
         };
         data.randomGrowth = new Weapon.Stats[0];
 

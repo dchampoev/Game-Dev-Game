@@ -9949,21 +9949,125 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 390844914572540567, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 400214488140675027, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: weaponEvolutions.Array.size
-      value: 1
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[0].image
+      value: 
+      objectReference: {fileID: 1729333030}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[1].image
+      value: 
+      objectReference: {fileID: 423658754}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[2].image
+      value: 
+      objectReference: {fileID: 627437776}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[3].image
+      value: 
+      objectReference: {fileID: 339925820}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[4].image
+      value: 
+      objectReference: {fileID: 1003007138}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: weaponSlots.Array.data[5].image
+      value: 
+      objectReference: {fileID: 1440557212}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[0].image
+      value: 
+      objectReference: {fileID: 1420605269}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[1].image
+      value: 
+      objectReference: {fileID: 1208808744}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[2].image
+      value: 
+      objectReference: {fileID: 1213519350}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[3].image
+      value: 
+      objectReference: {fileID: 1746742715}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[4].image
+      value: 
+      objectReference: {fileID: 465629061}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: passiveSlots.Array.data[5].image
+      value: 
+      objectReference: {fileID: 697645483}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[0].upgradeIcon
+      value: 
+      objectReference: {fileID: 1883663508}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[1].upgradeIcon
+      value: 
+      objectReference: {fileID: 914596276}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[2].upgradeIcon
+      value: 
+      objectReference: {fileID: 1590389244}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[3].upgradeIcon
+      value: 
+      objectReference: {fileID: 791983763}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[0].upgradeButton
+      value: 
+      objectReference: {fileID: 373458809}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[1].upgradeButton
+      value: 
+      objectReference: {fileID: 1955059036}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[2].upgradeButton
+      value: 
+      objectReference: {fileID: 1279538399}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[3].upgradeButton
+      value: 
+      objectReference: {fileID: 1463256075}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[0].upgradeNameDisplay
+      value: 
+      objectReference: {fileID: 2091514139}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[1].upgradeNameDisplay
+      value: 
+      objectReference: {fileID: 1886561853}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[2].upgradeNameDisplay
+      value: 
+      objectReference: {fileID: 1822619041}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[3].upgradeNameDisplay
+      value: 
+      objectReference: {fileID: 1568952517}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[0].upgradeDescriptionDisplay
+      value: 
+      objectReference: {fileID: 688606092}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[1].upgradeDescriptionDisplay
+      value: 
+      objectReference: {fileID: 1697886902}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[2].upgradeDescriptionDisplay
+      value: 
+      objectReference: {fileID: 1263421473}
+    - target: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: upgradeUIOptions.Array.data[3].upgradeDescriptionDisplay
+      value: 
+      objectReference: {fileID: 231606534}
+    - target: {fileID: 3793074203517270595, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: pullSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: 'weaponUISlots.Array.data[0]'
@@ -9989,10 +10093,6 @@ PrefabInstance:
       propertyPath: 'weaponUISlots.Array.data[5]'
       value: 
       objectReference: {fileID: 1440557212}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: 'weaponEvolutions.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 703bc66d80c604e9d8c63e015164792c, type: 2}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: 'passiveItemUISlots.Array.data[0]'
       value: 
@@ -10022,65 +10122,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1883663508}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[1].upgradeIcon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[2].upgradeIcon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[3].upgradeIcon
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: upgradeUIOptions.Array.data[0].upgradeButton
       value: 
       objectReference: {fileID: 373458809}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[1].upgradeButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[2].upgradeButton
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[3].upgradeButton
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: upgradeUIOptions.Array.data[0].upgradeNameDisplay
       value: 
       objectReference: {fileID: 2091514139}
     - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[1].upgradeNameDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[2].upgradeNameDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[3].upgradeNameDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: upgradeUIOptions.Array.data[0].upgradeDescriptionDisplay
       value: 
       objectReference: {fileID: 688606092}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[1].upgradeDescriptionDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[2].upgradeDescriptionDisplay
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4606284639121836779, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: upgradeUIOptions.Array.data[3].upgradeDescriptionDisplay
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: expBar
       value: 
@@ -10089,14 +10141,6 @@ PrefabInstance:
       propertyPath: levelText
       value: 
       objectReference: {fileID: 539827743}
-    - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: damageEffect
-      value: 
-      objectReference: {fileID: 7198592785103293147, guid: aa61292d38f9c4a6596307b61b9e7b57, type: 3}
-    - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      propertyPath: firstPassiveItemTest
-      value: 
-      objectReference: {fileID: 9150660653785296089, guid: dc3a0fc5cae564bcd9f98ebd1b7b6ff5, type: 3}
     - target: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: m_Name
       value: Player
@@ -10144,10 +10188,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7482094410598706126}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
 --- !u!1 &6801395813023021870 stripped
 GameObject:
@@ -10216,71 +10257,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8998368394483529027, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
   m_PrefabInstance: {fileID: 6801395813023021869}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7482094410598706126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801395813023021870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd5e530cca32f43ea9beaa58b5498178, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GameStats::PlayerInventory
-  weaponSlots:
-  - item: {fileID: 0}
-    image: {fileID: 1729333030}
-  - item: {fileID: 0}
-    image: {fileID: 423658754}
-  - item: {fileID: 0}
-    image: {fileID: 627437776}
-  - item: {fileID: 0}
-    image: {fileID: 339925820}
-  - item: {fileID: 0}
-    image: {fileID: 1003007138}
-  - item: {fileID: 0}
-    image: {fileID: 1440557212}
-  passiveSlots:
-  - item: {fileID: 0}
-    image: {fileID: 1420605269}
-  - item: {fileID: 0}
-    image: {fileID: 1208808744}
-  - item: {fileID: 0}
-    image: {fileID: 1213519350}
-  - item: {fileID: 0}
-    image: {fileID: 1746742715}
-  - item: {fileID: 0}
-    image: {fileID: 465629061}
-  - item: {fileID: 0}
-    image: {fileID: 697645483}
-  availableWeapons:
-  - {fileID: 11400000, guid: 5a63623787aa74babb551adfb7cff0a0, type: 2}
-  - {fileID: 11400000, guid: 61a31eae5c0304324a6f83d814abdd66, type: 2}
-  - {fileID: 11400000, guid: 6be68000ae11a428a92c723790ae5306, type: 2}
-  - {fileID: 11400000, guid: 68889beceb8144a8caa25ef41e10ed69, type: 2}
-  - {fileID: 11400000, guid: 4f7874a84043d4076be993ee29d67c13, type: 2}
-  availablePassives:
-  - {fileID: 11400000, guid: 8c082b7b461c647a682ceb3f63654cf5, type: 2}
-  - {fileID: 11400000, guid: 8f64e9589461f4c2c8630c0e203bd2f3, type: 2}
-  - {fileID: 11400000, guid: 12c738a3d6d25416e9e3b3c289ddcc90, type: 2}
-  upgradeUIOptions:
-  - upgradeNameDisplay: {fileID: 2091514139}
-    upgradeDescriptionDisplay: {fileID: 688606092}
-    upgradeIcon: {fileID: 1883663508}
-    upgradeButton: {fileID: 373458809}
-  - upgradeNameDisplay: {fileID: 1886561853}
-    upgradeDescriptionDisplay: {fileID: 1697886902}
-    upgradeIcon: {fileID: 914596276}
-    upgradeButton: {fileID: 1955059036}
-  - upgradeNameDisplay: {fileID: 1822619041}
-    upgradeDescriptionDisplay: {fileID: 1263421473}
-    upgradeIcon: {fileID: 1590389244}
-    upgradeButton: {fileID: 1279538399}
-  - upgradeNameDisplay: {fileID: 1568952517}
-    upgradeDescriptionDisplay: {fileID: 231606534}
-    upgradeIcon: {fileID: 791983763}
-    upgradeButton: {fileID: 1463256075}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

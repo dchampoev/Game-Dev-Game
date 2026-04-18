@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2258728298444616444}
   - component: {fileID: 4275270915036951666}
   - component: {fileID: -7996590533828121720}
-  - component: {fileID: -3540857588113693489}
   - component: {fileID: 1314825127322812336}
+  - component: {fileID: 6061546257673071090}
   m_Layer: 0
   m_Name: Health Potion
   m_TagString: Pickup
@@ -140,19 +140,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.40625, y: 0.59375}
   m_EdgeRadius: 0
---- !u!114 &-3540857588113693489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2621639212542214925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f813046f30f3c43419bb347afa0e1f67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HealthPotion
-  healthToRestore: 100
 --- !u!50 &1314825127322812336
 Rigidbody2D:
   serializedVersion: 5
@@ -180,3 +167,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6061546257673071090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2621639212542214925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ccdf5775d4848a6896f49565d6e8cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameStats::Pickup
+  lifespan: 0.5
+  bobbingAnimation:
+    frequency: 2
+    direction: {x: 0, y: 0.3}
+  experience: 0
+  health: 50
