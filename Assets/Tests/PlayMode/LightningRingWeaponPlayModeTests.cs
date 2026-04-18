@@ -16,6 +16,13 @@ public class LightningRingWeaponPlayModeTests
         }
     }
 
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(target, value);
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -34,15 +41,15 @@ public class LightningRingWeaponPlayModeTests
         TestLightningRing weapon = weaponObj.AddComponent<TestLightningRing>();
         weapon.enabled = false;
 
-        GameObject playerObject = new GameObject("Player");
-        PlayerMovement playerMovement = playerObject.AddComponent<PlayerMovement>();
-        playerMovement.enabled = false;
-
         GameObject enemyObject = new GameObject("Enemy");
         enemyObject.tag = "Enemy";
         enemyObject.transform.position = Vector3.zero;
-        enemyObject.AddComponent<SpriteRenderer>();
-        enemyObject.AddComponent<EnemyMovement>();
+
+        SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
+
+        EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
+        enemyMovement.enabled = false;
 
         CircleCollider2D collider = enemyObject.AddComponent<CircleCollider2D>();
         collider.radius = 0.5f;
@@ -52,7 +59,9 @@ public class LightningRingWeaponPlayModeTests
         enemy.currentDamage = 1f;
         enemy.currentMoveSpeed = 1f;
 
-        yield return null;
+        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
+        SetPrivateField(enemy, "originalColor", Color.white);
+        SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         weapon.CallDamageArea(Vector2.zero, 5f, 3f);
 

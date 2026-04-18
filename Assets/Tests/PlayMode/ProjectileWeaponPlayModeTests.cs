@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
@@ -6,6 +7,8 @@ using UnityEngine.TestTools;
 
 public class ProjectileWeaponPlayModeTests
 {
+    private readonly List<ScriptableObject> createdScriptableObjects = new List<ScriptableObject>();
+
     private class TestProjectile : Projectile
     {
         protected override void Start()
@@ -97,6 +100,42 @@ public class ProjectileWeaponPlayModeTests
         }
     }
 
+    private PlayerStats CreateInactiveOwner(out PlayerMovement movement)
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+
+        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
+        owner.enabled = false;
+
+        movement = playerObject.AddComponent<PlayerMovement>();
+        movement.enabled = false;
+        movement.lastMoveDirection = Vector2.right;
+
+        return owner;
+    }
+
+    private WeaponData CreateWeaponData(float cooldown, float projectileInterval)
+    {
+        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        createdScriptableObjects.Add(data);
+        data.baseStats = new Weapon.Stats
+        {
+            cooldown = cooldown,
+            projectileInterval = projectileInterval
+        };
+        data.linearGrowth = new Weapon.Stats[0];
+        data.randomGrowth = new Weapon.Stats[0];
+        return data;
+    }
+
+    private TestProjectileWeapon CreateInactiveWeapon()
+    {
+        GameObject weaponObject = new GameObject("Weapon");
+        weaponObject.SetActive(false);
+        return weaponObject.AddComponent<TestProjectileWeapon>();
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -106,32 +145,30 @@ public class ProjectileWeaponPlayModeTests
         }
 
         yield return null;
+
+        foreach (var obj in createdScriptableObjects)
+        {
+            if (obj != null)
+            {
+                Object.DestroyImmediate(obj, true);
+            }
+        }
+
+        createdScriptableObjects.Clear();
     }
 
     [UnityTest]
     public IEnumerator Attack_WhenProjectilePrefabExists_ShouldSpawnProjectileAndSetCooldown()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-        movement.lastMoveDirection = Vector2.right;
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 2f,
-            projectileInterval = 0.5f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(2f, 0.5f);
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestProjectileWeapon weapon = weaponObject.AddComponent<TestProjectileWeapon>();
+        TestProjectileWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -157,27 +194,15 @@ public class ProjectileWeaponPlayModeTests
     [UnityTest]
     public IEnumerator Attack_WhenAttackCountIsGreaterThanOne_ShouldQueueNextAttack()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-        movement.lastMoveDirection = Vector2.right;
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 2f,
-            projectileInterval = 0.75f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(2f, 0.75f);
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestProjectileWeapon weapon = weaponObject.AddComponent<TestProjectileWeapon>();
+        TestProjectileWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -186,6 +211,7 @@ public class ProjectileWeaponPlayModeTests
         {
             projectilePrefab = projectilePrefab,
             cooldown = 2f,
+            projectileInterval = 0.75f,
             spawnVariance = new Rect(0f, 0f, 0f, 0f)
         });
 
@@ -201,27 +227,15 @@ public class ProjectileWeaponPlayModeTests
     [UnityTest]
     public IEnumerator Update_WhenQueuedAttackIntervalExpires_ShouldFireNextProjectile()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-        movement.lastMoveDirection = Vector2.right;
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 2f,
-            projectileInterval = 0.01f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(2f, 0.01f);
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestProjectileWeapon weapon = weaponObject.AddComponent<TestProjectileWeapon>();
+        TestProjectileWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -232,6 +246,7 @@ public class ProjectileWeaponPlayModeTests
         {
             projectilePrefab = projectilePrefab,
             cooldown = 2f,
+            projectileInterval = 0.01f,
             spawnVariance = new Rect(0f, 0f, 0f, 0f)
         });
 

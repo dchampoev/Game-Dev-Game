@@ -39,6 +39,13 @@ public class ProjectilePlayModeTests
         }
     }
 
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(target, value);
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -54,6 +61,7 @@ public class ProjectilePlayModeTests
     public IEnumerator OnTriggerEnter2D_WhenEnemyHitAndPiercingBecomesZero_ShouldDamageEnemyAndDestroyProjectile()
     {
         GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
         playerObject.tag = "Player";
         playerObject.AddComponent<BoxCollider2D>();
 
@@ -84,17 +92,23 @@ public class ProjectilePlayModeTests
 
         GameObject enemyObject = new GameObject("Enemy");
         enemyObject.tag = "Enemy";
+
         BoxCollider2D enemyCollider = enemyObject.AddComponent<BoxCollider2D>();
-        enemyObject.AddComponent<SpriteRenderer>();
+
+        SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
 
         EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
-        EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
+        enemyMovement.enabled = false;
 
+        EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
         enemyStats.currentHealth = 10f;
         enemyStats.currentDamage = 1f;
         enemyStats.currentMoveSpeed = 1f;
 
-        yield return null;
+        SetPrivateField(enemyStats, "spriteRenderer", spriteRenderer);
+        SetPrivateField(enemyStats, "originalColor", Color.white);
+        SetPrivateField(enemyStats, "enemyMovement", enemyMovement);
 
         projectile.CallOnTriggerEnter2D(enemyCollider);
 

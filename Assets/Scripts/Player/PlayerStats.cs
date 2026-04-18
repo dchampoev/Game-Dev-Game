@@ -178,6 +178,7 @@ public class PlayerStats : MonoBehaviour
 
     public List<LevelRange> levelRanges;
 
+    PlayerCollector collector;
     PlayerInventory inventory;
     public int weaponIndex;
     public int passiveItemIndex;
@@ -203,9 +204,11 @@ public class PlayerStats : MonoBehaviour
         }
 
         inventory = GetComponent<PlayerInventory>();
+        collector = GetComponentInChildren<PlayerCollector>();
 
         baseStats = actualStats = characterData.stats;
         health = actualStats.maxHealth;
+        collector.SetRadius(actualStats.magnet);
     }
 
     void Start()
@@ -251,6 +254,7 @@ public class PlayerStats : MonoBehaviour
                 actualStats += passive.GetBoosts();
             }
         }
+        collector.SetRadius(actualStats.magnet);
     }
 
     public void IncreaseExperience(int amount)
@@ -386,7 +390,6 @@ public class PlayerStats : MonoBehaviour
 
         GameObject spawnedWeapon = Instantiate(weaponPrefab, transform.position, Quaternion.identity);
         spawnedWeapon.transform.SetParent(transform);
-        //inventory.AddWeapon(weaponIndex, spawnedWeapon.GetComponent<WeaponController>());
 
         weaponIndex++;
     }
@@ -402,7 +405,6 @@ public class PlayerStats : MonoBehaviour
 
         GameObject spawnedPassiveItem = Instantiate(passiveItemPrefab, transform.position, Quaternion.identity);
         spawnedPassiveItem.transform.SetParent(transform);
-        //inventory.AddPassiveItem(passiveItemIndex, spawnedPassiveItem.GetComponent<PassiveItem>());
 
         passiveItemIndex++;
     }

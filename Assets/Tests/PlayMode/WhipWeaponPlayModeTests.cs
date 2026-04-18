@@ -1,11 +1,12 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
 
 public class WhipWeaponPlayModeTests
 {
+    private readonly List<ScriptableObject> createdScriptableObjects = new List<ScriptableObject>();
+
     private class TestProjectile : Projectile
     {
         protected override void Start()
@@ -95,6 +96,7 @@ public class WhipWeaponPlayModeTests
                 .GetField("currentSpawnYOffset", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(this, value);
         }
+
         public void SetCurrentAttackCount(int value)
         {
             typeof(ProjectileWeapon)
@@ -103,42 +105,73 @@ public class WhipWeaponPlayModeTests
         }
     }
 
-    [UnityTearDown]
-    public IEnumerator TearDown()
-    {
-        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
-        {
-            Object.Destroy(go);
-        }
-
-        yield return null;
-    }
-
-    [UnityTest]
-    public IEnumerator Attack_WhenMovingRight_ShouldSpawnProjectileOnPositiveX()
+    private PlayerStats CreateInactiveOwner(out PlayerMovement movement)
     {
         GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+
         PlayerStats owner = playerObject.AddComponent<PlayerStats>();
         owner.enabled = false;
 
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
+        movement = playerObject.AddComponent<PlayerMovement>();
         movement.enabled = false;
         movement.lastMoveDirection = Vector2.right;
+
+        return owner;
+    }
+
+    private WeaponData CreateWeaponData(float cooldown, float projectileInterval)
+    {
+        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        createdScriptableObjects.Add(data);
+        data.baseStats = new Weapon.Stats
+        {
+            cooldown = cooldown,
+            projectileInterval = projectileInterval
+        };
+        data.linearGrowth = new Weapon.Stats[0];
+        data.randomGrowth = new Weapon.Stats[0];
+        return data;
+    }
+
+    private TestWhipWeapon CreateInactiveWeapon()
+    {
+        GameObject weaponObject = new GameObject("Whip");
+        weaponObject.SetActive(false);
+        return weaponObject.AddComponent<TestWhipWeapon>();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(go);
+        }
+
+        foreach (var obj in createdScriptableObjects)
+        {
+            if (obj != null)
+            {
+                Object.DestroyImmediate(obj, true);
+            }
+        }
+
+        createdScriptableObjects.Clear();
+    }
+
+    [Test]
+    public void Attack_WhenMovingRight_ShouldSpawnProjectileOnPositiveX()
+    {
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 1f,
-            projectileInterval = 0.25f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(1f, 0.25f);
 
-        GameObject weaponObject = new GameObject("Whip");
-        TestWhipWeapon weapon = weaponObject.AddComponent<TestWhipWeapon>();
+        TestWhipWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -165,36 +198,21 @@ public class WhipWeaponPlayModeTests
         Assert.Greater(spawned.transform.position.x, owner.transform.position.x);
         Assert.AreEqual(1, weapon.GetCurrentSpawnCount());
         Assert.AreEqual(0f, weapon.GetCurrentSpawnYOffset());
-
-        yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator Attack_WhenSecondSpawnGoesLeft_ShouldFlipProjectileScale()
+    [Test]
+    public void Attack_WhenSecondSpawnGoesLeft_ShouldFlipProjectileScale()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
-
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-        movement.lastMoveDirection = Vector2.right;
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
         projectilePrefab.transform.localScale = new Vector3(2f, 1f, 1f);
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 1f,
-            projectileInterval = 0.25f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(1f, 0.25f);
 
-        GameObject weaponObject = new GameObject("Whip");
-        TestWhipWeapon weapon = weaponObject.AddComponent<TestWhipWeapon>();
+        TestWhipWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -225,35 +243,20 @@ public class WhipWeaponPlayModeTests
         Assert.Less(spawned.transform.localScale.x, 0f);
         Assert.AreEqual(2, weapon.GetCurrentSpawnCount());
         Assert.AreEqual(1f, weapon.GetCurrentSpawnYOffset());
-
-        yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator Attack_WhenAttackCountIsGreaterThanOne_ShouldQueueNextAttack()
+    [Test]
+    public void Attack_WhenAttackCountIsGreaterThanOne_ShouldQueueNextAttack()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats owner = playerObject.AddComponent<PlayerStats>();
-        owner.enabled = false;
-
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-        movement.lastMoveDirection = Vector2.right;
+        PlayerMovement movement;
+        PlayerStats owner = CreateInactiveOwner(out movement);
 
         GameObject projectilePrefabObject = new GameObject("ProjectilePrefab");
         TestProjectile projectilePrefab = projectilePrefabObject.AddComponent<TestProjectile>();
 
-        WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
-        data.baseStats = new Weapon.Stats
-        {
-            cooldown = 1f,
-            projectileInterval = 0.5f
-        };
-        data.linearGrowth = new Weapon.Stats[0];
-        data.randomGrowth = new Weapon.Stats[0];
+        WeaponData data = CreateWeaponData(1f, 0.5f);
 
-        GameObject weaponObject = new GameObject("Whip");
-        TestWhipWeapon weapon = weaponObject.AddComponent<TestWhipWeapon>();
+        TestWhipWeapon weapon = CreateInactiveWeapon();
         weapon.data = data;
         weapon.SetOwner(owner);
         weapon.SetMovement(movement);
@@ -261,6 +264,7 @@ public class WhipWeaponPlayModeTests
         weapon.SetCurrentStats(new Weapon.Stats
         {
             projectilePrefab = projectilePrefab,
+            projectileInterval = 0.5f,
             spawnVariance = new Rect(1f, 0f, 0f, 0f)
         });
 
@@ -269,7 +273,5 @@ public class WhipWeaponPlayModeTests
         Assert.IsTrue(result);
         Assert.AreEqual(2, weapon.GetCurrentAttackCount());
         Assert.AreEqual(0.5f, weapon.GetCurrentAttackInterval());
-
-        yield return null;
     }
 }

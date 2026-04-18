@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2273752683264309445}
   - component: {fileID: 2050489491435122034}
   - component: {fileID: 1496061956337239595}
-  - component: {fileID: 7478701461239204966}
   - component: {fileID: -2628940313537063785}
+  - component: {fileID: 3808049332612572941}
   m_Layer: 0
   m_Name: Blue Gem
   m_TagString: Pickup
@@ -130,19 +130,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.328125
---- !u!114 &7478701461239204966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8368989066321366195}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f80e341d0a50341739695396fca62c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExperienceGem
-  experienceGranted: 30
 --- !u!50 &-2628940313537063785
 Rigidbody2D:
   serializedVersion: 5
@@ -170,3 +157,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &3808049332612572941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368989066321366195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ccdf5775d4848a6896f49565d6e8cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameStats::Pickup
+  lifespan: 0.5
+  bobbingAnimation:
+    frequency: 2
+    direction: {x: 0, y: 0.3}
+  experience: 120
+  health: 0

@@ -8,6 +8,8 @@ using UnityEngine.UI;
 
 public class ItemAttemptEvolutionPlayModeTests
 {
+    private readonly List<ScriptableObject> createdScriptableObjects = new List<ScriptableObject>();
+
     private class TestItem : Item
     {
         public void SetInventory(PlayerInventory inv) => inventory = inv;
@@ -20,6 +22,7 @@ public class ItemAttemptEvolutionPlayModeTests
     private WeaponData CreateWeaponData(string name)
     {
         WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        createdScriptableObjects.Add(data);
         data.name = name;
         data.maxLevel = 5;
         data.baseStats = new Weapon.Stats
@@ -34,6 +37,7 @@ public class ItemAttemptEvolutionPlayModeTests
     private PassiveData CreatePassiveData(string name)
     {
         PassiveData data = ScriptableObject.CreateInstance<PassiveData>();
+        createdScriptableObjects.Add(data);
         data.name = name;
         data.maxLevel = 5;
         data.baseStats = new Passive.Modifier
@@ -57,31 +61,45 @@ public class ItemAttemptEvolutionPlayModeTests
         };
     }
 
-    private void SetPrivateField(object target, string fieldName, object value)
+    [UnityTearDown]
+    public IEnumerator TearDown()
     {
-        target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(target, value);
+        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.Destroy(go);
+        }
+
+        yield return null;
+
+        foreach (var obj in createdScriptableObjects)
+        {
+            if (obj != null)
+            {
+                Object.DestroyImmediate(obj, true);
+            }
+        }
+
+        foreach (var obj in Resources.FindObjectsOfTypeAll<CharacterData>())
+        {
+            Object.DestroyImmediate(obj, true);
+        }
+
+        createdScriptableObjects.Clear();
     }
 
     [UnityTest]
     public IEnumerator AttemptEvolution_WhenValid_ShouldRemoveCatalystAndAddOutcome()
     {
-        GameObject playerObject = new GameObject("Player");
-
-        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
-        movement.enabled = false;
-
-        PlayerStats stats = playerObject.AddComponent<PlayerStats>();
-        stats.enabled = false;
-
-        PlayerInventory inventory = playerObject.AddComponent<PlayerInventory>();
+        GameObject inventoryObject = new GameObject("Inventory");
+        PlayerInventory inventory = inventoryObject.AddComponent<PlayerInventory>();
         inventory.weaponSlots = new List<PlayerInventory.Slot>();
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
+        inventory.availableWeapons = new List<WeaponData>();
+        inventory.availablePassives = new List<PassiveData>();
+        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
 
-        SetPrivateField(stats, "inventory", inventory);
-
-        yield return null;
+        PlayerStats stats = PlayerTestFactory.CreatePlayerStats(inventory);
+        PlayerTestFactory.SetPrivateField(inventory, "player", stats);
 
         GameObject itemGO = new GameObject("Item");
         TestItem item = itemGO.AddComponent<TestItem>();
