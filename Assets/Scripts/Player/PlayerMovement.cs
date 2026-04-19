@@ -7,6 +7,7 @@ using UnityEngine.TestTools;
 [RequireComponent(typeof(PlayerInput))]
 public sealed class PlayerMovement : MonoBehaviour
 {
+    public const float DEFAULT_MOVE_SPEED = 5f;
     private const float DirectionEpsilon = 0.01f;
 
     [HideInInspector]
@@ -40,6 +41,6 @@ public sealed class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigidBody.linearVelocity = movementInput.normalized * player.CurrentMoveSpeed;
+        rigidBody.linearVelocity = movementInput.normalized * DEFAULT_MOVE_SPEED * player.Stats.moveSpeed;
     }
 }

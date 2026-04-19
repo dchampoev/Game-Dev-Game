@@ -1,7 +1,9 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using UnityEngine.TestTools;
 
 public class ProjectileTests
@@ -19,6 +21,10 @@ public class ProjectileTests
         public override float GetDamage()
         {
             return damage;
+        }
+        public override float GetArea()
+        {
+            return stats.area;
         }
     }
 
@@ -46,27 +52,98 @@ public class ProjectileTests
         }
     }
 
-    private void SetProtectedField(object target, string fieldName, object value)
+    private void SetPrivateField(object target, string fieldName, object value)
     {
         target.GetType()
-            .BaseType
             .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(target, value);
+            ?.SetValue(target, value);
     }
 
-    [Test]
-    public void AcquireAutoAimFacing_WhenNoEnemies_ShouldKeepRotationUnchanged()
+    private PlayerStats CreatePlayer()
     {
-        GameObject projectileObject = new GameObject("Projectile");
-        TestProjectile projectile = projectileObject.AddComponent<TestProjectile>();
+        GameObject playerGO = new GameObject("Player");
+        playerGO.SetActive(false);
 
-        Quaternion before = projectile.transform.rotation;
+        PlayerStats stats = playerGO.AddComponent<PlayerStats>();
+        stats.enabled = false;
 
-        projectile.AcquireAutoAimFacing();
+        PlayerMovement movement = playerGO.AddComponent<PlayerMovement>();
+        movement.enabled = false;
+        movement.lastMoveDirection = Vector2.right;
 
-        Quaternion after = projectile.transform.rotation;
+        GameObject collectorGO = new GameObject("Collector");
+        collectorGO.transform.SetParent(playerGO.transform);
+        collectorGO.AddComponent<CircleCollider2D>();
+        PlayerCollector collector = collectorGO.AddComponent<PlayerCollector>();
+        collector.enabled = false;
 
-        Assert.AreEqual(before, after);
+        GameObject inventoryGO = new GameObject("Inventory");
+        inventoryGO.transform.SetParent(playerGO.transform);
+        PlayerInventory inventory = inventoryGO.AddComponent<PlayerInventory>();
+        inventory.weaponSlots = new List<PlayerInventory.Slot>();
+        inventory.passiveSlots = new List<PlayerInventory.Slot>();
+        inventory.availableWeapons = new List<WeaponData>();
+        inventory.availablePassives = new List<PassiveData>();
+        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
+
+        GameObject healthBarGO = new GameObject("HealthBar");
+        Image healthBar = healthBarGO.AddComponent<Image>();
+
+        GameObject expBarGO = new GameObject("ExpBar");
+        Image expBar = expBarGO.AddComponent<Image>();
+
+        GameObject levelTextGO = new GameObject("LevelText");
+        TextMeshProUGUI levelText = levelTextGO.AddComponent<TextMeshProUGUI>();
+
+        stats.healthBar = healthBar;
+        stats.expBar = expBar;
+        stats.levelText = levelText;
+
+        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
+        CharacterData.Stats playerStats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = 5f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
+        };
+
+        stats.baseStats = playerStats;
+        stats.Stats = playerStats;
+        stats.CurrentHealth = 20f;
+
+        SetPrivateField(stats, "characterData", characterData);
+        SetPrivateField(stats, "inventory", inventory);
+        SetPrivateField(stats, "collector", collector);
+        SetPrivateField(stats, "health", 20f);
+
+        return stats;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
     }
 
     [Test]
@@ -88,8 +165,23 @@ public class ProjectileTests
     }
 
     [Test]
+    public void AcquireAutoAimFacing_WhenNoEnemies_ShouldSetValidRotation()
+    {
+        GameObject projectileObject = new GameObject("Projectile");
+        TestProjectile projectile = projectileObject.AddComponent<TestProjectile>();
+
+        projectile.AcquireAutoAimFacing();
+
+        float z = projectile.transform.eulerAngles.z;
+
+        Assert.IsFalse(float.IsNaN(z));
+    }
+
+    [Test]
     public void Start_WhenKinematicBody_ShouldSetScaleAndPiercing()
     {
+        PlayerStats owner = CreatePlayer();
+
         GameObject weaponObject = new GameObject("Weapon");
         TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
         weapon.stats = new Weapon.Stats
@@ -100,6 +192,10 @@ public class ProjectileTests
             lifespan = 0f
         };
 
+        typeof(Item)
+            .GetField("owner", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(weapon, owner);
+
         GameObject projectileObject = new GameObject("Projectile");
         projectileObject.transform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -108,6 +204,7 @@ public class ProjectileTests
 
         TestProjectile projectile = projectileObject.AddComponent<TestProjectile>();
         projectile.weapon = weapon;
+        projectile.owner = owner;
 
         projectile.CallStart();
 
@@ -124,11 +221,61 @@ public class ProjectileTests
     [Test]
     public void FixedUpdate_WhenBodyIsKinematic_ShouldMoveProjectileForward()
     {
+        PlayerStats owner = CreatePlayer();
+
         GameObject weaponObject = new GameObject("Weapon");
         TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
         weapon.stats = new Weapon.Stats
         {
             speed = 10f,
+            area = 1f,
+            piercing = 1,
+            lifespan = 0f
+        };
+
+        typeof(Item)
+            .GetField("owner", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(weapon, owner);
+
+        GameObject projectileObject = new GameObject("Projectile");
+        Rigidbody2D rb = projectileObject.AddComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+
+        TestProjectile projectile = projectileObject.AddComponent<TestProjectile>();
+        projectile.weapon = weapon;
+        projectile.owner = owner;
+
+        projectile.CallStart();
+
+        Vector3 before = projectile.transform.position;
+
+        projectile.CallFixedUpdate();
+
+        Vector3 after = projectile.transform.position;
+
+        Assert.Greater(after.x, before.x);
+    }
+    [Test]
+    public void OnTriggerEnter2D_WhenEnemyHitAndPiercingBecomesZero_ShouldDamageEnemyAndDestroyProjectile()
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+        playerObject.tag = "Player";
+        playerObject.AddComponent<BoxCollider2D>();
+
+        PlayerMovement playerMovement = playerObject.AddComponent<PlayerMovement>();
+        playerMovement.enabled = false;
+
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
+        GameObject weaponObject = new GameObject("Weapon");
+        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.enabled = false;
+        weapon.damage = 2f;
+        weapon.stats = new Weapon.Stats
+        {
+            speed = 0f,
             area = 1f,
             piercing = 1,
             lifespan = 0f
@@ -140,15 +287,41 @@ public class ProjectileTests
 
         TestProjectile projectile = projectileObject.AddComponent<TestProjectile>();
         projectile.weapon = weapon;
-
         projectile.CallStart();
 
-        Vector3 before = projectile.transform.position;
+        GameObject enemyObject = new GameObject("Enemy");
+        enemyObject.tag = "Enemy";
 
-        projectile.CallFixedUpdate();
+        BoxCollider2D enemyCollider = enemyObject.AddComponent<BoxCollider2D>();
 
-        Vector3 after = projectile.transform.position;
+        SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
 
-        Assert.Greater(after.x, before.x);
+        EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
+        enemyMovement.enabled = false;
+
+        EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
+        enemyStats.currentHealth = 10f;
+        enemyStats.currentDamage = 1f;
+        enemyStats.currentMoveSpeed = 1f;
+
+        SetPrivateField(enemyStats, "spriteRenderer", spriteRenderer);
+        SetPrivateField(enemyStats, "originalColor", Color.white);
+        SetPrivateField(enemyStats, "enemyMovement", enemyMovement);
+
+        LogAssert.Expect(
+            LogType.Error,
+            "Destroy may not be called from edit mode! Use DestroyImmediate instead.\nDestroying an object in edit mode destroys it permanently."
+        );
+
+        projectile.CallOnTriggerEnter2D(enemyCollider);
+
+        Assert.AreEqual(8f, enemyStats.currentHealth);
+
+        int piercing = (int)typeof(Projectile)
+            .GetField("piercing", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(projectile);
+
+        Assert.AreEqual(0, piercing);
     }
 }

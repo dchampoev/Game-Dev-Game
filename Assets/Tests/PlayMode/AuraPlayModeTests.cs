@@ -46,6 +46,48 @@ public class AuraPlayModeTests
         }
     }
 
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            ?.SetValue(target, value);
+    }
+
+    private PlayerStats CreatePlayer()
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = 5f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
+        };
+
+        playerStats.baseStats = stats;
+        playerStats.Stats = stats;
+        playerStats.CurrentHealth = 20f;
+
+        return playerStats;
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -55,21 +97,26 @@ public class AuraPlayModeTests
         }
 
         yield return null;
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
     }
 
     [UnityTest]
     public IEnumerator Update_WhenEnemyInside_ShouldDealDamage()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerMovement playerMovement = playerObject.AddComponent<PlayerMovement>();
-        playerMovement.enabled = false;
+        PlayerStats owner = CreatePlayer();
 
         GameObject auraObject = new GameObject("Aura");
         TestAura aura = auraObject.AddComponent<TestAura>();
         aura.enabled = false;
+        aura.owner = owner;
 
         GameObject weaponObject = new GameObject("Weapon");
         TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.enabled = false;
         weapon.stats = new Weapon.Stats
         {
             cooldown = 0f,
@@ -79,7 +126,8 @@ public class AuraPlayModeTests
         aura.weapon = weapon;
 
         GameObject enemyObject = new GameObject("Enemy");
-        enemyObject.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
 
         EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
         enemyMovement.enabled = false;
@@ -90,11 +138,13 @@ public class AuraPlayModeTests
         enemy.currentDamage = 1f;
         enemy.currentMoveSpeed = 1f;
 
+        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
+        SetPrivateField(enemy, "originalColor", Color.white);
+        SetPrivateField(enemy, "enemyMovement", enemyMovement);
+
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();
 
         aura.CallOnTriggerEnter2D(enemyCollider);
-
-        LogAssert.Expect(LogType.Exception, "NullReferenceException: Object reference not set to an instance of an object");
         aura.CallUpdate();
 
         yield return null;
@@ -105,16 +155,16 @@ public class AuraPlayModeTests
     [UnityTest]
     public IEnumerator OnTriggerExit2D_WhenEnemyLeaves_ShouldStopAffectingAfterNextTick()
     {
-        GameObject playerObject = new GameObject("Player");
-        PlayerMovement playerMovement = playerObject.AddComponent<PlayerMovement>();
-        playerMovement.enabled = false;
+        PlayerStats owner = CreatePlayer();
 
         GameObject auraObject = new GameObject("Aura");
         TestAura aura = auraObject.AddComponent<TestAura>();
         aura.enabled = false;
+        aura.owner = owner;
 
         GameObject weaponObject = new GameObject("Weapon");
         TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.enabled = false;
         weapon.stats = new Weapon.Stats
         {
             cooldown = 0f,
@@ -124,7 +174,8 @@ public class AuraPlayModeTests
         aura.weapon = weapon;
 
         GameObject enemyObject = new GameObject("Enemy");
-        enemyObject.AddComponent<SpriteRenderer>();
+        SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
+        spriteRenderer.color = Color.white;
 
         EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
         enemyMovement.enabled = false;
@@ -134,6 +185,10 @@ public class AuraPlayModeTests
         enemy.currentHealth = 10f;
         enemy.currentDamage = 1f;
         enemy.currentMoveSpeed = 1f;
+
+        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
+        SetPrivateField(enemy, "originalColor", Color.white);
+        SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();
 

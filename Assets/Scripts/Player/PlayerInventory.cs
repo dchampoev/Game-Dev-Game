@@ -168,9 +168,9 @@ public class PlayerInventory : MonoBehaviour
         {
             GameObject gameObject = new GameObject(data.baseStats.name + " Controller");
             Weapon spawnedWeapon = (Weapon)gameObject.AddComponent(weaponType);
-            spawnedWeapon.Initialize(data);
             spawnedWeapon.transform.SetParent(transform);
             spawnedWeapon.transform.localPosition = Vector2.zero;
+            spawnedWeapon.Initialize(data);
             spawnedWeapon.OnEquip();
 
             weaponSlots[slotIndex].Assign(spawnedWeapon);
@@ -204,9 +204,9 @@ public class PlayerInventory : MonoBehaviour
 
         GameObject gameObject = new GameObject(data.baseStats.name + " Passive");
         Passive spawnedPassive = gameObject.AddComponent<Passive>();
-        spawnedPassive.Initialize(data);
         spawnedPassive.transform.SetParent(transform);
         spawnedPassive.transform.localPosition = Vector2.zero;
+        spawnedPassive.Initialize(data);
 
         passiveSlots[slotIndex].Assign(spawnedPassive);
 

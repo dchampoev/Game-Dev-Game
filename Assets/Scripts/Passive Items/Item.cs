@@ -12,6 +12,7 @@ public class Item : MonoBehaviour
     protected PlayerInventory inventory;
 
     protected PlayerStats owner;
+    public PlayerStats Owner => owner;
 
     public virtual void Initialize(ItemData data)
     {

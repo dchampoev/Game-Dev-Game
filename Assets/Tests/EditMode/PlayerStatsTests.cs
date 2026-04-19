@@ -21,27 +21,6 @@ public class PlayerStatsTests
             ?.SetValue(stats, value);
     }
 
-    private void SetPrivateBool(PlayerStats stats, string fieldName, bool value)
-    {
-        typeof(PlayerStats)
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(stats, value);
-    }
-
-    private void SetPrivateFloat(PlayerStats stats, string fieldName, float value)
-    {
-        typeof(PlayerStats)
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(stats, value);
-    }
-
-    private T GetPrivateField<T>(object obj, string fieldName)
-    {
-        return (T)obj.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.GetValue(obj);
-    }
-
     private void CallPrivateMethod(object obj, string methodName)
     {
         obj.GetType()
@@ -55,6 +34,7 @@ public class PlayerStatsTests
         playerGO.SetActive(false);
 
         PlayerStats stats = playerGO.AddComponent<PlayerStats>();
+        stats.enabled = false;
 
         GameObject healthBarGO = new GameObject("HealthBar");
         Image healthBar = healthBarGO.AddComponent<Image>();
@@ -73,16 +53,28 @@ public class PlayerStatsTests
         {
             maxHealth = 20f,
             recovery = 1f,
+            armor = 0f,
             moveSpeed = 5f,
             might = 1f,
+            area = 1f,
             speed = 1f,
-            magnet = 1f
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
         };
 
         CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
 
         stats.baseStats = startStats;
-        SetPrivateField(stats, "actualStats", startStats);
+        stats.Stats = startStats;
+        stats.CurrentHealth = 20f;
+
         SetPrivateField(stats, "health", 20f);
         SetPrivateField(stats, "inventory", playerGO.AddComponent<PlayerInventory>());
         SetCharacterData(stats, characterData);
@@ -114,7 +106,7 @@ public class PlayerStatsTests
 
         foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
         {
-            Object.DestroyImmediate(data);
+            Object.DestroyImmediate(data, true);
         }
     }
 
@@ -143,6 +135,21 @@ public class PlayerStatsTests
     }
 
     [Test]
+    public void TakeDamage_WhenArmorBlocksAllDamage_ShouldNotReduceHealth()
+    {
+        PlayerStats stats = CreatePlayer();
+        CharacterData.Stats currentStats = stats.Stats;
+        currentStats.armor = 10f;
+        stats.Stats = currentStats;
+
+        float initialHealth = stats.CurrentHealth;
+
+        stats.TakeDamage(5f);
+
+        Assert.AreEqual(initialHealth, stats.CurrentHealth);
+    }
+
+    [Test]
     public void Heal_ShouldIncreaseHealth()
     {
         PlayerStats stats = CreatePlayer();
@@ -157,11 +164,11 @@ public class PlayerStatsTests
     public void Heal_ShouldNotExceedMaxHealth()
     {
         PlayerStats stats = CreatePlayer();
-        stats.CurrentHealth = stats.MaxHealth - 1f;
+        stats.CurrentHealth = stats.Stats.maxHealth - 1f;
 
         stats.Heal(10f);
 
-        Assert.AreEqual(stats.MaxHealth, stats.CurrentHealth);
+        Assert.AreEqual(stats.Stats.maxHealth, stats.CurrentHealth);
     }
 
     [Test]
@@ -245,17 +252,17 @@ public class PlayerStatsTests
         CallPrivateMethod(stats, "Recover");
 
         Assert.Greater(stats.CurrentHealth, 10f);
-        Assert.LessOrEqual(stats.CurrentHealth, stats.MaxHealth);
+        Assert.LessOrEqual(stats.CurrentHealth, stats.Stats.maxHealth);
     }
 
     [Test]
     public void Recover_ShouldNotExceedMaxHealth()
     {
         PlayerStats stats = CreatePlayer();
-        stats.CurrentHealth = stats.MaxHealth - 0.01f;
+        stats.CurrentHealth = stats.Stats.maxHealth - 0.01f;
 
         CallPrivateMethod(stats, "Recover");
 
-        Assert.LessOrEqual(stats.CurrentHealth, stats.MaxHealth);
+        Assert.LessOrEqual(stats.CurrentHealth, stats.Stats.maxHealth);
     }
 }

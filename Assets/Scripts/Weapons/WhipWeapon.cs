@@ -10,7 +10,7 @@ public class WhipWeapon : ProjectileWeapon
         if (!currentStats.projectilePrefab)
         {
             Debug.LogWarning("Whip weapon has no projectile prefab.");
-            currentCooldown = data.baseStats.cooldown;
+            ActivateCooldown(true);
             return false;
         }
 
@@ -48,7 +48,7 @@ public class WhipWeapon : ProjectileWeapon
         }
 
         prefab.weapon = this;
-        currentCooldown = data.baseStats.cooldown;
+        ActivateCooldown(true);
         attackCount--;
 
         currentSpawnCount++;

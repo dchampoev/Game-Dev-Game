@@ -25,7 +25,7 @@ public class Aura : WeaponEffect
                 else
                 {
                     Weapon.Stats stats = weapon.GetStats();
-                    affectedEnemies[pair.Key] = stats.cooldown;
+                    affectedEnemies[pair.Key] = stats.cooldown * Owner.Stats.cooldown;
                     pair.Key.TakeDamage(GetDamage(), transform.position, stats.knockback);
 
                     if (stats.hitEffect)

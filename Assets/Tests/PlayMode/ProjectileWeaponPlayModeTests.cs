@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
+using UnityEngine.UI;
+using TMPro;
 
 public class ProjectileWeaponPlayModeTests
 {
@@ -100,6 +100,13 @@ public class ProjectileWeaponPlayModeTests
         }
     }
 
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            ?.SetValue(target, value);
+    }
+
     private PlayerStats CreateInactiveOwner(out PlayerMovement movement)
     {
         GameObject playerObject = new GameObject("Player");
@@ -111,6 +118,66 @@ public class ProjectileWeaponPlayModeTests
         movement = playerObject.AddComponent<PlayerMovement>();
         movement.enabled = false;
         movement.lastMoveDirection = Vector2.right;
+
+        GameObject collectorGO = new GameObject("Collector");
+        collectorGO.transform.SetParent(playerObject.transform);
+        collectorGO.AddComponent<CircleCollider2D>();
+        PlayerCollector collector = collectorGO.AddComponent<PlayerCollector>();
+        collector.enabled = false;
+
+        GameObject inventoryGO = new GameObject("Inventory");
+        inventoryGO.transform.SetParent(playerObject.transform);
+        PlayerInventory inventory = inventoryGO.AddComponent<PlayerInventory>();
+        inventory.weaponSlots = new List<PlayerInventory.Slot>();
+        inventory.passiveSlots = new List<PlayerInventory.Slot>();
+        inventory.availableWeapons = new List<WeaponData>();
+        inventory.availablePassives = new List<PassiveData>();
+        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
+
+        GameObject healthBarGO = new GameObject("HealthBar");
+        Image healthBar = healthBarGO.AddComponent<Image>();
+
+        GameObject expBarGO = new GameObject("ExpBar");
+        Image expBar = expBarGO.AddComponent<Image>();
+
+        GameObject levelTextGO = new GameObject("LevelText");
+        TextMeshProUGUI levelText = levelTextGO.AddComponent<TextMeshProUGUI>();
+
+        owner.healthBar = healthBar;
+        owner.expBar = expBar;
+        owner.levelText = levelText;
+
+        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
+        createdScriptableObjects.Add(characterData);
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = 5f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
+        };
+
+        owner.baseStats = stats;
+        owner.Stats = stats;
+        owner.CurrentHealth = 20f;
+
+        SetPrivateField(owner, "characterData", characterData);
+        SetPrivateField(owner, "inventory", inventory);
+        SetPrivateField(owner, "collector", collector);
+        SetPrivateField(owner, "health", 20f);
 
         return owner;
     }
@@ -136,15 +203,13 @@ public class ProjectileWeaponPlayModeTests
         return weaponObject.AddComponent<TestProjectileWeapon>();
     }
 
-    [UnityTearDown]
-    public IEnumerator TearDown()
+    [TearDown]
+    public void TearDown()
     {
         foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
-            Object.Destroy(go);
+            Object.DestroyImmediate(go);
         }
-
-        yield return null;
 
         foreach (var obj in createdScriptableObjects)
         {
@@ -157,8 +222,8 @@ public class ProjectileWeaponPlayModeTests
         createdScriptableObjects.Clear();
     }
 
-    [UnityTest]
-    public IEnumerator Attack_WhenProjectilePrefabExists_ShouldSpawnProjectileAndSetCooldown()
+    [Test]
+    public void Attack_WhenProjectilePrefabExists_ShouldSpawnProjectileAndSetCooldown()
     {
         PlayerMovement movement;
         PlayerStats owner = CreateInactiveOwner(out movement);
@@ -187,12 +252,10 @@ public class ProjectileWeaponPlayModeTests
         Assert.IsTrue(result);
         Assert.AreEqual(2, projectiles.Length);
         Assert.AreEqual(2f, weapon.GetCurrentCooldown());
-
-        yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator Attack_WhenAttackCountIsGreaterThanOne_ShouldQueueNextAttack()
+    [Test]
+    public void Attack_WhenAttackCountIsGreaterThanOne_ShouldQueueNextAttack()
     {
         PlayerMovement movement;
         PlayerStats owner = CreateInactiveOwner(out movement);
@@ -220,12 +283,10 @@ public class ProjectileWeaponPlayModeTests
         Assert.IsTrue(result);
         Assert.AreEqual(2, weapon.GetCurrentAttackCount());
         Assert.AreEqual(0.75f, weapon.GetCurrentAttackInterval());
-
-        yield return null;
     }
 
-    [UnityTest]
-    public IEnumerator Update_WhenQueuedAttackIntervalExpires_ShouldFireNextProjectile()
+    [Test]
+    public void Update_WhenQueuedAttackIntervalExpires_ShouldFireNextProjectile()
     {
         PlayerMovement movement;
         PlayerStats owner = CreateInactiveOwner(out movement);
@@ -255,7 +316,5 @@ public class ProjectileWeaponPlayModeTests
         TestProjectile[] projectiles = Object.FindObjectsByType<TestProjectile>(FindObjectsSortMode.None);
 
         Assert.AreEqual(2, projectiles.Length);
-
-        yield return null;
     }
 }

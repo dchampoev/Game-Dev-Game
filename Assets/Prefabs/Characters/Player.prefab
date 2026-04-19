@@ -81,7 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b87d93fa07e24b80ae474b84033eed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCollector
-  pullSpeed: 5
+  pullSpeed: 10
 --- !u!1 &1306540412234368255
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,7 +368,6 @@ GameObject:
   - component: {fileID: 9160524778728249226}
   - component: {fileID: 3029557315058893598}
   - component: {fileID: 6654571745430842168}
-  - component: {fileID: 4606284639121836779}
   - component: {fileID: 1826405454277526196}
   m_Layer: 0
   m_Name: Player
@@ -621,18 +620,39 @@ MonoBehaviour:
   baseStats:
     maxHealth: 0
     recovery: 0
+    armor: 0
     moveSpeed: 0
     might: 0
+    area: 0
     speed: 0
+    duration: 0
+    amount: 0
+    cooldown: 0
+    luck: 0
+    growth: 0
+    greed: 0
+    curse: 0
     magnet: 0
+    revival: 0
   actualStats:
     maxHealth: 0
     recovery: 0
+    armor: 0
     moveSpeed: 0
     might: 0
+    area: 0
     speed: 0
+    duration: 0
+    amount: 0
+    cooldown: 0
+    luck: 0
+    growth: 0
+    greed: 0
+    curse: 0
     magnet: 0
+    revival: 0
   damageEffect: {fileID: 7198592785103293147, guid: aa61292d38f9c4a6596307b61b9e7b57, type: 3}
+  blockedEffect: {fileID: 8136234868713363725, guid: b48dc31765280446f978e7e764d0cbeb, type: 3}
   experience: 0
   level: 1
   experienceCap: 0
@@ -649,81 +669,6 @@ MonoBehaviour:
   healthBar: {fileID: 5320416108489413824}
   expBar: {fileID: 0}
   levelText: {fileID: 0}
---- !u!114 &4606284639121836779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7043779768366221037}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daedb254a0e704152be86294dd5e9e8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
-  weaponSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  weaponLevels: 000000000000000000000000000000000000000000000000
-  weaponUISlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  passiveItemSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  passiveItemsLevels: 000000000000000000000000000000000000000000000000
-  passiveItemUISlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  weaponUpgradeOptions:
-  - weaponUpgradeIndex: 0
-    initialWeapon: {fileID: 6109573915449109977, guid: d272a84f7be854a7eb827db71f4770cf, type: 3}
-    weaponData: {fileID: 11400000, guid: 817f6e665e873480b9afe4dfbee70ad9, type: 2}
-  - weaponUpgradeIndex: 1
-    initialWeapon: {fileID: 7429028512478703734, guid: 42de94e3705db45d788b1f0076b0bc36, type: 3}
-    weaponData: {fileID: 11400000, guid: 1ba025f253d704159860249210c7f6cb, type: 2}
-  passiveItemUpgradeOptions:
-  - passiveItemUpgradeIndex: 0
-    initialPassiveItem: {fileID: 4972447377370073038, guid: 040bf73d2026d4bd5abd9d88264e7571, type: 3}
-    passiveItemData: {fileID: 11400000, guid: 531a7d89cd45547789bcc708afadf04d, type: 2}
-  - passiveItemUpgradeIndex: 1
-    initialPassiveItem: {fileID: 9150660653785296089, guid: dc3a0fc5cae564bcd9f98ebd1b7b6ff5, type: 3}
-    passiveItemData: {fileID: 11400000, guid: da74ba86a307840a08cd01e1b2b197f0, type: 2}
-  upgradeUIOptions:
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  weaponEvolutions:
-  - {fileID: 11400000, guid: 703bc66d80c604e9d8c63e015164792c, type: 2}
 --- !u!114 &1826405454277526196
 MonoBehaviour:
   m_ObjectHideFlags: 0

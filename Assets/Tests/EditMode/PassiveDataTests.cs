@@ -13,13 +13,19 @@ public class PassiveDataTests
             {
                 name = "Level2",
                 description = "First",
-                boosts = new CharacterData.Stats(might: 1f)
+                boosts = new CharacterData.Stats
+                {
+                    might = 1f
+                }
             },
             new Passive.Modifier
             {
                 name = "Level3",
                 description = "Second",
-                boosts = new CharacterData.Stats(might: 2f)
+                boosts = new CharacterData.Stats
+                {
+                    might = 2f
+                }
             }
         };
 
@@ -40,14 +46,24 @@ public class PassiveDataTests
 
         Passive.Modifier result = data.GetLevelData(2);
 
-        Assert.AreEqual(null, result.name);
-        Assert.AreEqual(null, result.description);
+        Assert.IsNull(result.name);
+        Assert.IsNull(result.description);
         Assert.AreEqual(0f, result.boosts.maxHealth);
         Assert.AreEqual(0f, result.boosts.recovery);
+        Assert.AreEqual(0f, result.boosts.armor);
         Assert.AreEqual(0f, result.boosts.moveSpeed);
         Assert.AreEqual(0f, result.boosts.might);
+        Assert.AreEqual(0f, result.boosts.area);
         Assert.AreEqual(0f, result.boosts.speed);
+        Assert.AreEqual(0f, result.boosts.duration);
+        Assert.AreEqual(0, result.boosts.amount);
+        Assert.AreEqual(0f, result.boosts.cooldown);
+        Assert.AreEqual(0f, result.boosts.luck);
+        Assert.AreEqual(0f, result.boosts.growth);
+        Assert.AreEqual(0f, result.boosts.greed);
+        Assert.AreEqual(0f, result.boosts.curse);
         Assert.AreEqual(0f, result.boosts.magnet);
+        Assert.AreEqual(0, result.boosts.revival);
 
         Object.DestroyImmediate(data);
     }

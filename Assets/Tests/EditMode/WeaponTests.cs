@@ -1,6 +1,7 @@
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class WeaponTests
 {
@@ -26,6 +27,20 @@ public class WeaponTests
         return default;
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<WeaponData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
+    }
+
     [Test]
     public void StatsGetDamage_WhenDamageVarianceIsZero_ShouldReturnBaseDamage()
     {
@@ -41,8 +56,16 @@ public class WeaponTests
     }
 
     [Test]
-    public void Initialize_ShouldSetDataStatsAndCooldown()
+    public void Initialize_ShouldSetDataStatsAndMovement()
     {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.AddComponent<PlayerInventory>();
+        PlayerMovement movement = playerObject.AddComponent<PlayerMovement>();
+        movement.enabled = false;
+
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
         WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
         data.maxLevel = 5;
         data.baseStats = new Weapon.Stats
@@ -59,11 +82,11 @@ public class WeaponTests
         weapon.Initialize(data);
 
         Weapon.Stats currentStats = GetField<Weapon.Stats>(weapon, "currentStats");
-        float currentCooldown = GetField<float>(weapon, "currentCooldown");
+        PlayerMovement storedMovement = GetField<PlayerMovement>(weapon, "movement");
 
         Assert.AreSame(data, weapon.data);
         Assert.AreEqual(3f, currentStats.damage);
-        Assert.AreEqual(1.5f, currentCooldown);
+        Assert.AreSame(movement, storedMovement);
     }
 
     [Test]
@@ -71,7 +94,13 @@ public class WeaponTests
     {
         GameObject playerObject = new GameObject("Player");
         PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
-        playerStats.CurrentMight = 2f;
+        playerStats.enabled = false;
+
+        CharacterData.Stats ownerStats = new CharacterData.Stats
+        {
+            might = 2f
+        };
+        playerStats.Stats = ownerStats;
 
         GameObject weaponObject = new GameObject("Weapon");
         TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();

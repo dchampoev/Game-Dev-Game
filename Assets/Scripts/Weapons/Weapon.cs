@@ -15,7 +15,7 @@ public abstract class Weapon : Item
         [Header("Visuals")]
         public Projectile projectilePrefab;
         public Aura auraPrefab;
-        public ParticleSystem hitEffect,procEffect;
+        public ParticleSystem hitEffect, procEffect;
         public Rect spawnVariance;
 
         [Header("Values")]
@@ -49,7 +49,7 @@ public abstract class Weapon : Item
             result.number = s1.number + s2.number;
             result.piercing = s1.piercing + s2.piercing;
             result.maxInstances = s1.maxInstances + s2.maxInstances;
-            
+
             return result;
         }
 
@@ -70,28 +70,14 @@ public abstract class Weapon : Item
         this.data = data;
         currentStats = data.baseStats;
         movement = owner.GetComponent<PlayerMovement>();
-        currentCooldown = currentStats.cooldown;
+        ActivateCooldown();
     }
-
-    protected virtual void Awake()
-    {
-        if (data) currentStats = data.baseStats;
-    }
-
-    protected virtual void Start()
-    {
-        if (data)
-        {
-            Initialize(data);
-        }
-    }
-
     protected virtual void Update()
     {
         currentCooldown -= Time.deltaTime;
         if (currentCooldown <= 0f)
         {
-            Attack(currentStats.number);
+            Attack(currentStats.number + owner.Stats.amount);
         }
     }
 
@@ -125,11 +111,25 @@ public abstract class Weapon : Item
 
     public virtual float GetDamage()
     {
-        return currentStats.GetDamage() * owner.CurrentMight;
+        return currentStats.GetDamage() * owner.Stats.might;
+    }
+
+    public virtual float GetArea()
+    {
+        return currentStats.area + owner.Stats.area;
     }
 
     public virtual Stats GetStats()
     {
         return currentStats;
+    }
+
+    public virtual bool ActivateCooldown(bool strict = false)
+    {
+        if (strict && currentCooldown > 0) return false;
+
+        float actualCooldown = currentStats.cooldown * Owner.Stats.cooldown;
+        currentCooldown = Mathf.Min(actualCooldown, currentCooldown + actualCooldown);
+        return true;
     }
 }

@@ -732,7 +732,7 @@ MonoBehaviour:
         m_MethodName: SelectCharacter
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 9a00f864d1f0544eab9d133bb081ed00, type: 2}
+          m_ObjectArgument: {fileID: 11400000, guid: 5a84cffa3c91749719f2356f3f4abbb6, type: 2}
           m_ObjectArgumentAssemblyTypeName: CharacterData, GameStats
           m_IntArgument: 0
           m_FloatArgument: 0

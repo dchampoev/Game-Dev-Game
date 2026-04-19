@@ -35,6 +35,20 @@ public class WhipWeaponTests
         GameObject weaponObject = new GameObject("Whip");
         TestWhipWeapon weapon = weaponObject.AddComponent<TestWhipWeapon>();
 
+        GameObject playerObject = new GameObject("Player");
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            cooldown = 1f
+        };
+        playerStats.Stats = stats;
+
+        typeof(Item)
+            .GetField("owner", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(weapon, playerStats);
+
         WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
         data.baseStats = new Weapon.Stats
         {
@@ -46,7 +60,8 @@ public class WhipWeaponTests
 
         weapon.SetCurrentStats(new Weapon.Stats
         {
-            projectilePrefab = null
+            projectilePrefab = null,
+            cooldown = 2f
         });
 
         LogAssert.Expect(LogType.Warning, "Whip weapon has no projectile prefab.");
@@ -54,6 +69,7 @@ public class WhipWeaponTests
         bool result = weapon.CallAttack(1);
 
         Assert.IsFalse(result);
+
         Assert.AreEqual(2f, weapon.GetCurrentCooldown());
     }
 }
