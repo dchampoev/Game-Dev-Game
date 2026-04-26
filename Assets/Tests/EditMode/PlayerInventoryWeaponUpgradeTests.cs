@@ -1,26 +1,12 @@
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerInventoryWeaponUpgradeTests
 {
-    private object InvokePrivate(object target, string methodName, params object[] args)
-    {
-        return target.GetType()
-            .GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .Invoke(target, args);
-    }
-
-    private void SetPrivateField(object target, string fieldName, object value)
-    {
-        target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(target, value);
-    }
-
     private class TestWeapon : Weapon
     {
     }
@@ -33,38 +19,7 @@ public class PlayerInventoryWeaponUpgradeTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
         return inventory;
-    }
-
-    private PlayerInventory.UpgradeUI CreateUpgradeUI(string name)
-    {
-        GameObject container = new GameObject(name + "_Container");
-
-        GameObject nameObject = new GameObject(name + "_Name");
-        nameObject.transform.SetParent(container.transform);
-        TextMeshProUGUI nameText = nameObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject descriptionObject = new GameObject(name + "_Description");
-        descriptionObject.transform.SetParent(container.transform);
-        TextMeshProUGUI descriptionText = descriptionObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject iconObject = new GameObject(name + "_Icon");
-        iconObject.transform.SetParent(container.transform);
-        Image icon = iconObject.AddComponent<Image>();
-
-        GameObject buttonObject = new GameObject(name + "_Button");
-        buttonObject.transform.SetParent(container.transform);
-        buttonObject.AddComponent<Image>();
-        Button button = buttonObject.AddComponent<Button>();
-
-        return new PlayerInventory.UpgradeUI
-        {
-            upgradeNameDisplay = nameText,
-            upgradeDescriptionDisplay = descriptionText,
-            upgradeIcon = icon,
-            upgradeButton = button
-        };
     }
 
     private WeaponData CreateWeaponData(string name, int maxLevel = 5)
@@ -94,87 +49,50 @@ public class PlayerInventoryWeaponUpgradeTests
         return data;
     }
 
-    [Test]
-    public void TryConfigureExistingWeaponLevelUp_WhenMatchingWeaponExists_ShouldReturnTrueAndPopulateUi()
+    private PlayerInventory.Slot CreateSlot(Item item)
     {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
+        GameObject imageObject = new GameObject("Image");
+        Image image = imageObject.AddComponent<Image>();
 
-        WeaponData weaponData = CreateWeaponData("Knife", 5);
-
-        GameObject weaponObject = new GameObject("Weapon");
-        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
-        weapon.data = weaponData;
-        weapon.maxLevel = weaponData.maxLevel;
-        weapon.currentLevel = 1;
-
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
+        return new PlayerInventory.Slot
         {
-            item = weapon,
-            image = new GameObject("WeaponImage").AddComponent<Image>()
-        });
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingWeaponLevelUp", ui, weaponData);
-
-        Assert.IsTrue(result);
-        Assert.AreEqual("Knife_L2", ui.upgradeNameDisplay.text);
-        Assert.AreEqual("Knife_Desc_L2", ui.upgradeDescriptionDisplay.text);
-        Assert.AreEqual(weaponData.icon, ui.upgradeIcon.sprite);
+            item = item,
+            image = image
+        };
     }
 
-    [Test]
-    public void TryConfigureExistingWeaponLevelUp_WhenWeaponIsAtMaxLevel_ShouldDisableUiAndReturnTrue()
+    private void SetPrivateField(object target, string fieldName, object value)
     {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            ?.SetValue(target, value);
+    }
 
-        WeaponData weaponData = CreateWeaponData("Whip", 2);
+    private void SetCurrentStats(Weapon weapon, Weapon.Stats stats)
+    {
+        typeof(Weapon)
+            .GetField("currentStats", BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(weapon, stats);
+    }
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
-        weapon.data = weaponData;
-        weapon.maxLevel = weaponData.maxLevel;
-        weapon.currentLevel = 2;
-
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
-            item = weapon,
-            image = new GameObject("WeaponImage").AddComponent<Image>()
-        });
+            Object.DestroyImmediate(obj);
+        }
 
-        ui.upgradeNameDisplay.transform.parent.gameObject.SetActive(true);
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingWeaponLevelUp", ui, weaponData);
-
-        Assert.IsTrue(result);
-        Assert.IsFalse(ui.upgradeNameDisplay.transform.parent.gameObject.activeSelf);
+        foreach (var data in Resources.FindObjectsOfTypeAll<WeaponData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
     }
 
     [Test]
-    public void TryConfigureExistingWeaponLevelUp_WhenMatchingWeaponDoesNotExist_ShouldReturnFalse()
+    public void LevelUp_WhenWeaponIsValid_ShouldIncreaseWeaponLevel()
     {
         PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
-        WeaponData weaponData = CreateWeaponData("Axe", 5);
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingWeaponLevelUp", ui, weaponData);
-
-        Assert.IsFalse(result);
-    }
-
-    [Test]
-    public void BindWeaponLevelUp_WhenButtonClicked_ShouldCallLevelUpWeapon()
-    {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
-        GameObject playerObject = new GameObject("Player");
-        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
-
-        SetPrivateField(inventory, "player", playerStats);
-        SetPrivateField(playerStats, "inventory", inventory);
-        SetPrivateField(playerStats, "characterData", ScriptableObject.CreateInstance<CharacterData>());
 
         WeaponData weaponData = CreateWeaponData("MagicWand", 5);
 
@@ -184,16 +102,50 @@ public class PlayerInventoryWeaponUpgradeTests
         weapon.maxLevel = weaponData.maxLevel;
         weapon.currentLevel = 1;
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = weapon,
-            image = new GameObject("WeaponImage").AddComponent<Image>()
-        });
+        SetCurrentStats(weapon, weaponData.baseStats);
+        SetPrivateField(weapon, "evolutionData", new ItemData.Evolution[0]);
 
-        InvokePrivate(inventory, "BindWeaponLevelUp", ui, 0);
+        inventory.weaponSlots.Add(CreateSlot(weapon));
 
-        ui.upgradeButton.onClick.Invoke();
+        bool result = inventory.LevelUp(weapon);
 
+        Assert.IsTrue(result);
         Assert.AreEqual(2, weapon.currentLevel);
+    }
+
+    [Test]
+    public void LevelUp_WhenWeaponIsAtMaxLevel_ShouldReturnFalse()
+    {
+        PlayerInventory inventory = CreateInventory();
+
+        WeaponData weaponData = CreateWeaponData("Whip", 2);
+
+        GameObject weaponObject = new GameObject("Weapon");
+        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.data = weaponData;
+        weapon.maxLevel = weaponData.maxLevel;
+        weapon.currentLevel = 2;
+
+        SetPrivateField(weapon, "evolutionData", new ItemData.Evolution[0]);
+
+        inventory.weaponSlots.Add(CreateSlot(weapon));
+
+        LogAssert.Expect(LogType.Warning, "Cannot level up Weapon to Level 2, max level of 2 already reached.");
+        LogAssert.Expect(LogType.Warning, "Failed to level up Weapon");
+
+        bool result = inventory.LevelUp(weapon);
+
+        Assert.IsFalse(result);
+        Assert.AreEqual(2, weapon.currentLevel);
+    }
+
+    [Test]
+    public void LevelUp_WhenItemIsNull_ShouldReturnFalse()
+    {
+        PlayerInventory inventory = CreateInventory();
+
+        bool result = inventory.LevelUp(null);
+
+        Assert.IsFalse(result);
     }
 }

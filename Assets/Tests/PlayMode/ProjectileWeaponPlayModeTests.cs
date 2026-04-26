@@ -132,7 +132,6 @@ public class ProjectileWeaponPlayModeTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
 
         GameObject healthBarGO = new GameObject("HealthBar");
         Image healthBar = healthBarGO.AddComponent<Image>();

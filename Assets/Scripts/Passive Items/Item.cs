@@ -14,6 +14,12 @@ public class Item : MonoBehaviour
     protected PlayerStats owner;
     public PlayerStats Owner => owner;
 
+    [System.Serializable]
+    public class LevelData
+    {
+        public string name, description;
+    }
+
     public virtual void Initialize(ItemData data)
     {
         maxLevel = data.maxLevel;

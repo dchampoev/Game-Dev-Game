@@ -19,6 +19,13 @@ public class ItemAttemptEvolutionPlayModeTests
     {
     }
 
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(target, value);
+    }
+
     private WeaponData CreateWeaponData(string name)
     {
         WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
@@ -43,7 +50,11 @@ public class ItemAttemptEvolutionPlayModeTests
         data.baseStats = new Passive.Modifier
         {
             name = name,
-            description = "Outcome"
+            description = "Outcome",
+            boosts = new CharacterData.Stats
+            {
+                might = 1f
+            }
         };
         data.growth = new Passive.Modifier[0];
         return data;
@@ -59,6 +70,55 @@ public class ItemAttemptEvolutionPlayModeTests
             item = item,
             image = image
         };
+    }
+
+    private PlayerStats CreatePlayerStats(PlayerInventory inventory)
+    {
+        GameObject playerObject = new GameObject("Player");
+        playerObject.SetActive(false);
+
+        PlayerStats playerStats = playerObject.AddComponent<PlayerStats>();
+        playerStats.enabled = false;
+
+        GameObject collectorObject = new GameObject("Collector");
+        collectorObject.transform.SetParent(playerObject.transform);
+        collectorObject.AddComponent<CircleCollider2D>();
+        PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
+        collector.enabled = false;
+
+        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
+        createdScriptableObjects.Add(characterData);
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = 5f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
+        };
+
+        playerStats.baseStats = stats;
+        playerStats.Stats = stats;
+        playerStats.CurrentHealth = stats.maxHealth;
+
+        SetPrivateField(playerStats, "inventory", inventory);
+        SetPrivateField(playerStats, "collector", collector);
+        SetPrivateField(playerStats, "characterData", characterData);
+        SetPrivateField(playerStats, "health", stats.maxHealth);
+
+        return playerStats;
     }
 
     [UnityTearDown]
@@ -79,11 +139,6 @@ public class ItemAttemptEvolutionPlayModeTests
             }
         }
 
-        foreach (var obj in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(obj, true);
-        }
-
         createdScriptableObjects.Clear();
     }
 
@@ -96,10 +151,9 @@ public class ItemAttemptEvolutionPlayModeTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
 
-        PlayerStats stats = PlayerTestFactory.CreatePlayerStats(inventory);
-        PlayerTestFactory.SetPrivateField(inventory, "player", stats);
+        PlayerStats stats = CreatePlayerStats(inventory);
+        SetPrivateField(inventory, "player", stats);
 
         GameObject itemGO = new GameObject("Item");
         TestItem item = itemGO.AddComponent<TestItem>();
@@ -115,11 +169,7 @@ public class ItemAttemptEvolutionPlayModeTests
         catalystWeapon.currentLevel = 1;
 
         inventory.weaponSlots.Add(CreateSlot(catalystWeapon));
-        inventory.passiveSlots.Add(new PlayerInventory.Slot
-        {
-            item = null,
-            image = new GameObject("EmptyPassiveSlotImage").AddComponent<Image>()
-        });
+        inventory.passiveSlots.Add(CreateSlot(null));
 
         ItemData.Evolution evolution = new ItemData.Evolution
         {

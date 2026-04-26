@@ -12,6 +12,10 @@ public class PlayerInventoryTests
 
     private class TestItemData : ItemData
     {
+        public override Item.LevelData GetLevelData(int level)
+        {
+            return new Item.LevelData();
+        }
     }
 
     private PlayerInventory CreateInventory()
@@ -65,6 +69,30 @@ public class PlayerInventoryTests
         };
         data.growth = new Passive.Modifier[0];
         return data;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<WeaponData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<PassiveData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<TestItemData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
     }
 
     [Test]
@@ -149,7 +177,10 @@ public class PlayerInventoryTests
 
         WeaponData weaponData = CreateWeaponData("BadWeapon", "Not.A.Real.Type");
 
-        LogAssert.Expect(LogType.Warning, $"Weapon behaviour script {weaponData.behaviour} not found! Make sure the class name matches the string in WeaponData.");
+        LogAssert.Expect(
+            LogType.Warning,
+            $"Weapon behaviour script {weaponData.behaviour} not found! Make sure the class name matches the string in WeaponData."
+        );
 
         int result = inventory.Add(weaponData);
 

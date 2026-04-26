@@ -1,9 +1,8 @@
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerInventoryRemainingWeaponTests
 {
@@ -26,38 +25,7 @@ public class PlayerInventoryRemainingWeaponTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
         return inventory;
-    }
-
-    private PlayerInventory.UpgradeUI CreateUpgradeUI(string name)
-    {
-        GameObject container = new GameObject(name + "_Container");
-
-        GameObject nameObject = new GameObject(name + "_Name");
-        nameObject.transform.SetParent(container.transform);
-        TextMeshProUGUI nameText = nameObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject descriptionObject = new GameObject(name + "_Description");
-        descriptionObject.transform.SetParent(container.transform);
-        TextMeshProUGUI descriptionText = descriptionObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject iconObject = new GameObject(name + "_Icon");
-        iconObject.transform.SetParent(container.transform);
-        Image icon = iconObject.AddComponent<Image>();
-
-        GameObject buttonObject = new GameObject(name + "_Button");
-        buttonObject.transform.SetParent(container.transform);
-        buttonObject.AddComponent<Image>();
-        Button button = buttonObject.AddComponent<Button>();
-
-        return new PlayerInventory.UpgradeUI
-        {
-            upgradeNameDisplay = nameText,
-            upgradeDescriptionDisplay = descriptionText,
-            upgradeIcon = icon,
-            upgradeButton = button
-        };
     }
 
     private WeaponData CreateWeaponData(string name, int maxLevel = 5)
@@ -82,73 +50,160 @@ public class PlayerInventoryRemainingWeaponTests
         return data;
     }
 
-    [Test]
-    public void TakeRandomWeapon_WhenPoolIsEmpty_ShouldReturnNull()
+    private PlayerInventory.Slot CreateSlot(Item item)
     {
-        PlayerInventory inventory = CreateInventory();
-        List<WeaponData> weaponPool = new List<WeaponData>();
+        GameObject imageObject = new GameObject("Image");
+        Image image = imageObject.AddComponent<Image>();
 
-        WeaponData result = (WeaponData)InvokePrivate(inventory, "TakeRandomWeapon", weaponPool);
+        return new PlayerInventory.Slot
+        {
+            item = item,
+            image = image
+        };
+    }
 
-        Assert.IsNull(result);
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (var weaponData in Resources.FindObjectsOfTypeAll<WeaponData>())
+        {
+            Object.DestroyImmediate(weaponData, true);
+        }
     }
 
     [Test]
-    public void TakeRandomWeapon_WhenPoolHasOneItem_ShouldReturnThatItemAndRemoveItFromPool()
+    public void GetSlotsLeft_WhenNoSlots_ShouldReturnZero()
     {
         PlayerInventory inventory = CreateInventory();
-        WeaponData weaponData = CreateWeaponData("Knife");
-        List<WeaponData> weaponPool = new List<WeaponData> { weaponData };
 
-        WeaponData result = (WeaponData)InvokePrivate(inventory, "TakeRandomWeapon", weaponPool);
+        int result = (int)InvokePrivate(inventory, "GetSlotsLeft", inventory.weaponSlots);
 
-        Assert.AreSame(weaponData, result);
-        Assert.AreEqual(0, weaponPool.Count);
+        Assert.AreEqual(0, result);
     }
 
     [Test]
-    public void ConfigureWeaponUpgradeOption_WhenPoolIsEmpty_ShouldDisableUi()
+    public void GetSlotsLeft_WhenOneEmptySlot_ShouldReturnOne()
     {
         PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-        List<WeaponData> weaponPool = new List<WeaponData>();
 
-        ui.upgradeNameDisplay.transform.parent.gameObject.SetActive(true);
+        inventory.weaponSlots.Add(CreateSlot(null));
 
-        InvokePrivate(inventory, "ConfigureWeaponUpgradeOption", ui, weaponPool);
+        int result = (int)InvokePrivate(inventory, "GetSlotsLeft", inventory.weaponSlots);
 
-        Assert.IsFalse(ui.upgradeNameDisplay.transform.parent.gameObject.activeSelf);
+        Assert.AreEqual(1, result);
     }
 
     [Test]
-    public void ConfigureWeaponUpgradeOption_WhenWeaponIsNew_ShouldPopulateUi()
+    public void CanBeOfferedAsUpgrade_WhenNewWeaponAndSlotAvailable_ShouldReturnTrue()
     {
         PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
         WeaponData weaponData = CreateWeaponData("Axe");
-        List<WeaponData> weaponPool = new List<WeaponData> { weaponData };
 
-        InvokePrivate(inventory, "ConfigureWeaponUpgradeOption", ui, weaponPool);
+        bool result = (bool)InvokePrivate(
+            inventory,
+            "CanBeOfferedAsUpgrade",
+            weaponData,
+            1,
+            0
+        );
 
-        Assert.IsTrue(ui.upgradeNameDisplay.transform.parent.gameObject.activeSelf);
-        Assert.AreEqual("Axe", ui.upgradeNameDisplay.text);
-        Assert.AreEqual("Axe_Description", ui.upgradeDescriptionDisplay.text);
-        Assert.AreEqual(weaponData.icon, ui.upgradeIcon.sprite);
+        Assert.IsTrue(result);
     }
 
     [Test]
-    public void ConfigureNewWeaponPickup_ShouldPopulateUi()
+    public void CanBeOfferedAsUpgrade_WhenNewWeaponAndNoSlotAvailable_ShouldReturnFalse()
     {
         PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
+        WeaponData weaponData = CreateWeaponData("Axe");
 
+        bool result = (bool)InvokePrivate(
+            inventory,
+            "CanBeOfferedAsUpgrade",
+            weaponData,
+            0,
+            0
+        );
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void CanBeOfferedAsUpgrade_WhenExistingWeaponBelowMax_ShouldReturnTrue()
+    {
+        PlayerInventory inventory = CreateInventory();
+        WeaponData weaponData = CreateWeaponData("Knife", 5);
+
+        GameObject weaponObject = new GameObject("Knife");
+        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.data = weaponData;
+        weapon.currentLevel = 2;
+
+        inventory.weaponSlots.Add(CreateSlot(weapon));
+
+        bool result = (bool)InvokePrivate(
+            inventory,
+            "CanBeOfferedAsUpgrade",
+            weaponData,
+            0,
+            0
+        );
+
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public void CanBeOfferedAsUpgrade_WhenExistingWeaponAtMax_ShouldReturnFalse()
+    {
+        PlayerInventory inventory = CreateInventory();
+        WeaponData weaponData = CreateWeaponData("Knife", 2);
+
+        GameObject weaponObject = new GameObject("Knife");
+        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+        weapon.data = weaponData;
+        weapon.currentLevel = 2;
+
+        inventory.weaponSlots.Add(CreateSlot(weapon));
+
+        bool result = (bool)InvokePrivate(
+            inventory,
+            "CanBeOfferedAsUpgrade",
+            weaponData,
+            0,
+            0
+        );
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void GetAvailableUpgrades_WhenAvailableWeaponAndEmptySlot_ShouldIncludeWeapon()
+    {
+        PlayerInventory inventory = CreateInventory();
         WeaponData weaponData = CreateWeaponData("Cross");
 
-        InvokePrivate(inventory, "ConfigureNewWeaponPickup", ui, weaponData);
+        inventory.availableWeapons.Add(weaponData);
+        inventory.weaponSlots.Add(CreateSlot(null));
 
-        Assert.AreEqual("Cross", ui.upgradeNameDisplay.text);
-        Assert.AreEqual("Cross_Description", ui.upgradeDescriptionDisplay.text);
-        Assert.AreEqual(weaponData.icon, ui.upgradeIcon.sprite);
+        List<ItemData> result = (List<ItemData>)InvokePrivate(inventory, "GetAvailableUpgrades");
+
+        Assert.Contains(weaponData, result);
+    }
+
+    [Test]
+    public void GetAvailableUpgrades_WhenAvailableWeaponButNoEmptySlot_ShouldNotIncludeWeapon()
+    {
+        PlayerInventory inventory = CreateInventory();
+        WeaponData weaponData = CreateWeaponData("Cross");
+
+        inventory.availableWeapons.Add(weaponData);
+
+        List<ItemData> result = (List<ItemData>)InvokePrivate(inventory, "GetAvailableUpgrades");
+
+        Assert.IsFalse(result.Contains(weaponData));
     }
 }

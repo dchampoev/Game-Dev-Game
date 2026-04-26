@@ -29,11 +29,11 @@ public class PassiveDataTests
             }
         };
 
-        Passive.Modifier result = data.GetLevelData(3);
+        Passive.LevelData result = data.GetLevelData(3);
 
         Assert.AreEqual("Level3", result.name);
         Assert.AreEqual("Second", result.description);
-        Assert.AreEqual(2f, result.boosts.might);
+        Assert.AreEqual(2f, ((Passive.Modifier)result).boosts.might);
 
         Object.DestroyImmediate(data);
     }
@@ -44,26 +44,26 @@ public class PassiveDataTests
         PassiveData data = ScriptableObject.CreateInstance<PassiveData>();
         data.growth = new Passive.Modifier[0];
 
-        Passive.Modifier result = data.GetLevelData(2);
+        Passive.LevelData result = data.GetLevelData(2);
 
         Assert.IsNull(result.name);
         Assert.IsNull(result.description);
-        Assert.AreEqual(0f, result.boosts.maxHealth);
-        Assert.AreEqual(0f, result.boosts.recovery);
-        Assert.AreEqual(0f, result.boosts.armor);
-        Assert.AreEqual(0f, result.boosts.moveSpeed);
-        Assert.AreEqual(0f, result.boosts.might);
-        Assert.AreEqual(0f, result.boosts.area);
-        Assert.AreEqual(0f, result.boosts.speed);
-        Assert.AreEqual(0f, result.boosts.duration);
-        Assert.AreEqual(0, result.boosts.amount);
-        Assert.AreEqual(0f, result.boosts.cooldown);
-        Assert.AreEqual(0f, result.boosts.luck);
-        Assert.AreEqual(0f, result.boosts.growth);
-        Assert.AreEqual(0f, result.boosts.greed);
-        Assert.AreEqual(0f, result.boosts.curse);
-        Assert.AreEqual(0f, result.boosts.magnet);
-        Assert.AreEqual(0, result.boosts.revival);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.maxHealth);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.recovery);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.armor);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.moveSpeed);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.might);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.area);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.speed);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.duration);
+        Assert.AreEqual(0, ((Passive.Modifier)result).boosts.amount);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.cooldown);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.luck);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.growth);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.greed);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.curse);
+        Assert.AreEqual(0f, ((Passive.Modifier)result).boosts.magnet);
+        Assert.AreEqual(0, ((Passive.Modifier)result).boosts.revival);
 
         Object.DestroyImmediate(data);
     }

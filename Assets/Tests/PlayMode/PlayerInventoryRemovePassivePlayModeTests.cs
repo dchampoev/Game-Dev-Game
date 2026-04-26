@@ -25,7 +25,6 @@ public class PlayerInventoryRemovePassivePlayModeTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
         return inventory;
     }
 
@@ -41,6 +40,22 @@ public class PlayerInventoryRemovePassivePlayModeTests
         };
         data.growth = new Passive.Modifier[0];
         return data;
+    }
+
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.Destroy(go);
+        }
+
+        yield return null;
+
+        foreach (var data in Resources.FindObjectsOfTypeAll<PassiveData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
     }
 
     [UnityTest]

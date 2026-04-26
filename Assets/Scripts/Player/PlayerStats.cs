@@ -141,8 +141,8 @@ public class PlayerStats : MonoBehaviour
     {
         if (experience >= experienceCap)
         {
-            experience -= experienceCap;
             level++;
+            experience -= experienceCap;
 
             int experienceCapIncrease = 0;
 
@@ -165,6 +165,11 @@ public class PlayerStats : MonoBehaviour
             if (GameManager.instance != null)
             {
                 GameManager.instance.StartLevelUp();
+            }
+
+            if(experience >= experienceCap)
+            {
+                LevelUpChecker();
             }
         }
     }

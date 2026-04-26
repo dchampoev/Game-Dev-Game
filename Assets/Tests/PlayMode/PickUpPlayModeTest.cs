@@ -79,7 +79,6 @@ public class PickUpPlayModeTests
         inventory.passiveSlots = new System.Collections.Generic.List<PlayerInventory.Slot>();
         inventory.availableWeapons = new System.Collections.Generic.List<WeaponData>();
         inventory.availablePassives = new System.Collections.Generic.List<PassiveData>();
-        inventory.upgradeUIOptions = new System.Collections.Generic.List<PlayerInventory.UpgradeUI>();
 
         CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
 
@@ -87,18 +86,29 @@ public class PickUpPlayModeTests
         {
             maxHealth = 20f,
             recovery = 1f,
+            armor = 0f,
             moveSpeed = 5f,
             might = 1f,
+            area = 1f,
             speed = 1f,
-            magnet = 1f
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
         };
 
         playerStats.baseStats = stats;
+        playerStats.Stats = stats;
+        playerStats.CurrentHealth = 10f;
 
         SetPrivateField(playerStats, "inventory", inventory);
         SetPrivateField(playerStats, "collector", collector);
         SetPrivateField(playerStats, "characterData", characterData);
-        SetPrivateField(playerStats, "actualStats", stats);
         SetPrivateField(playerStats, "health", 10f);
 
         return playerStats;

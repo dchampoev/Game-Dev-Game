@@ -1,21 +1,21 @@
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerInventoryPassiveUpgradeTests
 {
-    private object InvokePrivate(object target, string methodName, params object[] args)
-    {
-        return target.GetType()
-            .GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .Invoke(target, args);
-    }
-
     private class TestPassive : Passive
     {
+    }
+
+    private void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(target, value);
     }
 
     private PlayerInventory CreateInventory()
@@ -26,38 +26,7 @@ public class PlayerInventoryPassiveUpgradeTests
         inventory.passiveSlots = new List<PlayerInventory.Slot>();
         inventory.availableWeapons = new List<WeaponData>();
         inventory.availablePassives = new List<PassiveData>();
-        inventory.upgradeUIOptions = new List<PlayerInventory.UpgradeUI>();
         return inventory;
-    }
-
-    private PlayerInventory.UpgradeUI CreateUpgradeUI(string name)
-    {
-        GameObject container = new GameObject(name + "_Container");
-
-        GameObject nameObject = new GameObject(name + "_Name");
-        nameObject.transform.SetParent(container.transform);
-        TextMeshProUGUI nameText = nameObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject descriptionObject = new GameObject(name + "_Description");
-        descriptionObject.transform.SetParent(container.transform);
-        TextMeshProUGUI descriptionText = descriptionObject.AddComponent<TextMeshProUGUI>();
-
-        GameObject iconObject = new GameObject(name + "_Icon");
-        iconObject.transform.SetParent(container.transform);
-        Image icon = iconObject.AddComponent<Image>();
-
-        GameObject buttonObject = new GameObject(name + "_Button");
-        buttonObject.transform.SetParent(container.transform);
-        buttonObject.AddComponent<Image>();
-        Button button = buttonObject.AddComponent<Button>();
-
-        return new PlayerInventory.UpgradeUI
-        {
-            upgradeNameDisplay = nameText,
-            upgradeDescriptionDisplay = descriptionText,
-            upgradeIcon = icon,
-            upgradeButton = button
-        };
     }
 
     private PassiveData CreatePassiveData(string name, int maxLevel = 5)
@@ -68,29 +37,47 @@ public class PlayerInventoryPassiveUpgradeTests
         data.baseStats = new Passive.Modifier
         {
             name = name,
-            description = name + "_Base"
+            description = name + "_Base",
+            boosts = new CharacterData.Stats
+            {
+                maxHealth = 1f,
+                might = 1f
+            }
         };
         data.growth = new Passive.Modifier[]
         {
             new Passive.Modifier
             {
                 name = name + "_L2",
-                description = name + "_Desc_L2"
+                description = name + "_Desc_L2",
+                boosts = new CharacterData.Stats
+                {
+                    might = 2f
+                }
             },
             new Passive.Modifier
             {
                 name = name + "_L3",
-                description = name + "_Desc_L3"
+                description = name + "_Desc_L3",
+                boosts = new CharacterData.Stats
+                {
+                    might = 3f
+                }
             }
         };
         return data;
     }
 
-    private void SetPrivateField(object target, string fieldName, object value)
+    private PlayerInventory.Slot CreateSlot(Item item)
     {
-        target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(target, value);
+        GameObject imageObject = new GameObject("Image");
+        Image image = imageObject.AddComponent<Image>();
+
+        return new PlayerInventory.Slot
+        {
+            item = item,
+            image = image
+        };
     }
 
     private PlayerStats CreatePlayerStats(PlayerInventory inventory)
@@ -107,25 +94,36 @@ public class PlayerInventoryPassiveUpgradeTests
         PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
         collector.enabled = false;
 
-        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
-
         CharacterData.Stats stats = new CharacterData.Stats
         {
             maxHealth = 20f,
             recovery = 1f,
+            armor = 0f,
             moveSpeed = 5f,
             might = 1f,
+            area = 1f,
             speed = 1f,
-            magnet = 1f
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
         };
 
+        CharacterData characterData = ScriptableObject.CreateInstance<CharacterData>();
+
         playerStats.baseStats = stats;
+        playerStats.Stats = stats;
+        playerStats.CurrentHealth = stats.maxHealth;
 
         SetPrivateField(playerStats, "inventory", inventory);
         SetPrivateField(playerStats, "collector", collector);
         SetPrivateField(playerStats, "characterData", characterData);
-        SetPrivateField(playerStats, "actualStats", stats);
-        SetPrivateField(playerStats, "health", 20f);
+        SetPrivateField(playerStats, "health", stats.maxHealth);
 
         return playerStats;
     }
@@ -147,87 +145,13 @@ public class PlayerInventoryPassiveUpgradeTests
         {
             Object.DestroyImmediate(characterData, true);
         }
-        foreach (var characterData in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(characterData, true);
-        }
     }
 
     [Test]
-    public void TryConfigureExistingPassiveLevelUp_WhenMatchingPassiveExists_ShouldReturnTrueAndPopulateUi()
+    public void LevelUp_WhenPassiveIsValid_ShouldIncreasePassiveLevel()
     {
         PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
-        PassiveData passiveData = CreatePassiveData("Spinach", 5);
-
-        GameObject passiveObject = new GameObject("Passive");
-        TestPassive passive = passiveObject.AddComponent<TestPassive>();
-        passive.data = passiveData;
-        passive.currentLevel = 1;
-
-        inventory.passiveSlots.Add(new PlayerInventory.Slot
-        {
-            item = passive,
-            image = new GameObject("PassiveImage").AddComponent<Image>()
-        });
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingPassiveLevelUp", ui, passiveData);
-
-        Assert.IsTrue(result);
-        Assert.AreEqual("Spinach_L2", ui.upgradeNameDisplay.text);
-        Assert.AreEqual("Spinach_Desc_L2", ui.upgradeDescriptionDisplay.text);
-        Assert.AreEqual(passiveData.icon, ui.upgradeIcon.sprite);
-    }
-
-    [Test]
-    public void TryConfigureExistingPassiveLevelUp_WhenPassiveIsAtMaxLevel_ShouldDisableUiAndReturnTrue()
-    {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
-        PassiveData passiveData = CreatePassiveData("Armor", 2);
-
-        GameObject passiveObject = new GameObject("Passive");
-        TestPassive passive = passiveObject.AddComponent<TestPassive>();
-        passive.data = passiveData;
-        passive.currentLevel = 2;
-
-        inventory.passiveSlots.Add(new PlayerInventory.Slot
-        {
-            item = passive,
-            image = new GameObject("PassiveImage").AddComponent<Image>()
-        });
-
-        ui.upgradeNameDisplay.transform.parent.gameObject.SetActive(true);
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingPassiveLevelUp", ui, passiveData);
-
-        Assert.IsTrue(result);
-        Assert.IsFalse(ui.upgradeNameDisplay.transform.parent.gameObject.activeSelf);
-    }
-
-    [Test]
-    public void TryConfigureExistingPassiveLevelUp_WhenMatchingPassiveDoesNotExist_ShouldReturnFalse()
-    {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
-        PassiveData passiveData = CreatePassiveData("Clover", 5);
-
-        bool result = (bool)InvokePrivate(inventory, "TryConfigureExistingPassiveLevelUp", ui, passiveData);
-
-        Assert.IsFalse(result);
-    }
-
-    [Test]
-    public void BindPassiveLevelUp_WhenButtonClicked_ShouldCallLevelUpPassiveItem()
-    {
-        PlayerInventory inventory = CreateInventory();
-        PlayerInventory.UpgradeUI ui = CreateUpgradeUI("Upgrade");
-
         PlayerStats playerStats = CreatePlayerStats(inventory);
-
         SetPrivateField(inventory, "player", playerStats);
 
         PassiveData passiveData = CreatePassiveData("HollowHeart", 5);
@@ -238,16 +162,70 @@ public class PlayerInventoryPassiveUpgradeTests
         passive.maxLevel = passiveData.maxLevel;
         passive.currentLevel = 1;
 
-        inventory.passiveSlots.Add(new PlayerInventory.Slot
-        {
-            item = passive,
-            image = new GameObject("PassiveImage").AddComponent<Image>()
-        });
+        inventory.passiveSlots.Add(CreateSlot(passive));
 
-        InvokePrivate(inventory, "BindPassiveLevelUp", ui, 0);
+        bool result = inventory.LevelUp(passive);
 
-        ui.upgradeButton.onClick.Invoke();
+        Assert.IsTrue(result);
+        Assert.AreEqual(2, passive.currentLevel);
+    }
 
+    [Test]
+    public void LevelUp_WhenPassiveIsValid_ShouldRecalculatePlayerStats()
+    {
+        PlayerInventory inventory = CreateInventory();
+        PlayerStats playerStats = CreatePlayerStats(inventory);
+        SetPrivateField(inventory, "player", playerStats);
+
+        PassiveData passiveData = CreatePassiveData("Spinach", 5);
+
+        GameObject passiveObject = new GameObject("Passive");
+        TestPassive passive = passiveObject.AddComponent<TestPassive>();
+        passive.data = passiveData;
+        passive.maxLevel = passiveData.maxLevel;
+        passive.currentLevel = 1;
+
+        inventory.passiveSlots.Add(CreateSlot(passive));
+
+        bool result = inventory.LevelUp(passive);
+
+        Assert.IsTrue(result);
+        Assert.Greater(playerStats.Stats.might, playerStats.baseStats.might);
+    }
+
+    [Test]
+    public void LevelUp_WhenItemIsNull_ShouldReturnFalse()
+    {
+        PlayerInventory inventory = CreateInventory();
+
+        bool result = inventory.LevelUp(null);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void LevelUp_WhenPassiveIsAtMaxLevel_ShouldReturnFalse()
+    {
+        PlayerInventory inventory = CreateInventory();
+        PlayerStats playerStats = CreatePlayerStats(inventory);
+        SetPrivateField(inventory, "player", playerStats);
+
+        PassiveData passiveData = CreatePassiveData("Armor", 2);
+
+        GameObject passiveObject = new GameObject("Passive");
+        TestPassive passive = passiveObject.AddComponent<TestPassive>();
+        passive.data = passiveData;
+        passive.maxLevel = passiveData.maxLevel;
+        passive.currentLevel = 2;
+
+        inventory.passiveSlots.Add(CreateSlot(passive));
+
+        LogAssert.Expect(LogType.Warning, "Cannot level up Passive to Level 2, max level of 2 already reached.");
+        LogAssert.Expect(LogType.Warning, "Failed to level up Passive");
+
+        bool result = inventory.LevelUp(passive);
+
+        Assert.IsFalse(result);
         Assert.AreEqual(2, passive.currentLevel);
     }
 }

@@ -14,11 +14,11 @@ public class WeaponDataTests
         };
         data.randomGrowth = new Weapon.Stats[0];
 
-        Weapon.Stats result = data.GetLevelData(3);
+        Weapon.LevelData result = data.GetLevelData(3);
 
-        Assert.AreEqual(5f, result.damage);
-        Assert.AreEqual(7f, result.speed);
-        Assert.AreEqual(2, result.number);
+        Assert.AreEqual(5f, ((Weapon.Stats) result).damage);
+        Assert.AreEqual(7f, ((Weapon.Stats) result).speed);
+        Assert.AreEqual(2, ((Weapon.Stats) result).number);
 
         Object.DestroyImmediate(data);
     }
@@ -33,11 +33,11 @@ public class WeaponDataTests
             new Weapon.Stats { damage = 9f, cooldown = 1.5f, piercing = 4 }
         };
 
-        Weapon.Stats result = data.GetLevelData(2);
+        Weapon.LevelData result = data.GetLevelData(2);
 
-        Assert.AreEqual(9f, result.damage);
-        Assert.AreEqual(1.5f, result.cooldown);
-        Assert.AreEqual(4, result.piercing);
+        Assert.AreEqual(9f, ((Weapon.Stats) result).damage);
+        Assert.AreEqual(1.5f, ((Weapon.Stats) result).cooldown);
+        Assert.AreEqual(4, ((Weapon.Stats) result).piercing);
 
         Object.DestroyImmediate(data);
     }
@@ -49,15 +49,15 @@ public class WeaponDataTests
         data.linearGrowth = new Weapon.Stats[0];
         data.randomGrowth = new Weapon.Stats[0];
 
-        Weapon.Stats result = data.GetLevelData(2);
+        Weapon.LevelData result = data.GetLevelData(2);
 
         Assert.AreEqual(null, result.name);
         Assert.AreEqual(null, result.description);
-        Assert.AreEqual(0f, result.damage);
-        Assert.AreEqual(0f, result.cooldown);
-        Assert.AreEqual(0f, result.speed);
-        Assert.AreEqual(0, result.number);
-        Assert.AreEqual(0, result.piercing);
+        Assert.AreEqual(0f, ((Weapon.Stats) result).damage);
+        Assert.AreEqual(0f, ((Weapon.Stats) result).cooldown);
+        Assert.AreEqual(0f, ((Weapon.Stats) result).speed);
+        Assert.AreEqual(0, ((Weapon.Stats) result).number);
+        Assert.AreEqual(0, ((Weapon.Stats) result).piercing);
 
         Object.DestroyImmediate(data);
     }
