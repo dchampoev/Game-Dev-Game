@@ -68,11 +68,9 @@ public class PlayerInventoryRemovePassivePlayModeTests
         TestPassive passive = passiveObject.AddComponent<TestPassive>();
         passive.data = passiveData;
 
-        Image image = new GameObject("PassiveImage").AddComponent<Image>();
         inventory.passiveSlots.Add(new PlayerInventory.Slot
         {
             item = passive,
-            image = image
         });
 
         bool result = inventory.Remove(passiveData);
@@ -96,11 +94,9 @@ public class PlayerInventoryRemovePassivePlayModeTests
         TestPassive passive = passiveObject.AddComponent<TestPassive>();
         passive.data = passiveData;
 
-        Image image = new GameObject("PassiveImage").AddComponent<Image>();
         inventory.passiveSlots.Add(new PlayerInventory.Slot
         {
             item = passive,
-            image = image
         });
 
         bool result = inventory.Remove(passiveData, true);

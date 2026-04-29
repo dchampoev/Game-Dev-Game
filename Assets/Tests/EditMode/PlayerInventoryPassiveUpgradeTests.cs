@@ -70,13 +70,9 @@ public class PlayerInventoryPassiveUpgradeTests
 
     private PlayerInventory.Slot CreateSlot(Item item)
     {
-        GameObject imageObject = new GameObject("Image");
-        Image image = imageObject.AddComponent<Image>();
-
         return new PlayerInventory.Slot
         {
             item = item,
-            image = image
         };
     }
 

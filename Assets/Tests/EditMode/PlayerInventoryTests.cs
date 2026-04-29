@@ -31,14 +31,9 @@ public class PlayerInventoryTests
 
     private PlayerInventory.Slot CreateEmptySlot(string name)
     {
-        GameObject imageObject = new GameObject(name);
-        Image image = imageObject.AddComponent<Image>();
-        image.enabled = false;
-
         return new PlayerInventory.Slot
         {
             item = null,
-            image = image
         };
     }
 
@@ -108,7 +103,6 @@ public class PlayerInventoryTests
         inventory.weaponSlots.Add(new PlayerInventory.Slot
         {
             item = weapon,
-            image = new GameObject("WeaponImage").AddComponent<Image>()
         });
 
         Weapon result = inventory.Get(weaponData);
@@ -129,7 +123,6 @@ public class PlayerInventoryTests
         inventory.passiveSlots.Add(new PlayerInventory.Slot
         {
             item = passive,
-            image = new GameObject("PassiveImage").AddComponent<Image>()
         });
 
         Passive result = inventory.Get(passiveData);
@@ -150,7 +143,6 @@ public class PlayerInventoryTests
         inventory.weaponSlots.Add(new PlayerInventory.Slot
         {
             item = weapon,
-            image = new GameObject("WeaponImage").AddComponent<Image>()
         });
 
         bool result = inventory.Has(weaponData);

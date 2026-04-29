@@ -56,7 +56,6 @@ public class ItemCanEvolveTests
         inventory.weaponSlots.Add(new PlayerInventory.Slot
         {
             item = weapon,
-            image = new GameObject().AddComponent<Image>()
         });
 
         ItemData.Evolution valid = new ItemData.Evolution

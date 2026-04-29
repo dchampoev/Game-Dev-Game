@@ -48,8 +48,6 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI chosenCharacterName;
     public TextMeshProUGUI levelReachedDisplay;
     public TextMeshProUGUI timeSurvivedDisplay;
-    public List<Image> chosenWeaponsUI = new List<Image>(6);
-    public List<Image> chosenPassiveItemsUI = new List<Image>(6);
 
     [Header("Stopwatch")]
     public float timeLimit;
@@ -165,39 +163,6 @@ public class GameManager : MonoBehaviour
         levelReachedDisplay.text = levelReached.ToString();
     }
 
-    public void AssignChosenWeaponsAndPassiveItemsUI(List<PlayerInventory.Slot> chosenWeapons, List<PlayerInventory.Slot> chosenPassiveItems)
-    {
-        if (chosenWeapons.Count != chosenWeaponsUI.Count || chosenPassiveItems.Count != chosenPassiveItemsUI.Count)
-        {
-            Debug.LogError("Chosen weapons or passive items count does not match the UI slots count.");
-            return;
-        }
-
-        for (int i = 0; i < chosenWeapons.Count; i++)
-        {
-            if (chosenWeapons[i].image.sprite)
-            {
-                chosenWeaponsUI[i].enabled = true;
-                chosenWeaponsUI[i].sprite = chosenWeapons[i].image.sprite;
-            }
-            else
-            {
-                chosenWeaponsUI[i].enabled = false;
-            }
-        }
-        for (int i = 0; i < chosenPassiveItems.Count; i++)
-        {
-            if (chosenPassiveItems[i].image.sprite)
-            {
-                chosenPassiveItemsUI[i].enabled = true;
-                chosenPassiveItemsUI[i].sprite = chosenPassiveItems[i].image.sprite;
-            }
-            else
-            {
-                chosenPassiveItemsUI[i].enabled = false;
-            }
-        }
-    }
     void UpdateStopwatch()
     {
         stopwatchTime += Time.deltaTime;

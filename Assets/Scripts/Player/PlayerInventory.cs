@@ -9,7 +9,6 @@ public class PlayerInventory : MonoBehaviour
     public class Slot
     {
         public Item item;
-        public Image image;
 
         public void Assign(Item assignedItem)
         {
@@ -17,14 +16,10 @@ public class PlayerInventory : MonoBehaviour
             if (item is Weapon)
             {
                 Weapon weapon = item as Weapon;
-                image.enabled = true;
-                image.sprite = weapon.data.icon;
             }
             else
             {
                 Passive passive = item as Passive;
-                image.enabled = true;
-                image.sprite = passive.data.icon;
             }
             Debug.Log(string.Format("Assigned {0} to inventory slot.", item.name));
         }
@@ -32,14 +27,13 @@ public class PlayerInventory : MonoBehaviour
         public void Clear()
         {
             item = null;
-            image.enabled = false;
-            image.sprite = null;
         }
 
         public bool IsEmpty() { return item == null; }
     }
     public List<Slot> weaponSlots = new List<Slot>(6);
     public List<Slot> passiveSlots = new List<Slot>(6);
+    public UIInvetoryIconsDisplay weaponUI, passiveUI;
 
     [Header("UI Elements")]
     public List<WeaponData> availableWeapons = new List<WeaponData>();
@@ -158,6 +152,7 @@ public class PlayerInventory : MonoBehaviour
             spawnedWeapon.OnEquip();
 
             weaponSlots[slotIndex].Assign(spawnedWeapon);
+            if(weaponUI != null) weaponUI.Refresh();
 
             if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
@@ -193,6 +188,7 @@ public class PlayerInventory : MonoBehaviour
         spawnedPassive.Initialize(data);
 
         passiveSlots[slotIndex].Assign(spawnedPassive);
+        if(passiveUI != null) passiveUI.Refresh();
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
@@ -218,6 +214,9 @@ public class PlayerInventory : MonoBehaviour
             Debug.LogWarning(string.Format("Failed to level up {0}", item.name));
             return false;
         }
+
+        if(weaponUI!=null) weaponUI.Refresh();
+        if(passiveUI!=null) passiveUI.Refresh();
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
             GameManager.instance.EndLevelUp();

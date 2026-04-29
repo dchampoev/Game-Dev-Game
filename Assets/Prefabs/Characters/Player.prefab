@@ -659,11 +659,17 @@ MonoBehaviour:
   iFrameDuration: 0.5
   levelRanges:
   - startLevel: 1
-    endLevel: 3
-    experienceCapIncrease: 100
-  - startLevel: 4
-    endLevel: 5
-    experienceCapIncrease: 200
+    endLevel: 2
+    experienceCapIncrease: 5
+  - startLevel: 3
+    endLevel: 20
+    experienceCapIncrease: 13
+  - startLevel: 21
+    endLevel: 40
+    experienceCapIncrease: 600
+  - startLevel: 41
+    endLevel: 9999
+    experienceCapIncrease: 2400
   weaponIndex: 0
   passiveItemIndex: 0
   healthBar: {fileID: 5320416108489413824}
@@ -683,30 +689,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::PlayerInventory
   weaponSlots:
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   passiveSlots:
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
   - item: {fileID: 0}
-    image: {fileID: 0}
+  weaponUI: {fileID: 0}
+  passiveUI: {fileID: 0}
   availableWeapons:
   - {fileID: 11400000, guid: 5a63623787aa74babb551adfb7cff0a0, type: 2}
   - {fileID: 11400000, guid: 61a31eae5c0304324a6f83d814abdd66, type: 2}
@@ -717,23 +713,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c082b7b461c647a682ceb3f63654cf5, type: 2}
   - {fileID: 11400000, guid: 8f64e9589461f4c2c8630c0e203bd2f3, type: 2}
   - {fileID: 11400000, guid: 12c738a3d6d25416e9e3b3c289ddcc90, type: 2}
-  upgradeUIOptions:
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
-  - upgradeNameDisplay: {fileID: 0}
-    upgradeDescriptionDisplay: {fileID: 0}
-    upgradeIcon: {fileID: 0}
-    upgradeButton: {fileID: 0}
+  - {fileID: 11400000, guid: a44539285af6d4f01abbe248c2ca4eaf, type: 2}
+  - {fileID: 11400000, guid: 8090ea471564c46ca94cd0b811232159, type: 2}
+  - {fileID: 11400000, guid: 419a58a3fda6d449e8baf3556e087fd3, type: 2}
+  - {fileID: 11400000, guid: 92256f0ec12c74e52bd47360fa2ccb99, type: 2}
+  - {fileID: 11400000, guid: e38864923656c44adb4b97434a8dacad, type: 2}
+  - {fileID: 11400000, guid: 82f1900c3bf9343039c88090b141a27c, type: 2}
+  - {fileID: 11400000, guid: eee9f2eabb08f46caa186d28741f9e8d, type: 2}
+  - {fileID: 11400000, guid: 154a526f7e48046c3b76b6de89d8b049, type: 2}
+  - {fileID: 11400000, guid: a52a16ee3d65a42009db1e88245ed507, type: 2}
+  upgradeWindow: {fileID: 0}
 --- !u!1 &7980684270985565153
 GameObject:
   m_ObjectHideFlags: 0
