@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
@@ -14,25 +13,15 @@ public class EnemyStatsPlayModeTests
             ?.SetValue(obj, value);
     }
 
-    private EnemySpawner CreateDisabledSpawnerWithSingleSpawnPoint(Vector3 spawnOffset)
-    {
-        GameObject spawnerObject = new GameObject("Spawner");
-        EnemySpawner spawner = spawnerObject.AddComponent<EnemySpawner>();
-        spawner.enabled = false;
-        spawner.relativeSpawnPoints = new List<Transform>();
-
-        GameObject spawnPointObject = new GameObject("SpawnPoint");
-        spawnPointObject.transform.position = spawnOffset;
-        spawner.relativeSpawnPoints.Add(spawnPointObject.transform);
-
-        return spawner;
-    }
-
     private EnemyStats CreateEnemy(Color initialColor, float health = 10f, float flash = 0.1f, float fade = 0.1f)
     {
         GameObject enemyObject = new GameObject("Enemy");
+
         SpriteRenderer renderer = enemyObject.AddComponent<SpriteRenderer>();
         renderer.color = initialColor;
+
+        EnemyMovement movement = enemyObject.AddComponent<EnemyMovement>();
+        movement.enabled = false;
 
         EnemyStats stats = enemyObject.AddComponent<EnemyStats>();
         stats.currentHealth = health;
@@ -41,8 +30,16 @@ public class EnemyStatsPlayModeTests
 
         SetPrivateField(stats, "spriteRenderer", renderer);
         SetPrivateField(stats, "originalColor", initialColor);
+        SetPrivateField(stats, "enemyMovement", movement);
 
         return stats;
+    }
+
+    [UnitySetUp]
+    public IEnumerator SetUp()
+    {
+        EnemyStats.count = 0;
+        yield return null;
     }
 
     [UnityTearDown]
@@ -54,12 +51,15 @@ public class EnemyStatsPlayModeTests
         }
 
         yield return null;
+
+        SpawnManager.instance = null;
+        EnemyStats.count = 0;
     }
 
     [UnityTest]
     public IEnumerator TakeDamage_ShouldFlashAndRestoreColor()
     {
-        EnemyStats stats = CreateEnemy(Color.white, 10f, 0.1f);
+        EnemyStats stats = CreateEnemy(Color.white, 10f, 0.05f);
         SpriteRenderer renderer = stats.GetComponent<SpriteRenderer>();
         stats.damageColor = Color.red;
 
@@ -67,51 +67,63 @@ public class EnemyStatsPlayModeTests
 
         Assert.AreEqual(Color.red, renderer.color);
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.1f);
 
         Assert.AreEqual(Color.white, renderer.color);
         Assert.AreEqual(9f, stats.currentHealth);
     }
 
     [UnityTest]
-    public IEnumerator TakeDamage_ShouldKillEnemyAndDestroyIt()
+    public IEnumerator TakeDamage_WhenHealthReachesZero_ShouldFadeAndDestroyEnemy()
     {
-        EnemySpawner spawner = CreateDisabledSpawnerWithSingleSpawnPoint(Vector3.zero);
-        spawner.enemiesAlive = 1;
-
-        EnemyStats stats = CreateEnemy(Color.white, 1f, 0.05f, 0.1f);
+        EnemyStats stats = CreateEnemy(Color.white, 1f, 0.01f, 0.05f);
         GameObject enemyObject = stats.gameObject;
 
         stats.TakeDamage(1f, Vector2.zero, 0f, 0f);
 
-        Assert.AreEqual(0, spawner.enemiesAlive);
-
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.1f);
         yield return null;
 
         Assert.IsTrue(enemyObject == null);
     }
 
     [UnityTest]
-    public IEnumerator Update_ShouldRelocateEnemyNearPlayer()
+    public IEnumerator Awake_ShouldIncreaseEnemyCount()
     {
-        CreateDisabledSpawnerWithSingleSpawnPoint(new Vector3(3f, 4f, 0f));
+        Assert.AreEqual(0, EnemyStats.count);
 
-        EnemyStats stats = CreateEnemy(Color.white);
-        GameObject enemyObject = stats.gameObject;
-        stats.relocateDistance = 5f;
-
-        GameObject player = new GameObject("Player");
-        player.transform.position = new Vector3(5f, 5f, 0f);
-
-        SetPrivateField(stats, "player", player.transform);
-
-        enemyObject.transform.position = new Vector3(-100f, -100f, 0f);
+        CreateEnemy(Color.white);
 
         yield return null;
 
-        stats.SendMessage("Update");
+        Assert.AreEqual(1, EnemyStats.count);
+    }
 
-        Assert.AreEqual(new Vector3(8f, 9f, 0f), enemyObject.transform.position);
+    [UnityTest]
+    public IEnumerator OnDestroy_ShouldDecreaseEnemyCount()
+    {
+        EnemyStats stats = CreateEnemy(Color.white);
+
+        yield return null;
+
+        Assert.AreEqual(1, EnemyStats.count);
+
+        Object.Destroy(stats.gameObject);
+
+        yield return null;
+
+        Assert.AreEqual(0, EnemyStats.count);
+    }
+
+    [UnityTest]
+    public IEnumerator TakeDamage_WhenKnockbackForceIsZero_ShouldNotRequireKnockback()
+    {
+        EnemyStats stats = CreateEnemy(Color.white, 10f);
+
+        stats.TakeDamage(2f, Vector2.zero, 0f, 0f);
+
+        yield return null;
+
+        Assert.AreEqual(8f, stats.currentHealth);
     }
 }

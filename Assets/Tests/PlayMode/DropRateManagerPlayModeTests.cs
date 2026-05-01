@@ -6,11 +6,23 @@ using UnityEngine.TestTools;
 
 public class DropRateManagerPlayModeTests
 {
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.Destroy(go);
+        }
+
+        yield return null;
+    }
+
     [UnityTest]
     public IEnumerator OnDestroy_WhenDropRateIs100_ShouldInstantiateDrop()
     {
         GameObject managerObject = new GameObject("DropManager");
         DropRateManager manager = managerObject.AddComponent<DropRateManager>();
+        manager.active = true;
 
         GameObject dropPrefab = new GameObject("DropPrefab");
         dropPrefab.AddComponent<TestDropMarker>();
@@ -29,13 +41,10 @@ public class DropRateManagerPlayModeTests
 
         Object.Destroy(managerObject);
         yield return null;
-        yield return null;
 
         int after = Object.FindObjectsByType<TestDropMarker>(FindObjectsSortMode.None).Length;
 
         Assert.Greater(after, before);
-
-        Object.Destroy(dropPrefab);
     }
 
     [UnityTest]
@@ -43,6 +52,7 @@ public class DropRateManagerPlayModeTests
     {
         GameObject managerObject = new GameObject("DropManager");
         DropRateManager manager = managerObject.AddComponent<DropRateManager>();
+        manager.active = true;
 
         GameObject dropPrefab = new GameObject("DropPrefab");
         dropPrefab.AddComponent<TestDropMarker>();
@@ -61,12 +71,9 @@ public class DropRateManagerPlayModeTests
 
         Object.Destroy(managerObject);
         yield return null;
-        yield return null;
 
         int after = Object.FindObjectsByType<TestDropMarker>(FindObjectsSortMode.None).Length;
 
         Assert.AreEqual(before, after);
-
-        Object.Destroy(dropPrefab);
     }
 }

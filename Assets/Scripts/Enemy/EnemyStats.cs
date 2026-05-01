@@ -4,16 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class EnemyStats : MonoBehaviour
 {
-    public EnemyScriptableObject enemyData;
-
-    [HideInInspector]
     public float currentMoveSpeed;
-    [HideInInspector]
     public float currentHealth;
-    [HideInInspector]
     public float currentDamage;
 
-    public float relocateDistance = 20f;
     Transform player;
 
     [Header("Damage Feedback")]
@@ -24,20 +18,10 @@ public class EnemyStats : MonoBehaviour
     SpriteRenderer spriteRenderer;
     EnemyMovement enemyMovement;
 
-    public void InitializeStats()
-    {
-        currentMoveSpeed = enemyData.MoveSpeed;
-        currentHealth = enemyData.MaxHealth;
-        currentDamage = enemyData.Damage;
-    }
-
+    public static int count;
     void Awake()
     {
-        if (enemyData == null)
-        {
-            return;
-        }
-        InitializeStats();
+        count++;
     }
 
     void Start()
@@ -51,15 +35,6 @@ public class EnemyStats : MonoBehaviour
         enemyMovement = GetComponent<EnemyMovement>();
     }
 
-    void Update()
-    {
-        if (player == null) return;
-
-        if (Vector2.Distance(transform.position, player.position) >= relocateDistance)
-        {
-            RelocateNearPlayer();
-        }
-    }
 
     public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce = 5f, float knockbackDuration = 0.2f)
     {
@@ -92,17 +67,17 @@ public class EnemyStats : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        count--;     
+    }
+    
     private void Kill()
     {
-        EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
-        spawner.OnEnemyKilled();
-        StartCoroutine(KillFade());
-    }
+        DropRateManager drops = GetComponent<DropRateManager>();
+        if(drops) drops.active = true;
 
-    void RelocateNearPlayer()
-    {
-        EnemySpawner spawner = FindAnyObjectByType<EnemySpawner>();
-        transform.position = player.position + spawner.relativeSpawnPoints[UnityEngine.Random.Range(0, spawner.relativeSpawnPoints.Count)].position;
+        StartCoroutine(KillFade());
     }
     IEnumerator DamageFlash()
     {

@@ -59,6 +59,11 @@ public class GameManager : MonoBehaviour
 
     public GameObject playerObject;
 
+    public float GetElapsedTime()
+    {
+        return stopwatchTime;
+    }
+
     void Awake()
     {
         if (instance == null)
