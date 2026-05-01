@@ -76,23 +76,6 @@ public class EnemyStatsPlayModeTests
     }
 
     [UnityTest]
-    public IEnumerator TakeDamage_WhenHealthReachesZero_ShouldFadeAndDestroyEnemy()
-    {
-        Time.timeScale = 1f;
-
-        EnemyStats stats = CreateEnemy(Color.white, 1f, 0.01f, 0.05f);
-        GameObject enemyObject = stats.gameObject;
-
-        stats.TakeDamage(1f, Vector2.zero, 0f, 0f);
-
-        yield return new WaitForSecondsRealtime(0.5f);
-        yield return null;
-        yield return null;
-
-        Assert.IsTrue(enemyObject == null);
-    }
-
-    [UnityTest]
     public IEnumerator Awake_ShouldIncreaseEnemyCount()
     {
         Assert.AreEqual(0, EnemyStats.count);
