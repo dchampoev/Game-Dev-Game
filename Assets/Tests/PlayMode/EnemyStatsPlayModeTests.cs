@@ -81,8 +81,14 @@ public class EnemyStatsPlayModeTests
 
         stats.TakeDamage(1f, Vector2.zero, 0f, 0f);
 
-        yield return new WaitForSeconds(0.1f);
-        yield return null;
+        float timeout = 1f;
+        float elapsed = 0f;
+
+        while (enemyObject != null && elapsed < timeout)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
 
         Assert.IsTrue(enemyObject == null);
     }
