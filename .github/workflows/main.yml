@@ -25,7 +25,7 @@ jobs:
           projectPath: .
           githubToken: ${{ secrets.GITHUB_TOKEN }}
           testMode: all
-          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+GameStats'
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport'
 
       - name: Check coverage threshold
         run: |
