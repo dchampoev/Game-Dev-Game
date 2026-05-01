@@ -38,6 +38,7 @@ public class EnemyStatsPlayModeTests
     [UnitySetUp]
     public IEnumerator SetUp()
     {
+        Time.timeScale = 1f;
         EnemyStats.count = 0;
         yield return null;
     }
@@ -45,6 +46,7 @@ public class EnemyStatsPlayModeTests
     [UnityTearDown]
     public IEnumerator TearDown()
     {
+        Time.timeScale = 1f;
         foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
             Object.Destroy(obj);
@@ -76,19 +78,16 @@ public class EnemyStatsPlayModeTests
     [UnityTest]
     public IEnumerator TakeDamage_WhenHealthReachesZero_ShouldFadeAndDestroyEnemy()
     {
+        Time.timeScale = 1f;
+
         EnemyStats stats = CreateEnemy(Color.white, 1f, 0.01f, 0.05f);
         GameObject enemyObject = stats.gameObject;
 
         stats.TakeDamage(1f, Vector2.zero, 0f, 0f);
 
-        float timeout = 1f;
-        float elapsed = 0f;
-
-        while (enemyObject != null && elapsed < timeout)
-        {
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+        yield return new WaitForSecondsRealtime(0.5f);
+        yield return null;
+        yield return null;
 
         Assert.IsTrue(enemyObject == null);
     }
