@@ -1,55 +1,76 @@
-- name: Run Unity tests
-  uses: game-ci/unity-test-runner@v4
-  with:
-    projectPath: .
-    githubToken: ${{ secrets.GITHUB_TOKEN }}
-    testMode: all
-    coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+GameStats'
+name: Unity Tests
 
-- name: Check coverage threshold
-  run: |
-    python3 - <<'PY'
-    import os
-    import re
-    import sys
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-    candidates = [
-        "CodeCoverage/Report/Summary.xml",
-        "CodeCoverage/Report/summary.xml",
-        "CodeCoverage/Report/index.htm",
-        "CodeCoverage/index.htm",
-    ]
+jobs:
+  test:
+    name: Run Unity tests
+    runs-on: ubuntu-latest
 
-    found = None
-    for path in candidates:
-        if os.path.exists(path):
-            found = path
-            break
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    if not found:
-        print("Coverage summary file not found.")
-        sys.exit(1)
+      - name: Run Unity tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: .
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          testMode: all
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+GameStats'
 
-    text = open(found, "r", encoding="utf-8", errors="ignore").read()
+      - name: Check coverage threshold
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
 
-    percent = None
+          candidates = [
+              "CodeCoverage/Report/Summary.xml",
+              "CodeCoverage/Report/summary.xml",
+              "CodeCoverage/Report/index.htm",
+              "CodeCoverage/index.htm",
+          ]
 
-    m = re.search(r'line-rate="([0-9.]+)"', text)
-    if m:
-        percent = float(m.group(1)) * 100.0
+          found = None
+          for path in candidates:
+              if os.path.exists(path):
+                  found = path
+                  break
 
-    if percent is None:
-        m = re.search(r'Line coverage[^0-9]*([0-9]+(?:\.[0-9]+)?)%', text, re.IGNORECASE)
-        if m:
-            percent = float(m.group(1))
+          if not found:
+              print("Coverage summary file not found.")
+              sys.exit(1)
 
-    if percent is None:
-        print("Could not parse coverage percentage.")
-        sys.exit(1)
+          text = open(found, "r", encoding="utf-8", errors="ignore").read()
 
-    print(f"Parsed coverage: {percent:.2f}%")
+          percent = None
 
-    if percent < 80.0:
-        print("Coverage is below 80%")
-        sys.exit(1)
-    PY
+          m = re.search(r'line-rate="([0-9.]+)"', text)
+          if m:
+              percent = float(m.group(1)) * 100.0
+
+          if percent is None:
+              m = re.search(r'Line coverage[^0-9]*([0-9]+(?:\.[0-9]+)?)%', text, re.IGNORECASE)
+              if m:
+                  percent = float(m.group(1))
+
+          if percent is None:
+              print("Could not parse coverage percentage.")
+              sys.exit(1)
+
+          print(f"Parsed coverage: {percent:.2f}%")
+
+          if percent < 80.0:
+              print("Coverage is below 80%")
+              sys.exit(1)
+          PY
