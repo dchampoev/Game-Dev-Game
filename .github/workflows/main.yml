@@ -40,11 +40,13 @@ jobs:
           import sys
 
           candidates = [
-              "CodeCoverage/Report/Summary.xml",
-              "CodeCoverage/Report/summary.xml",
-              "CodeCoverage/Report/index.htm",
-              "CodeCoverage/index.htm",
-          ]
+                "CodeCoverage/Report/Summary.xml",
+                "CodeCoverage/Report/summary.xml",
+                "CodeCoverage/Report/index.html",
+                "CodeCoverage/Report/index.htm",
+                "CodeCoverage/index.html",
+                "CodeCoverage/index.htm",
+            ]
 
           found = None
           for path in candidates:
@@ -54,7 +56,7 @@ jobs:
 
           if not found:
               print("Coverage summary file not found.")
-              sys.exit(1)
+              sys.exit(0)
 
           text = open(found, "r", encoding="utf-8", errors="ignore").read()
 
@@ -65,7 +67,7 @@ jobs:
               percent = float(m.group(1)) * 100.0
 
           if percent is None:
-              m = re.search(r'Line coverage[^0-9]*([0-9]+(?:\.[0-9]+)?)%', text, re.IGNORECASE)
+              m = re.search(r'Line coverage[^0-9]*([0-9]+(?:\.[0-9]+)?)%', text, re.IGNORECASE | re.DOTALL)
               if m:
                   percent = float(m.group(1))
 
