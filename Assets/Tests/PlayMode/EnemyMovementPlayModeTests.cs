@@ -18,9 +18,33 @@ public class EnemyMovementPlayModeTests
         }
     }
 
+    [UnityTearDown]
+    public IEnumerator TearDown()
+    {
+        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.Destroy(go);
+        }
+
+        yield return null;
+
+        SpawnManager.instance = null;
+    }
+
     [UnityTest]
     public IEnumerator Update_ShouldMoveEnemyTowardsPlayer()
     {
+        GameObject cameraObject = new GameObject("Main Camera");
+        Camera camera = cameraObject.AddComponent<Camera>();
+        camera.orthographic = true;
+        cameraObject.tag = "MainCamera";
+
+        GameObject spawnManagerObject = new GameObject("SpawnManager");
+        SpawnManager spawnManager = spawnManagerObject.AddComponent<SpawnManager>();
+        spawnManager.enabled = false;
+        spawnManager.referenceCamera = camera;
+        SpawnManager.instance = spawnManager;
+
         GameObject playerObject = new GameObject("Player");
         PlayerMovement playerMovement = playerObject.AddComponent<PlayerMovement>();
         playerMovement.enabled = false;
@@ -28,6 +52,7 @@ public class EnemyMovementPlayModeTests
 
         GameObject enemyObject = new GameObject("Enemy");
         TestEnemyMovement movement = enemyObject.AddComponent<TestEnemyMovement>();
+
         EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
         enemyStats.currentMoveSpeed = 5f;
 
@@ -42,9 +67,6 @@ public class EnemyMovementPlayModeTests
         Vector2 after = enemyObject.transform.position;
 
         Assert.AreNotEqual(before, after);
-
-        Object.Destroy(enemyObject);
-        Object.Destroy(playerObject);
 
         yield return null;
     }

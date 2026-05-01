@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c014ef30296476a888ed2e7d649938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  outOfFrameAction: 1
 --- !u!114 &-7062928403080530704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,11 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966718a909aeb4f0ca0918a4f398701c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
-  enemyData: {fileID: 11400000, guid: 48736315abfa84790bcfad4453a2a33a, type: 2}
-  currentMoveSpeed: 0
-  currentHealth: 0
-  currentDamage: 0
-  relocateDistance: 20
+  currentMoveSpeed: 1
+  currentHealth: 10
+  currentDamage: 3
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   damageFlashDuration: 0.2
   deathFadeDuration: 0.6
@@ -236,6 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0caa45d764844aba8b3e5daaf757752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropRateManager
+  active: 0
   drops:
   - dropName: Blue gem
     dropPrefab: {fileID: 8368989066321366195, guid: fca43c83c466f48c1bc0e391d32ebbde, type: 3}

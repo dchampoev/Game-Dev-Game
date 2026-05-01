@@ -11209,7 +11209,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1422738066}
-  - component: {fileID: 1422738065}
+  - component: {fileID: 1422738067}
+  - component: {fileID: 1422738068}
   m_Layer: 0
   m_Name: Enemy Spawner
   m_TagString: Untagged
@@ -11217,96 +11218,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1422738065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1422738064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24f71fc3f7abf4b4f860d766a9069942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  waves:
-  - waveName: Wave 1
-    enemyGroups:
-    - enemyName: Bat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-    minEnemiesAlive: 15
-    spawnInterval: 1.2
-    spawnedCount: 0
-  - waveName: Wave 2
-    enemyGroups:
-    - enemyName: Bat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-    minEnemiesAlive: 30
-    spawnInterval: 0.9
-    spawnedCount: 0
-  - waveName: Wave 3
-    enemyGroups:
-    - enemyName: Bat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-    - enemyName: RedBat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: dce8e9d338911432a9508a402e04147b, type: 3}
-    minEnemiesAlive: 50
-    spawnInterval: 0.7
-    spawnedCount: 0
-  - waveName: Wave 4
-    enemyGroups:
-    - enemyName: Bat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-    - enemyName: RedBat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: dce8e9d338911432a9508a402e04147b, type: 3}
-    minEnemiesAlive: 80
-    spawnInterval: 0.5
-    spawnedCount: 0
-  - waveName: Wave 5
-    enemyGroups:
-    - enemyName: Bat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-    - enemyName: RedBat
-      enemyCount: 0
-      spawnedCount: 0
-      enemyPrefab: {fileID: 105203936361193110, guid: dce8e9d338911432a9508a402e04147b, type: 3}
-    minEnemiesAlive: 120
-    spawnInterval: 0.35
-    spawnedCount: 0
-  currentWaveIndex: 0
-  enemiesAlive: 0
-  maxEnemiesAllowed: 150
-  maxEnemiesReached: 0
-  waveInterval: 60
-  relativeSpawnPoints:
-  - {fileID: 1912714240}
-  - {fileID: 682062997}
-  - {fileID: 336931576}
-  - {fileID: 1612046157}
-  - {fileID: 802072146}
-  - {fileID: 1650182836}
-  - {fileID: 488451381}
-  - {fileID: 1809090573}
-  - {fileID: 207106066}
-  - {fileID: 1871840618}
-  - {fileID: 1606758214}
-  - {fileID: 150856405}
-  - {fileID: 293884076}
-  - {fileID: 524089953}
 --- !u!4 &1422738066
 Transform:
   m_ObjectHideFlags: 0
@@ -11336,6 +11247,41 @@ Transform:
   - {fileID: 524089953}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1422738067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422738064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b20c76aec8bd4be9a61e98eb0e318b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameStats::SpawnManager
+  data:
+  - {fileID: 11400000, guid: 82b8b769a1dd44852beca270eb36a604, type: 2}
+  - {fileID: 11400000, guid: 8de4ae42f8fdf446cb794d03675ca597, type: 2}
+  - {fileID: 11400000, guid: e5a20fbe165cf4448a454ceec0735a37, type: 2}
+  referenceCamera: {fileID: 519420031}
+  maxEnemiesAllowed: 300
+--- !u!114 &1422738068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422738064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7f4a54eef864b80905e5d3fbc4526a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameStats::EventManager
+  events:
+  - {fileID: 11400000, guid: 384142f00eab842f4974380b0117b678, type: 2}
+  - {fileID: 11400000, guid: d456e307fdd314d7e91d856b5b435de9, type: 2}
+  firstTriggerDelay: 180
+  triggerInterval: 30
 --- !u!1 &1434096565
 GameObject:
   m_ObjectHideFlags: 0
@@ -17025,63 +16971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5e530cca32f43ea9beaa58b5498178, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameStats::PlayerInventory
---- !u!1001 &6937025977265905391
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 3.45
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2666104588078265769, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4254462943046021590, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
-      propertyPath: m_Name
-      value: Treasure Chest
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
 --- !u!4 &7482094410598706125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8998368394483529027, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
@@ -17100,4 +16989,3 @@ SceneRoots:
   - {fileID: 865535114}
   - {fileID: 18642179}
   - {fileID: 361517097}
-  - {fileID: 6937025977265905391}

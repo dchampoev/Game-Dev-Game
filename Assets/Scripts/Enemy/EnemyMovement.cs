@@ -2,37 +2,73 @@ using UnityEngine;
 
 public class EnemyMovement : MonoBehaviour
 {
-    EnemyStats enemy;
-    Transform player;
+    protected EnemyStats enemy;
+    protected Transform player;
 
-    Vector2 knockbackVelocity;
-    float knockbackDuration;
+    protected Vector2 knockbackVelocity;
+    protected float knockbackDuration;
 
-    protected void Start()
+    public enum OutOfFrameAction { none, respawnAtEdge, despawn }
+    public OutOfFrameAction outOfFrameAction = OutOfFrameAction.respawnAtEdge;
+
+    protected bool spawnedOutOfFrame = false;
+
+    protected virtual void Start()
     {
+        spawnedOutOfFrame = !SpawnManager.IsWithinBoundaries(transform);
         enemy = GetComponent<EnemyStats>();
-        player = FindAnyObjectByType<PlayerMovement>().transform;
+
+        PlayerMovement[] allPlayers = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
+        player = allPlayers[Random.Range(0, allPlayers.Length)].transform;
     }
 
-
-    protected void Update()
+    protected virtual void Update()
     {
-        if(knockbackDuration > 0)
+        if (knockbackDuration > 0)
         {
             transform.position += (Vector3)knockbackVelocity * Time.deltaTime;
             knockbackDuration -= Time.deltaTime;
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.position, enemy.currentMoveSpeed * Time.deltaTime);
+            Move();
+            HandleOutOfFrameAction();
         }
     }
 
-    public void Knockback(Vector2 velocity, float duration)
+    protected virtual void HandleOutOfFrameAction()
+    {
+        if (!SpawnManager.IsWithinBoundaries(transform))
+        {
+            switch (outOfFrameAction)
+            {
+                case OutOfFrameAction.none:
+                default:
+                    break;
+                case OutOfFrameAction.respawnAtEdge:
+                    transform.position = SpawnManager.GeneratePosition();
+                    break;
+                case OutOfFrameAction.despawn:
+                    if (!spawnedOutOfFrame)
+                    {
+                        Destroy(gameObject);
+                    }
+                    break;
+            }
+        }
+        else spawnedOutOfFrame = false;
+    }
+
+    public virtual void Knockback(Vector2 velocity, float duration)
     {
         if (knockbackDuration > 0) return;
 
         knockbackVelocity = velocity;
         knockbackDuration = duration;
+    }
+
+    public virtual void Move()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, player.position, enemy.currentMoveSpeed * Time.deltaTime);
     }
 }
