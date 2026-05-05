@@ -29,6 +29,6 @@ MonoBehaviour:
     luck: 1
     growth: 1
     greed: 1
-    curse: 0
+    curse: 1
     magnet: 2
     revival: 0

@@ -53,6 +53,6 @@ public class CharacterData : ScriptableObject
         maxHealth = 100, recovery = 0, armor =0, moveSpeed = 1,
         might = 1, area = 1, speed = 1, duration = 1,
         amount = 0, cooldown = 1, luck = 1, greed = 1,
-        growth = 1, curse = 0, magnet = 1, revival = 0
+        growth = 1, curse = 1, magnet = 1, revival = 0
     };
 }

@@ -167,7 +167,7 @@ public class PlayerStats : MonoBehaviour
                 GameManager.instance.StartLevelUp();
             }
 
-            if(experience >= experienceCap)
+            if (experience >= experienceCap)
             {
                 LevelUpChecker();
             }
@@ -211,7 +211,7 @@ public class PlayerStats : MonoBehaviour
             {
                 if (blockedEffect) Destroy(Instantiate(blockedEffect, transform.position, Quaternion.identity), 5f);
             }
-            
+
             iFrameTimer = iFrameDuration;
             isInvincible = true;
         }
@@ -232,6 +232,11 @@ public class PlayerStats : MonoBehaviour
         {
             GameManager.instance.AssignLevelReachedUI(level);
             GameManager.instance.GameOver();
+            LeaderboardManager.SaveScore(
+                characterData.name,
+                level * 100 + Mathf.FloorToInt(GameManager.instance.GetElapsedTime()),
+                GameManager.instance.GetElapsedTime()
+            );
         }
     }
 
