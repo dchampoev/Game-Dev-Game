@@ -11260,6 +11260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GameStats::SpawnManager
   data:
+  - {fileID: 11400000, guid: 6976581de6fdf4e19bd25293593d09c9, type: 2}
   - {fileID: 11400000, guid: 82b8b769a1dd44852beca270eb36a604, type: 2}
   - {fileID: 11400000, guid: 8de4ae42f8fdf446cb794d03675ca597, type: 2}
   - {fileID: 11400000, guid: e5a20fbe165cf4448a454ceec0735a37, type: 2}
@@ -11280,8 +11281,8 @@ MonoBehaviour:
   events:
   - {fileID: 11400000, guid: 384142f00eab842f4974380b0117b678, type: 2}
   - {fileID: 11400000, guid: d456e307fdd314d7e91d856b5b435de9, type: 2}
-  firstTriggerDelay: 180
-  triggerInterval: 30
+  firstTriggerDelay: 80
+  triggerInterval: 45
 --- !u!1 &1434096565
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,7 +21,7 @@ MonoBehaviour:
     description: High damage, high Area scaling.
     projectilePrefab: {fileID: 1898085468537934762, guid: 779cb83754120430c8b9a80c89146fd2, type: 3}
     auraPrefab: {fileID: 0}
-    hitEffect: {fileID: 0}
+    hitEffect: {fileID: 7198592785103293147, guid: 10015c374957944cf868b67db222c5f1, type: 3}
     procEffect: {fileID: 0}
     spawnVariance:
       serializedVersion: 2

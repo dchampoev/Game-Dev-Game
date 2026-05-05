@@ -240,3 +240,6 @@ MonoBehaviour:
   - dropName: Blue gem
     dropPrefab: {fileID: 8368989066321366195, guid: fca43c83c466f48c1bc0e391d32ebbde, type: 3}
     dropRate: 50
+  - dropName: Green gem
+    dropPrefab: {fileID: 8368989066321366195, guid: 75b9588414e5743cfbc7fd949d7feec0, type: 3}
+    dropRate: 5
