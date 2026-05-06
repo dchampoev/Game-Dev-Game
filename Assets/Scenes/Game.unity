@@ -11264,6 +11264,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 82b8b769a1dd44852beca270eb36a604, type: 2}
   - {fileID: 11400000, guid: 8de4ae42f8fdf446cb794d03675ca597, type: 2}
   - {fileID: 11400000, guid: e5a20fbe165cf4448a454ceec0735a37, type: 2}
+  - {fileID: 11400000, guid: 682f4d9ff6ffe4ae790f7a2bcb773491, type: 2}
   referenceCamera: {fileID: 519420031}
   maxEnemiesAllowed: 300
 --- !u!114 &1422738068

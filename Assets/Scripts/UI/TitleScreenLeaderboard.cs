@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+[ExcludeFromCodeCoverage]
 public class TitleScreenLeaderboard : MonoBehaviour
 {
     const string TitleSceneName = "Title Screen";

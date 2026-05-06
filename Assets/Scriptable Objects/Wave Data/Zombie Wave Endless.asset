@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40134017e7a3e4e4897c319fefdb263c, type: 3}
-  m_Name: Zombie Wave
+  m_Name: Zombie Wave Endless
   m_EditorClassIdentifier: GameStats::WaveData
   possibleSpawnablePrefabs:
   - {fileID: 5931487893682366752, guid: a21159e796e4a4d6ba9692e91beb4292, type: 3}
   spawnInterval: {x: 2, y: 3}
   spawnCount: {x: 8, y: 10}
-  duration: 180
+  duration: 60
   startingCount: 0
   totalSpawns: 999999
-  exitConditions: 1
+  exitConditions: 2
   mustKillAllEnemies: 0
   spawnedCount: 0
