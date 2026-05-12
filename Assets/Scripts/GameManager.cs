@@ -190,6 +190,11 @@ public class GameManager : MonoBehaviour
     public void StartLevelUp()
     {
         ChangeState(GameState.LevelUp);
+
+        PlayerMovement movement = playerObject.GetComponent<PlayerMovement>();
+        if (movement != null)
+            movement.StopMovement();
+
         if (levelUpScreen.activeSelf) stackedLevelUps++;
         else
         {
@@ -205,7 +210,7 @@ public class GameManager : MonoBehaviour
         levelUpScreen.SetActive(false);
         ChangeState(GameState.Gameplay);
 
-        if(stackedLevelUps > 0)
+        if (stackedLevelUps > 0)
         {
             stackedLevelUps--;
             StartLevelUp();

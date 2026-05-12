@@ -26,7 +26,7 @@ public sealed class PlayerMovement : MonoBehaviour
 
     public void OnMove(InputValue value)
     {
-        if(GameManager.instance.currentState != GameManager.GameState.Gameplay)
+        if (GameManager.instance.currentState != GameManager.GameState.Gameplay)
         {
             return;
         }
@@ -34,9 +34,19 @@ public sealed class PlayerMovement : MonoBehaviour
         movementInput = value.Get<Vector2>();
 
         if (movementInput.sqrMagnitude > DirectionEpsilon * DirectionEpsilon)
-        { 
-            lastMoveDirection = movementInput.normalized;   
+        {
+            lastMoveDirection = movementInput.normalized;
         }
+    }
+
+    public void StopMovement()
+    {
+        movementInput = Vector2.zero;
+        lastMoveDirection = Vector2.zero;
+
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = Vector2.zero;
     }
 
     void FixedUpdate()

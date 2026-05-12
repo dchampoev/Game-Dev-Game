@@ -21,6 +21,6 @@ MonoBehaviour:
   luckFactor: 1
   activeAfter: 180
   spawnEffectPrefab: {fileID: 0}
-  scale: {x: 0, y: 0}
+  scale: {x: 1.6, y: 0.8}
   spawnRadius: 10
   lifespan: 15
