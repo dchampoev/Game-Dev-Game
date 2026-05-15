@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.TestTools;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 [ExcludeFromCoverage]
 public class GameManager : MonoBehaviour
@@ -109,6 +110,8 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.Paused);
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
+
+            SelectFirstPauseButton();
         }
     }
 
@@ -201,6 +204,8 @@ public class GameManager : MonoBehaviour
             levelUpScreen.SetActive(true);
             Time.timeScale = 0f;
             playerObject.SendMessage("RemoveAndApplyUpgrades");
+
+            SelectFirstLevelUpButton();
         }
     }
 
@@ -214,6 +219,28 @@ public class GameManager : MonoBehaviour
         {
             stackedLevelUps--;
             StartLevelUp();
+        }
+    }
+
+    void SelectFirstLevelUpButton()
+    {
+        Button firstButton = levelUpScreen.GetComponentInChildren<Button>();
+
+        if (firstButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
+        }
+    }
+
+    void SelectFirstPauseButton()
+    {
+        Button firstButton = pauseMenu.GetComponentInChildren<Button>();
+
+        if (firstButton != null)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
         }
     }
 
