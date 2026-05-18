@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
 
     void CheckForPauseAndResume()
     {
-        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        if (Keyboard.current != null && (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.pKey.wasPressedThisFrame))
         {
             if (currentState == GameState.Gameplay)
             {

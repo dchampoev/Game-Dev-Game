@@ -177,8 +177,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1000
-  m_LinearDamping: 0
+  m_Mass: 1
+  m_LinearDamping: 5
   m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -204,6 +204,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64c014ef30296476a888ed2e7d649938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
+  sortingActive: 1
+  minimumDistance: 0.2
   outOfFrameAction: 1
   knockbackVariance: 2
 --- !u!114 &637326166732301934
@@ -220,7 +222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
   baseStats:
     maxHealth: 20
-    moveSpeed: 3
+    moveSpeed: 0.7
     damage: 3
     knockbackMultiplier: 1
     resistances:

@@ -57,6 +57,10 @@ public class ChargingEnemyMovementPlayModeTests
         GameObject enemyObject = new GameObject("Enemy");
         enemyObject.transform.position = Vector3.zero;
 
+        Rigidbody2D rb = enemyObject.AddComponent<Rigidbody2D>();
+        rb.gravityScale = 0f;
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
         EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
         enemyStats.baseStats = new EnemyStats.Stats
         {
@@ -67,10 +71,7 @@ public class ChargingEnemyMovementPlayModeTests
             resistances = new EnemyStats.Resitances()
         };
 
-        CallEnemyStatsStart(enemyStats);
-
         TestChargingEnemyMovement movement = enemyObject.AddComponent<TestChargingEnemyMovement>();
-        movement.enabled = false;
 
         return movement;
     }
@@ -96,19 +97,15 @@ public class ChargingEnemyMovementPlayModeTests
         CreatePlayer(new Vector3(10f, 0f, 0f));
 
         TestChargingEnemyMovement movement = CreateEnemy(5f);
-
-        movement.CallStart();
-
-        Vector3 before = movement.transform.position;
-
-        movement.CallMove();
-
-        Vector3 after = movement.transform.position;
-
-        Assert.Greater(after.x, before.x);
-        Assert.AreEqual(before.y, after.y, 0.001f);
+        Rigidbody2D rb = movement.GetComponent<Rigidbody2D>();
 
         yield return null;
+
+        movement.CallStart();
+        movement.CallMove();
+
+        Assert.Greater(rb.linearVelocity.x, 0f);
+        Assert.AreEqual(0f, rb.linearVelocity.y, 0.001f);
     }
 
     [UnityTest]
@@ -118,19 +115,14 @@ public class ChargingEnemyMovementPlayModeTests
         CreatePlayer(new Vector3(10f, 0f, 0f));
 
         TestChargingEnemyMovement movement = CreateEnemy(10f);
+        Rigidbody2D rb = movement.GetComponent<Rigidbody2D>();
+
+        yield return null;
 
         movement.CallStart();
-
-        Vector3 before = movement.transform.position;
-
-        yield return null;
-
         movement.CallMove();
 
-        Vector3 after = movement.transform.position;
-
-        Assert.Greater(after.x, before.x);
-
-        yield return null;
+        Assert.Greater(rb.linearVelocity.x, 0f);
+        Assert.AreEqual(10f, rb.linearVelocity.magnitude, 0.2f);
     }
 }

@@ -2487,7 +2487,6 @@ MonoBehaviour:
   timeSurvivedDisplay: {fileID: 257577926}
   timeLimit: 1200
   stopwatchDisplay: {fileID: 694733765}
-  playerObject: {fileID: 6801395813023021870}
 --- !u!4 &361517097
 Transform:
   m_ObjectHideFlags: 0
@@ -11167,6 +11166,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 682f4d9ff6ffe4ae790f7a2bcb773491, type: 2}
   referenceCamera: {fileID: 519420031}
   maxEnemiesAllowed: 300
+  boostedByCurse: 1
 --- !u!114 &1422738068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15103,6 +15103,14 @@ PrefabInstance:
       propertyPath: 'availablePassives.Array.data[15]'
       value: 
       objectReference: {fileID: 11400000, guid: b2973de996f9b4ff985f3b01b8e48d8c, type: 2}
+    - target: {fileID: 5827411885321299849, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5827411885321299849, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
+      propertyPath: m_LinearDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
       propertyPath: expBar
       value: 
@@ -15160,17 +15168,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
---- !u!1 &6801395813023021870 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7043779768366221037, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
-  m_PrefabInstance: {fileID: 6801395813023021869}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6801395813023021871 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6654571745430842168, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
   m_PrefabInstance: {fileID: 6801395813023021869}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801395813023021870}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc116991db3b049bcaa2e4370c338496, type: 3}
@@ -15181,7 +15184,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1826405454277526196, guid: 859e020b8d7f44a1fa863fd62dfc06ea, type: 3}
   m_PrefabInstance: {fileID: 6801395813023021869}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6801395813023021870}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd5e530cca32f43ea9beaa58b5498178, type: 3}

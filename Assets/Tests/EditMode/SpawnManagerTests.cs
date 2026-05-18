@@ -297,18 +297,16 @@ public class SpawnManagerTests
     }
 
     [Test]
-    public void GeneratePosition_WhenCameraIsNotOrthographic_ShouldLogWarning()
+    public void GeneratePosition_WhenReferenceCameraIsNull_ShouldUseMainCamera()
     {
         WaveData wave = CreateWaveData();
         SpawnManager manager = CreateManager(wave);
-        manager.referenceCamera.orthographic = false;
+        manager.referenceCamera = null;
 
-        LogAssert.Expect(
-            LogType.Warning,
-            "Spawn Manager's reference camera is not orthographic! Defaulting to (0, 0, 0) for spawn position."
-        );
+        Vector3 result = SpawnManager.GeneratePosition();
 
-        SpawnManager.GeneratePosition();
+        Assert.AreEqual(0f, result.z);
+        Assert.IsNotNull(manager.referenceCamera);
     }
 
     [Test]

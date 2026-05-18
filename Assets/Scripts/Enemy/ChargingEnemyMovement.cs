@@ -7,11 +7,18 @@ public class ChargingEnemyMovement : EnemyMovement
     protected override void Start()
     {
         base.Start();
-        chargeDirection = (player.transform.position - transform.position).normalized;
+        chargeDirection = ((Vector2)player.position - rigidBody.position).normalized;
     }
 
-    public override void Move()
+    protected override void Move(float deltaTime)
     {
-        transform.position += (Vector3)chargeDirection * stats.Actual.moveSpeed * Time.deltaTime;
+        if (rigidBody)
+        {
+            rigidBody.linearVelocity = chargeDirection * stats.Actual.moveSpeed;
+        }
+        else
+        {
+            transform.position += (Vector3)(chargeDirection * stats.Actual.moveSpeed * deltaTime);
+        }
     }
 }

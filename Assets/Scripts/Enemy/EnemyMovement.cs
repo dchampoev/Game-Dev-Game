@@ -32,14 +32,34 @@ public class EnemyMovement : Sortable
 
     protected virtual void Update()
     {
+        if (!rigidBody)
+        {
+            TickMovement(Time.deltaTime);
+        }
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        if (rigidBody)
+        {
+            TickMovement(Time.fixedDeltaTime);
+        }
+    }
+
+    void TickMovement(float deltaTime)
+    {
         if (knockbackDuration > 0)
         {
-            transform.position += (Vector3)knockbackVelocity * Time.deltaTime;
-            knockbackDuration -= Time.deltaTime;
+            if (rigidBody)
+                rigidBody.linearVelocity = knockbackVelocity;
+            else
+                transform.position += (Vector3)(knockbackVelocity * deltaTime);
+
+            knockbackDuration -= deltaTime;
         }
         else
         {
-            Move();
+            Move(deltaTime);
             HandleOutOfFrameAction();
         }
     }
@@ -83,22 +103,24 @@ public class EnemyMovement : Sortable
         knockbackDuration = duration * (reducesDuration ? Mathf.Pow(stats.Actual.knockbackMultiplier, pow) : 1);
     }
 
-    public virtual void Move()  
+    public virtual void Move()
+    {
+        Move(Time.deltaTime);
+    }
+
+    protected virtual void Move(float deltaTime)
     {
         if (rigidBody)
         {
-            rigidBody.MovePosition(Vector2.MoveTowards(
-                rigidBody.position,
-                player.transform.position,
-                stats.Actual.moveSpeed * Time.deltaTime
-            ));
+            Vector2 direction = ((Vector2)player.position - rigidBody.position).normalized;
+            rigidBody.linearVelocity = direction * stats.Actual.moveSpeed;
         }
         else
         {
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 player.transform.position,
-                stats.Actual.moveSpeed * Time.deltaTime
+                stats.Actual.moveSpeed * deltaTime
             );
         }
     }

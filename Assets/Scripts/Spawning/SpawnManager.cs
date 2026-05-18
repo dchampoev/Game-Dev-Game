@@ -119,21 +119,25 @@ public class SpawnManager : MonoBehaviour
     {
         if (!instance.referenceCamera) instance.referenceCamera = Camera.main;
 
-        if (!instance.referenceCamera.orthographic)
-        {
-            Debug.LogWarning("Spawn Manager's reference camera is not orthographic! Defaulting to (0, 0, 0) for spawn position.");
-        }
+        float x = Random.Range(0f, 1f);
+        float y = Random.Range(0f, 1f);
 
-        float x = Random.Range(0f, 1f), y = Random.Range(0f, 1f);
+        Vector3 position;
 
         switch (Random.Range(0, 2))
         {
             case 0:
             default:
-                return instance.referenceCamera.ViewportToWorldPoint(new Vector3(Mathf.Round(x), y, 0f));
+                position = instance.referenceCamera.ViewportToWorldPoint(new Vector3(Mathf.Round(x), y, 10f));
+                break;
+
             case 1:
-                return instance.referenceCamera.ViewportToWorldPoint(new Vector3(x, Mathf.Round(y), 0f));
+                position = instance.referenceCamera.ViewportToWorldPoint(new Vector3(x, Mathf.Round(y), 10f));
+                break;
         }
+
+        position.z = 0f;
+        return position;
     }
 
     public static bool IsWithinBoundaries(Transform checkedObj)

@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7062928403080530704, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
       propertyPath: baseStats.moveSpeed
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
       propertyPath: m_Name
@@ -86,4 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6459a4cda4e6f401a8099d66bdf11652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameStats::ChargingEnemyMovement
+  sortingActive: 1
+  minimumDistance: 0.2
   outOfFrameAction: 2
+  knockbackVariance: 2
