@@ -52,6 +52,53 @@ public class SpawnManagerTests
             .SetValue(target, value);
     }
 
+    private T GetPrivateField<T>(object target, string fieldName)
+    {
+        return (T)target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(target);
+    }
+
+    private PlayerStats CreatePlayer(float curse)
+    {
+        GameObject playerObject = new GameObject("Player");
+        PlayerStats player = playerObject.AddComponent<PlayerStats>();
+        player.enabled = false;
+
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 0f,
+            armor = 0f,
+            moveSpeed = 1f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = curse,
+            magnet = 1f,
+            revival = 0
+        };
+
+        player.Stats = stats;
+        player.level = 1;
+        return player;
+    }
+
+    private void CreateGameManagerWithPlayers(params PlayerStats[] players)
+    {
+        GameObject gameManagerObject = new GameObject("GameManager");
+        gameManagerObject.SetActive(false);
+        GameManager manager = gameManagerObject.AddComponent<GameManager>();
+        GameManager.instance = manager;
+        SetPrivateField(manager, "players", players);
+    }
+
     [TearDown]
     public void TearDown()
     {
@@ -66,6 +113,7 @@ public class SpawnManagerTests
         }
 
         SpawnManager.instance = null;
+        GameManager.instance = null;
         EnemyStats.count = 0;
     }
 
@@ -120,6 +168,34 @@ public class SpawnManagerTests
         bool result = SpawnManager.HasExceededTotalSpawns();
 
         Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void ActiveCooldown_WhenBoostedByCurse_ShouldDivideSpawnIntervalByCurse()
+    {
+        WaveData wave = CreateWaveData();
+        wave.spawnInterval = new Vector2(6f, 6f);
+        SpawnManager manager = CreateManager(wave);
+        manager.boostedByCurse = true;
+        CreateGameManagerWithPlayers(CreatePlayer(curse: 2f));
+
+        manager.ActiveCooldown();
+
+        Assert.AreEqual(2f, GetPrivateField<float>(manager, "spawnTimer"), 0.001f);
+    }
+
+    [Test]
+    public void ActiveCooldown_WhenNotBoostedByCurse_ShouldUseFullSpawnInterval()
+    {
+        WaveData wave = CreateWaveData();
+        wave.spawnInterval = new Vector2(6f, 6f);
+        SpawnManager manager = CreateManager(wave);
+        manager.boostedByCurse = false;
+        CreateGameManagerWithPlayers(CreatePlayer(curse: 2f));
+
+        manager.ActiveCooldown();
+
+        Assert.AreEqual(6f, GetPrivateField<float>(manager, "spawnTimer"), 0.001f);
     }
 
     [Test]

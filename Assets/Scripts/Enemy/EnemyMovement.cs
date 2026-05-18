@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : Sortable
 {
-    protected EnemyStats enemy;
+    protected EnemyStats stats;
     protected Transform player;
+    protected Rigidbody2D rigidBody;
 
     protected Vector2 knockbackVelocity;
     protected float knockbackDuration;
@@ -11,12 +12,19 @@ public class EnemyMovement : MonoBehaviour
     public enum OutOfFrameAction { none, respawnAtEdge, despawn }
     public OutOfFrameAction outOfFrameAction = OutOfFrameAction.respawnAtEdge;
 
+    [System.Flags]
+    public enum KnockbackVariance { duration = 1, velocity = 2 }
+    public KnockbackVariance knockbackVariance = KnockbackVariance.velocity;
+
     protected bool spawnedOutOfFrame = false;
 
-    protected virtual void Start()
+    protected override void Start()
     {
+        base.Start();
+
+        rigidBody = GetComponent<Rigidbody2D>();
         spawnedOutOfFrame = !SpawnManager.IsWithinBoundaries(transform);
-        enemy = GetComponent<EnemyStats>();
+        stats = GetComponent<EnemyStats>();
 
         PlayerMovement[] allPlayers = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
         player = allPlayers[Random.Range(0, allPlayers.Length)].transform;
@@ -63,12 +71,35 @@ public class EnemyMovement : MonoBehaviour
     {
         if (knockbackDuration > 0) return;
 
-        knockbackVelocity = velocity;
-        knockbackDuration = duration;
+        if (knockbackVariance == 0) return;
+
+        float pow = 1;
+        bool reducesVelocity = (knockbackVariance & KnockbackVariance.velocity) > 0,
+             reducesDuration = (knockbackVariance & KnockbackVariance.duration) > 0;
+
+        if (reducesVelocity && reducesDuration) pow = 0.5f;
+
+        knockbackVelocity = velocity * (reducesVelocity ? Mathf.Pow(stats.Actual.knockbackMultiplier, pow) : 1);
+        knockbackDuration = duration * (reducesDuration ? Mathf.Pow(stats.Actual.knockbackMultiplier, pow) : 1);
     }
 
-    public virtual void Move()
+    public virtual void Move()  
     {
-        transform.position = Vector2.MoveTowards(transform.position, player.position, enemy.currentMoveSpeed * Time.deltaTime);
+        if (rigidBody)
+        {
+            rigidBody.MovePosition(Vector2.MoveTowards(
+                rigidBody.position,
+                player.transform.position,
+                stats.Actual.moveSpeed * Time.deltaTime
+            ));
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(
+                transform.position,
+                player.transform.position,
+                stats.Actual.moveSpeed * Time.deltaTime
+            );
+        }
     }
 }

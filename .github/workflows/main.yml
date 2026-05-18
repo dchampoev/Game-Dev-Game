@@ -35,49 +35,68 @@ jobs:
       - name: Check coverage threshold
         run: |
           python3 - <<'PY'
-          import os
-          import re
+          from pathlib import Path
           import sys
+          import xml.etree.ElementTree as ET
 
-          candidates = [
-                "CodeCoverage/Report/Summary.xml",
-                "CodeCoverage/Report/summary.xml",
-                "CodeCoverage/Report/index.html",
-                "CodeCoverage/Report/index.htm",
-                "CodeCoverage/index.html",
-                "CodeCoverage/index.htm",
-            ]
+          threshold = 80.0
+          coverage_root = Path("CodeCoverage")
 
-          found = None
-          for path in candidates:
-              if os.path.exists(path):
-                  found = path
-                  break
+          def parse_reportgenerator_summary(path):
+              root = ET.parse(path).getroot()
+              line_coverage = root.findtext("./Summary/Linecoverage")
+              if line_coverage is not None:
+                  return float(line_coverage)
+              covered = root.findtext("./Summary/Coveredlines")
+              coverable = root.findtext("./Summary/Coverablelines")
+              if covered is not None and coverable is not None and float(coverable) > 0:
+                  return float(covered) / float(coverable) * 100.0
+              return None
 
-          if not found:
-              print("Coverage summary file not found. Skipping this check.")
-              sys.exit(0)
+          def parse_opencover_summary(paths):
+              visited = 0
+              total = 0
+              for path in paths:
+                  root = ET.parse(path).getroot()
+                  summary = root.find("./Summary")
+                  if summary is None:
+                      continue
+                  visited += int(summary.attrib.get("visitedSequencePoints", 0))
+                  total += int(summary.attrib.get("numSequencePoints", 0))
 
-          text = open(found, "r", encoding="utf-8", errors="ignore").read()
+              if total == 0:
+                  return None
+              return visited / total * 100.0
 
           percent = None
+          source = None
 
-          m = re.search(r'line-rate="([0-9.]+)"', text)
-          if m:
-              percent = float(m.group(1)) * 100.0
+          summary_candidates = [
+              coverage_root / "Report" / "Summary.xml",
+              coverage_root / "Report" / "summary.xml",
+          ]
+          for candidate in summary_candidates:
+              if candidate.exists():
+                  percent = parse_reportgenerator_summary(candidate)
+                  source = str(candidate)
+                  break
 
           if percent is None:
-              m = re.search(r'Line coverage[^0-9]*([0-9]+(?:\.[0-9]+)?)%', text, re.IGNORECASE | re.DOTALL)
-              if m:
-                  percent = float(m.group(1))
+              opencover_files = sorted(coverage_root.glob("**/TestCoverageResults_*.xml"))
+              if opencover_files:
+                  percent = parse_opencover_summary(opencover_files)
+                  source = ", ".join(str(path) for path in opencover_files)
 
           if percent is None:
-              print("Could not parse coverage percentage. Skipping this check.")
-              sys.exit(0)
+              print("Coverage report was not found or could not be parsed.")
+              sys.exit(1)
 
-          print(f"Parsed coverage: {percent:.2f}%")
+          print(f"Parsed line coverage: {percent:.2f}%")
+          print(f"Coverage source: {source}")
 
-          if percent < 80.0:
-              print("Coverage is below 80%. Skipping this check")
-              sys.exit(0)
+          if percent < threshold:
+              print(f"Coverage is below {threshold:.0f}% minimum.")
+              sys.exit(1)
+
+          print(f"Coverage meets the {threshold:.0f}% minimum.")
           PY

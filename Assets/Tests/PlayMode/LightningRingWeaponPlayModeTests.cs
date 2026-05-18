@@ -16,11 +16,32 @@ public class LightningRingWeaponPlayModeTests
         }
     }
 
+    private class TestEnemyMovement : EnemyMovement
+    {
+        public override void Knockback(Vector2 velocity, float duration)
+        {
+        }
+    }
+
     private void SetPrivateField(object target, string fieldName, object value)
     {
         target.GetType()
             .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
             .SetValue(target, value);
+    }
+
+    private float GetCurrentHealth(EnemyStats enemy)
+    {
+        return (float)typeof(EnemyStats)
+            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(enemy);
+    }
+
+    private void CallStart(EnemyStats stats)
+    {
+        typeof(EnemyStats)
+            .GetMethod("Start", BindingFlags.Instance | BindingFlags.NonPublic)
+            .Invoke(stats, null);
     }
 
     [UnityTearDown]
@@ -48,25 +69,30 @@ public class LightningRingWeaponPlayModeTests
         SpriteRenderer spriteRenderer = enemyObject.AddComponent<SpriteRenderer>();
         spriteRenderer.color = Color.white;
 
-        EnemyMovement enemyMovement = enemyObject.AddComponent<EnemyMovement>();
+        TestEnemyMovement enemyMovement = enemyObject.AddComponent<TestEnemyMovement>();
         enemyMovement.enabled = false;
 
         CircleCollider2D collider = enemyObject.AddComponent<CircleCollider2D>();
         collider.radius = 0.5f;
 
         EnemyStats enemy = enemyObject.AddComponent<EnemyStats>();
-        enemy.currentHealth = 10f;
-        enemy.currentDamage = 1f;
-        enemy.currentMoveSpeed = 1f;
+        enemy.baseStats = new EnemyStats.Stats
+        {
+            maxHealth = 10f,
+            moveSpeed = 1f,
+            damage = 1f,
+            knockbackMultiplier = 1f,
+            resistances = new EnemyStats.Resitances()
+        };
 
-        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
-        SetPrivateField(enemy, "originalColor", Color.white);
-        SetPrivateField(enemy, "enemyMovement", enemyMovement);
+        CallStart(enemy);
 
+        yield return new WaitForFixedUpdate();
+        
         weapon.CallDamageArea(Vector2.zero, 5f, 3f);
 
         yield return null;
 
-        Assert.AreEqual(7f, enemy.currentHealth);
+        Assert.AreEqual(7f, GetCurrentHealth(enemy));
     }
 }

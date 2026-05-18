@@ -12,6 +12,7 @@ public class SpawnManager : MonoBehaviour
     public int maxEnemiesAllowed = 300;
     float spawnTimer;
     float currentWaveDuration = 0f;
+    public bool boostedByCurse = true;
 
     public static SpawnManager instance;
 
@@ -44,7 +45,7 @@ public class SpawnManager : MonoBehaviour
 
             if (!CanSpawn())
             {
-                spawnTimer += data[currentWaveIndex].GetSpawnInterval();
+                ActiveCooldown();
                 return;
             }
 
@@ -58,8 +59,14 @@ public class SpawnManager : MonoBehaviour
                 currentWaveSpawnCount++;
             }
 
-            spawnTimer += data[currentWaveIndex].GetSpawnInterval();
+            ActiveCooldown();
         }
+    }
+
+    public void ActiveCooldown()
+    {
+        float curseBoost = boostedByCurse ? GameManager.GetCumulativeCurse() : 1;
+        spawnTimer += data[currentWaveIndex].GetSpawnInterval() / curseBoost;
     }
 
     public bool CanSpawn()

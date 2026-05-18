@@ -8,7 +8,8 @@ public class PlayerStats : MonoBehaviour
 {
     CharacterData characterData;
     public CharacterData.Stats baseStats;
-    [SerializeField] CharacterData.Stats actualStats;
+    CharacterData.Stats actualStats;
+    int revivesUsed;
 
     public CharacterData.Stats Stats
     {
@@ -17,6 +18,11 @@ public class PlayerStats : MonoBehaviour
         {
             actualStats = value;
         }
+    }
+
+    public CharacterData.Stats Actual
+    {
+        get { return actualStats; }
     }
 
     float health;
@@ -126,6 +132,7 @@ public class PlayerStats : MonoBehaviour
                 actualStats += passive.GetBoosts();
             }
         }
+        actualStats.revival = Mathf.Max(0, actualStats.revival - revivesUsed);
         collector.SetRadius(actualStats.magnet);
     }
 
@@ -228,6 +235,11 @@ public class PlayerStats : MonoBehaviour
 
     public void Die()
     {
+        if (TryRevive())
+        {
+            return;
+        }
+
         if (!GameManager.instance.isGameOver)
         {
             GameManager.instance.AssignLevelReachedUI(level);
@@ -238,6 +250,22 @@ public class PlayerStats : MonoBehaviour
                 GameManager.instance.GetElapsedTime()
             );
         }
+    }
+
+    bool TryRevive()
+    {
+        if (actualStats.revival <= 0)
+        {
+            return false;
+        }
+
+        actualStats.revival--;
+        revivesUsed++;
+        CurrentHealth = actualStats.maxHealth * 0.5f;
+        iFrameTimer = iFrameDuration;
+        isInvincible = true;
+
+        return true;
     }
 
     public void Heal(float amount)

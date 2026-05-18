@@ -173,7 +173,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8046337562113103150}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -190,7 +190,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!114 &2505420618797059581
 MonoBehaviour:
@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   outOfFrameAction: 1
+  knockbackVariance: 2
 --- !u!114 &6733772035101600882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,9 +218,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966718a909aeb4f0ca0918a4f398701c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
-  currentMoveSpeed: 0.7
-  currentHealth: 30
-  currentDamage: 4
+  baseStats:
+    maxHealth: 100
+    moveSpeed: 0.2
+    damage: 3
+    knockbackMultiplier: 0.2
+    resistances:
+      freeze: 0
+      kill: 0
+      debuff: 0
+    curseBoosts: 3
+    levelBoosts: 0
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   damageFlashDuration: 0.2
   deathFadeDuration: 0.6

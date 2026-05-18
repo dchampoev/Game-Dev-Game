@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6431474218609089886}
   - component: {fileID: 1102547806789151290}
-  - component: {fileID: 6071445413615804905}
+  - component: {fileID: 9118879167139483494}
   - component: {fileID: 3514783589200998964}
   - component: {fileID: -3270561520088079298}
   m_Layer: 0
@@ -94,8 +94,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!61 &6071445413615804905
-BoxCollider2D:
+--- !u!58 &9118879167139483494
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -129,17 +129,7 @@ BoxCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.5
 --- !u!114 &3514783589200998964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0caa45d764844aba8b3e5daaf757752, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropRateManager
+  active: 0
   drops:
   - dropName: Health Potion
     dropPrefab: {fileID: 2621639212542214925, guid: a430dbdb901ce4390b1e4d009892b9e3, type: 3}

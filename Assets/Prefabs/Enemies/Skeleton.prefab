@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
   outOfFrameAction: 1
+  knockbackVariance: 2
 --- !u!114 &241837741806866590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,9 +218,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966718a909aeb4f0ca0918a4f398701c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStats
-  currentMoveSpeed: 1.4
-  currentHealth: 24
-  currentDamage: 4
+  baseStats:
+    maxHealth: 18
+    moveSpeed: 1
+    damage: 3
+    knockbackMultiplier: 1
+    resistances:
+      freeze: 0
+      kill: 0
+      debuff: 0
+    curseBoosts: 3
+    levelBoosts: 0
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   damageFlashDuration: 0.2
   deathFadeDuration: 0.6

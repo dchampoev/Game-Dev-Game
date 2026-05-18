@@ -88,6 +88,13 @@ public class AuraPlayModeTests
         return playerStats;
     }
 
+    private float GetCurrentHealth(EnemyStats enemy)
+    {
+        return (float)typeof(EnemyStats)
+            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(enemy);
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -134,9 +141,16 @@ public class AuraPlayModeTests
 
         EnemyStats enemy = enemyObject.AddComponent<EnemyStats>();
         enemy.enabled = false;
-        enemy.currentHealth = 10f;
-        enemy.currentDamage = 1f;
-        enemy.currentMoveSpeed = 1f;
+        enemy.baseStats = new EnemyStats.Stats
+        {
+            maxHealth = 10f,
+            moveSpeed = 1f,
+            damage = 1f,
+            knockbackMultiplier = 1f,
+            resistances = new EnemyStats.Resitances()
+        };
+
+        SetPrivateField(enemy, "currentHealth", 10f);
 
         SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
         SetPrivateField(enemy, "originalColor", Color.white);
@@ -149,7 +163,7 @@ public class AuraPlayModeTests
 
         yield return null;
 
-        Assert.AreEqual(5f, enemy.currentHealth);
+        Assert.AreEqual(5f, GetCurrentHealth(enemy));
     }
 
     [UnityTest]
@@ -182,10 +196,16 @@ public class AuraPlayModeTests
 
         EnemyStats enemy = enemyObject.AddComponent<EnemyStats>();
         enemy.enabled = false;
-        enemy.currentHealth = 10f;
-        enemy.currentDamage = 1f;
-        enemy.currentMoveSpeed = 1f;
-
+        enemy.baseStats = new EnemyStats.Stats
+        {
+            maxHealth = 10f,
+            moveSpeed = 1f,
+            damage = 1f,
+            knockbackMultiplier = 1f,
+            resistances = new EnemyStats.Resitances()
+        };
+        
+        SetPrivateField(enemy, "currentHealth", 10f);
         SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
         SetPrivateField(enemy, "originalColor", Color.white);
         SetPrivateField(enemy, "enemyMovement", enemyMovement);
@@ -199,6 +219,6 @@ public class AuraPlayModeTests
 
         yield return null;
 
-        Assert.AreEqual(10f, enemy.currentHealth);
+        Assert.AreEqual(10f, GetCurrentHealth(enemy));
     }
 }

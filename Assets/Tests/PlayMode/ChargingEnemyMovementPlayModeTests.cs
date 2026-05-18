@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
@@ -16,6 +17,13 @@ public class ChargingEnemyMovementPlayModeTests
         {
             Move();
         }
+    }
+
+    private void CallEnemyStatsStart(EnemyStats stats)
+    {
+        typeof(EnemyStats)
+            .GetMethod("Start", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+            .Invoke(stats, null);
     }
 
     private void CreateSpawnManager()
@@ -50,7 +58,16 @@ public class ChargingEnemyMovementPlayModeTests
         enemyObject.transform.position = Vector3.zero;
 
         EnemyStats enemyStats = enemyObject.AddComponent<EnemyStats>();
-        enemyStats.currentMoveSpeed = speed;
+        enemyStats.baseStats = new EnemyStats.Stats
+        {
+            maxHealth = 10f,
+            moveSpeed = speed,
+            damage = 3f,
+            knockbackMultiplier = 1f,
+            resistances = new EnemyStats.Resitances()
+        };
+
+        CallEnemyStatsStart(enemyStats);
 
         TestChargingEnemyMovement movement = enemyObject.AddComponent<TestChargingEnemyMovement>();
         movement.enabled = false;
@@ -105,6 +122,8 @@ public class ChargingEnemyMovementPlayModeTests
         movement.CallStart();
 
         Vector3 before = movement.transform.position;
+
+        yield return null;
 
         movement.CallMove();
 

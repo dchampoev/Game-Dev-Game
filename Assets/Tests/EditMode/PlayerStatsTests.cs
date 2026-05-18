@@ -150,6 +150,40 @@ public class PlayerStatsTests
     }
 
     [Test]
+    public void TakeDamage_WhenLethalAndReviveAvailable_ShouldReviveAtHalfMaxHealth()
+    {
+        PlayerStats stats = CreatePlayer();
+        CharacterData.Stats currentStats = stats.Stats;
+        currentStats.revival = 1;
+        stats.Stats = currentStats;
+
+        stats.TakeDamage(25f);
+
+        Assert.AreEqual(10f, stats.CurrentHealth);
+        Assert.AreEqual(0, stats.Actual.revival);
+        Assert.AreEqual(0.5f, stats.healthBar.fillAmount, 0.01f);
+    }
+
+    [Test]
+    public void Die_WhenMultipleRevivesAvailable_ShouldConsumeOneReviveEachTime()
+    {
+        PlayerStats stats = CreatePlayer();
+        CharacterData.Stats currentStats = stats.Stats;
+        currentStats.revival = 2;
+        stats.Stats = currentStats;
+
+        stats.Die();
+        Assert.AreEqual(1, stats.Actual.revival);
+        Assert.AreEqual(10f, stats.CurrentHealth);
+
+        stats.CurrentHealth = 0f;
+        stats.Die();
+
+        Assert.AreEqual(0, stats.Actual.revival);
+        Assert.AreEqual(10f, stats.CurrentHealth);
+    }
+
+    [Test]
     public void Heal_ShouldIncreaseHealth()
     {
         PlayerStats stats = CreatePlayer();

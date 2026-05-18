@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.TestTools;
 using System.Collections;
 using UnityEngine.EventSystems;
+using System;
 
 [ExcludeFromCoverage]
 public class GameManager : MonoBehaviour
@@ -58,15 +59,41 @@ public class GameManager : MonoBehaviour
     public bool isGameOver { get { return currentState == GameState.GameOver; } }
     public bool choosingUpgrade { get { return currentState == GameState.LevelUp; } }
 
-    public GameObject playerObject;
+    PlayerStats[] players;
 
     public float GetElapsedTime()
     {
         return stopwatchTime;
     }
 
+    public static float GetCumulativeCurse()
+    {
+        if (!instance) return 1;
+
+        float totalCurse = 0;
+        foreach (PlayerStats player in instance.players)
+        {
+            totalCurse += player.Actual.curse;
+        }
+        return Mathf.Max(1, 1 + totalCurse);
+    }
+
+    public static int GetCumulativeLevels()
+    {
+        if (!instance) return 1;
+
+        int totalLevel = 0;
+        foreach (PlayerStats player in instance.players)
+        {
+            totalLevel += player.level;
+        }
+        return Mathf.Max(1, totalLevel);
+    }
+
     void Awake()
     {
+        players = FindObjectsByType<PlayerStats>(FindObjectsSortMode.None);
+
         if (instance == null)
         {
             instance = this;
@@ -179,7 +206,10 @@ public class GameManager : MonoBehaviour
 
         if (stopwatchTime >= timeLimit)
         {
-            playerObject.SendMessage("Die");
+            foreach(PlayerStats player in players)
+            {
+                player.SendMessage("Die");
+            }
         }
     }
 
@@ -194,16 +224,24 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.LevelUp);
 
-        PlayerMovement movement = playerObject.GetComponent<PlayerMovement>();
-        if (movement != null)
-            movement.StopMovement();
+        foreach (PlayerStats player in players)
+        {
+            if (player == null) continue;
+
+            PlayerMovement movement = player.GetComponent<PlayerMovement>();
+            if(movement != null)
+                movement.StopMovement();
+        }
 
         if (levelUpScreen.activeSelf) stackedLevelUps++;
         else
         {
             levelUpScreen.SetActive(true);
             Time.timeScale = 0f;
-            playerObject.SendMessage("RemoveAndApplyUpgrades");
+            foreach (PlayerStats player in players)
+            {
+                player.SendMessage("RemoveAndApplyUpgrades");
+            }
 
             SelectFirstLevelUpButton();
         }

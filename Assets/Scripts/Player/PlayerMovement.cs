@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 [ExcludeFromCoverage]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInput))]
-public sealed class PlayerMovement : MonoBehaviour
+public sealed class PlayerMovement : Sortable
 {
     public const float DEFAULT_MOVE_SPEED = 5f;
     private const float DirectionEpsilon = 0.01f;

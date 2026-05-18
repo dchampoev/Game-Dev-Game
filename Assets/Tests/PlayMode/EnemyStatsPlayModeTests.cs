@@ -6,11 +6,11 @@ using UnityEngine.TestTools;
 
 public class EnemyStatsPlayModeTests
 {
-    private void SetPrivateField(object obj, string fieldName, object value)
+    private float GetCurrentHealth(EnemyStats stats)
     {
-        obj.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(obj, value);
+        return (float)typeof(EnemyStats)
+            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
+            .GetValue(stats);
     }
 
     private EnemyStats CreateEnemy(Color initialColor, float health = 10f, float flash = 0.1f, float fade = 0.1f)
@@ -24,13 +24,17 @@ public class EnemyStatsPlayModeTests
         movement.enabled = false;
 
         EnemyStats stats = enemyObject.AddComponent<EnemyStats>();
-        stats.currentHealth = health;
+        stats.baseStats = new EnemyStats.Stats
+        {
+            maxHealth = health,
+            moveSpeed = 1f,
+            damage = 3f,
+            knockbackMultiplier = 1f,
+            resistances = new EnemyStats.Resitances()
+        };
+
         stats.damageFlashDuration = flash;
         stats.deathFadeDuration = fade;
-
-        SetPrivateField(stats, "spriteRenderer", renderer);
-        SetPrivateField(stats, "originalColor", initialColor);
-        SetPrivateField(stats, "enemyMovement", movement);
 
         return stats;
     }
@@ -47,6 +51,7 @@ public class EnemyStatsPlayModeTests
     public IEnumerator TearDown()
     {
         Time.timeScale = 1f;
+
         foreach (var obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
             Object.Destroy(obj);
@@ -65,14 +70,16 @@ public class EnemyStatsPlayModeTests
         SpriteRenderer renderer = stats.GetComponent<SpriteRenderer>();
         stats.damageColor = Color.red;
 
+        yield return null;
+
         stats.TakeDamage(1f, Vector2.zero, 0f, 0f);
 
         Assert.AreEqual(Color.red, renderer.color);
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         Assert.AreEqual(Color.white, renderer.color);
-        Assert.AreEqual(9f, stats.currentHealth);
+        Assert.AreEqual(9f, GetCurrentHealth(stats));
     }
 
     [UnityTest]
@@ -108,10 +115,12 @@ public class EnemyStatsPlayModeTests
     {
         EnemyStats stats = CreateEnemy(Color.white, 10f);
 
+        yield return null;
+
         stats.TakeDamage(2f, Vector2.zero, 0f, 0f);
 
         yield return null;
 
-        Assert.AreEqual(8f, stats.currentHealth);
+        Assert.AreEqual(8f, GetCurrentHealth(stats));
     }
 }

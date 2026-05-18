@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[ExcludeFromCodeCoverage]
 public class TitleScreenUI : MonoBehaviour
 {
     public Button firstButton;
