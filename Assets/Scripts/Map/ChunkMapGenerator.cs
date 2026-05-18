@@ -14,12 +14,12 @@ public class ChunkMapGenerator : MonoBehaviour
     [Header("Chunk Settings")]
     public PropRandomizer[] chunkPrefabs;
     public Vector2 chunkWorldSize = new Vector2(20f, 20f);
-    public LayerMask chunkCollisionMask = 1;
     public bool destroyCulledChunks = false;
 
     Vector3 lastCameraPosition;
     Rect lastCameraRect;
     float cullDistanceSqr;
+    readonly HashSet<Vector2> spawnedChunkPositions = new HashSet<Vector2>();
 
     void Start()
     {
@@ -29,6 +29,7 @@ public class ChunkMapGenerator : MonoBehaviour
         if (chunkPrefabs.Length < 1)
             Debug.LogError("There are no Terrain Chunks assigned, so the map cannot be dynamically generated.");
 
+        RegisterExistingChunks();
         StartCoroutine(UpdateChunksLoop());
         SpawnMissingChunksInView(Vector2.zero, true);
     }
@@ -102,7 +103,6 @@ public class ChunkMapGenerator : MonoBehaviour
     {
 
         HashSet<Vector2> spawnedPositions = new HashSet<Vector2>();
-        Vector2 currentPosition = worldCamera.transform.position;
 
         foreach (Vector3 vp in GetCheckedPoints())
         {
@@ -117,7 +117,7 @@ public class ChunkMapGenerator : MonoBehaviour
 
             Vector3 checkedPosition = SnapToChunkGrid(vp);
 
-            if (!spawnedPositions.Contains(checkedPosition) && !Physics2D.OverlapPoint(checkedPosition, chunkCollisionMask))
+            if (!spawnedPositions.Contains(checkedPosition) && !spawnedChunkPositions.Contains(checkedPosition))
                 SpawnChunk(checkedPosition);
 
             spawnedPositions.Add(checkedPosition);
@@ -139,7 +139,15 @@ public class ChunkMapGenerator : MonoBehaviour
         int rand = variant < 0 ? Random.Range(0, chunkPrefabs.Length) : variant;
         PropRandomizer chunk = Instantiate(chunkPrefabs[rand], transform);
         chunk.transform.position = spawnPosition;
+        spawnedChunkPositions.Add(spawnPosition);
         return chunk;
+    }
+
+    void RegisterExistingChunks()
+    {
+        spawnedChunkPositions.Clear();
+        for (int i = 0; i < transform.childCount; i++)
+            spawnedChunkPositions.Add(SnapToChunkGrid(transform.GetChild(i).position));
     }
 
     void CullDistantChunks()
@@ -150,7 +158,11 @@ public class ChunkMapGenerator : MonoBehaviour
             Vector2 dist = worldCamera.transform.position - chunk.position;
             bool cull = dist.sqrMagnitude > cullDistanceSqr;
             chunk.gameObject.SetActive(!cull);
-            if (destroyCulledChunks && cull) Destroy(chunk.gameObject);
+            if (destroyCulledChunks && cull)
+            {
+                spawnedChunkPositions.Remove(SnapToChunkGrid(chunk.position));
+                Destroy(chunk.gameObject);
+            }
         }
     }
 }

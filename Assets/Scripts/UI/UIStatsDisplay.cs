@@ -49,7 +49,8 @@ public class UIStatsDisplay : MonoBehaviour
             PropertyAttribute attribute = (PropertyAttribute)PropertyAttribute.GetCustomAttribute(field, typeof(PropertyAttribute));
             if (attribute != null && field.FieldType == typeof(float))
             {
-                float percentage = Mathf.Round(floatValue * 100 - 100);
+                float neutralValue = field.Name == nameof(CharacterData.Stats.curse) ? 0f : 1f;
+                float percentage = Mathf.Round((floatValue - neutralValue) * 100);
 
                 if (Mathf.Approximately(percentage, 0))
                 {

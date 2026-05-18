@@ -19,6 +19,6 @@ MonoBehaviour:
   duration: 80
   startingCount: 5
   totalSpawns: 100
-  exitConditions: -1
-  mustKillAllEnemies: 0
+  exitConditions: 2
+  mustKillAllEnemies: 1
   spawnedCount: 0

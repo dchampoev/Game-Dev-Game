@@ -10266,9 +10266,6 @@ MonoBehaviour:
   - {fileID: 7718754187242510777, guid: b1e37e04a81a64b3ab477f2315bee648, type: 3}
   - {fileID: 7718754187242510777, guid: 012ff33efd56c4d85a62eaec44cad2bf, type: 3}
   chunkWorldSize: {x: 20, y: 20}
-  chunkCollisionMask:
-    serializedVersion: 2
-    m_Bits: 64
   destroyCulledChunks: 0
 --- !u!4 &1306882449
 Transform:
