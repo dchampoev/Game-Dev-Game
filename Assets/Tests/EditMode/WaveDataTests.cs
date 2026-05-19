@@ -10,11 +10,7 @@ public class WaveDataTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<WaveData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WaveData>();
     }
 
     [Test]

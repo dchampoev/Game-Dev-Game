@@ -103,11 +103,7 @@ public class PlayerStatsTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
     }
 
     [Test]
@@ -172,12 +168,12 @@ public class PlayerStatsTests
         currentStats.revival = 2;
         stats.Stats = currentStats;
 
-        stats.Die();
+        stats.Kill();
         Assert.AreEqual(1, stats.Actual.revival);
         Assert.AreEqual(10f, stats.CurrentHealth);
 
         stats.CurrentHealth = 0f;
-        stats.Die();
+        stats.Kill();
 
         Assert.AreEqual(0, stats.Actual.revival);
         Assert.AreEqual(10f, stats.CurrentHealth);
@@ -189,7 +185,7 @@ public class PlayerStatsTests
         PlayerStats stats = CreatePlayer();
         stats.CurrentHealth = 5f;
 
-        stats.Heal(3f);
+        stats.RestoreHealth(3f);
 
         Assert.AreEqual(8f, stats.CurrentHealth);
     }
@@ -200,7 +196,7 @@ public class PlayerStatsTests
         PlayerStats stats = CreatePlayer();
         stats.CurrentHealth = stats.Stats.maxHealth - 1f;
 
-        stats.Heal(10f);
+        stats.RestoreHealth(10f);
 
         Assert.AreEqual(stats.Stats.maxHealth, stats.CurrentHealth);
     }
@@ -212,7 +208,7 @@ public class PlayerStatsTests
         stats.CurrentHealth = 5f;
         SetCharacterData(stats, null);
 
-        stats.Heal(3f);
+        stats.RestoreHealth(3f);
 
         Assert.AreEqual(5f, stats.CurrentHealth);
     }

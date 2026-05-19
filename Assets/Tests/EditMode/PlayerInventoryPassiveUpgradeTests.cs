@@ -131,16 +131,8 @@ public class PlayerInventoryPassiveUpgradeTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var passiveData in Resources.FindObjectsOfTypeAll<PassiveData>())
-        {
-            Object.DestroyImmediate(passiveData, true);
-        }
-
-        foreach (var characterData in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(characterData, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<PassiveData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
     }
 
     [Test]

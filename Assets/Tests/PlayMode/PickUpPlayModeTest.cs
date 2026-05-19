@@ -123,11 +123,7 @@ public class PickUpPlayModeTests
         }
 
         yield return null;
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
     }
 
     [UnityTest]

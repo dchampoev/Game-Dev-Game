@@ -51,11 +51,7 @@ public class PlayerInventoryRemovePassivePlayModeTests
         }
 
         yield return null;
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<PassiveData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<PassiveData>();
     }
 
     [UnityTest]

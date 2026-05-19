@@ -28,6 +28,8 @@ public class Aura : WeaponEffect
                     affectedEnemies[pair.Key] = stats.cooldown * Owner.Stats.cooldown;
                     pair.Key.TakeDamage(GetDamage(), transform.position, stats.knockback);
 
+                    weapon.ApplyBuffs(pair.Key);
+
                     if (stats.hitEffect)
                     {
                         Destroy(Instantiate(stats.hitEffect, pair.Key.transform.position, Quaternion.identity), 5f);

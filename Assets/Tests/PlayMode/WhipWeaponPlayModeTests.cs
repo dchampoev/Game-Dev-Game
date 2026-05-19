@@ -112,6 +112,27 @@ public class WhipWeaponPlayModeTests
 
         PlayerStats owner = playerObject.AddComponent<PlayerStats>();
         owner.enabled = false;
+        CharacterData.Stats stats = new CharacterData.Stats
+        {
+            maxHealth = 20f,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = 5f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = 1f,
+            revival = 0
+        };
+        owner.baseStats = stats;
+        owner.Stats = stats;
 
         movement = playerObject.AddComponent<PlayerMovement>();
         movement.enabled = false;

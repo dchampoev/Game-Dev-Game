@@ -86,11 +86,7 @@ public class EventManagerTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<TestEventData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<TestEventData>();
 
         EventManager.instance = null;
     }

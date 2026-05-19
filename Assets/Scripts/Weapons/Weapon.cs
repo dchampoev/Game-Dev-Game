@@ -21,6 +21,8 @@ public abstract class Weapon : Item
         public float damage, damageVariance, area, speed, cooldown, projectileInterval, knockback;
         public int number, piercing, maxInstances;
 
+        public EntityStats.BuffInfo[] appliedBuffs;
+
         public static Stats operator +(Stats s1, Stats s2)
         {
             Stats result = new Stats();
@@ -43,6 +45,7 @@ public abstract class Weapon : Item
             result.cooldown = s1.cooldown + s2.cooldown;
             result.projectileInterval = s1.projectileInterval + s2.projectileInterval;
             result.knockback = s1.knockback + s2.knockback;
+            result.appliedBuffs = s2.appliedBuffs == null || s2.appliedBuffs.Length <= 0 ? s1.appliedBuffs : s2.appliedBuffs;
 
             result.number = s1.number + s2.number;
             result.piercing = s1.piercing + s2.piercing;
@@ -87,12 +90,13 @@ public abstract class Weapon : Item
             return false;
         }
 
-        currentStats += (Stats) data.GetLevelData(++currentLevel);
+        currentStats += (Stats)data.GetLevelData(++currentLevel);
         return true;
     }
 
     public virtual bool CanAttack()
     {
+        if(Mathf.Approximately(owner.Stats.might, 0f)) return false;
         return currentCooldown <= 0f;
     }
 
@@ -128,5 +132,21 @@ public abstract class Weapon : Item
         float actualCooldown = currentStats.cooldown * Owner.Stats.cooldown;
         currentCooldown = Mathf.Min(actualCooldown, currentCooldown + actualCooldown);
         return true;
+    }
+
+    public void ApplyBuffs(EntityStats entity)
+    {
+        Stats stats = GetStats();
+        if (stats == null) return;
+
+        EntityStats.BuffInfo[] appliedBuffs = stats.appliedBuffs;
+        if (appliedBuffs == null) return;
+
+        float durationMultiplier = owner ? owner.Actual.duration : 1f;
+        foreach(EntityStats.BuffInfo buff in appliedBuffs)
+        {
+            if (buff == null || buff.data == null) continue;
+            entity.ApplyBuff(buff, durationMultiplier);    
+        }
     }
 }

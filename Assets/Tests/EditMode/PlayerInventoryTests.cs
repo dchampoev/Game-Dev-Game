@@ -73,21 +73,9 @@ public class PlayerInventoryTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<WeaponData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<PassiveData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<TestItemData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WeaponData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<PassiveData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<TestItemData>();
     }
 
     [Test]

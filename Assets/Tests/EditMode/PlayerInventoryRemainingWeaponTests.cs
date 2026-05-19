@@ -65,11 +65,7 @@ public class PlayerInventoryRemainingWeaponTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var weaponData in Resources.FindObjectsOfTypeAll<WeaponData>())
-        {
-            Object.DestroyImmediate(weaponData, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WeaponData>();
     }
 
     [Test]

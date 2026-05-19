@@ -14,11 +14,7 @@ public class SpawnDataTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<TestSpawnData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<TestSpawnData>();
     }
 
     [Test]

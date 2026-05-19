@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : EntityStats
 {
     CharacterData characterData;
     public CharacterData.Stats baseStats;
@@ -25,7 +25,6 @@ public class PlayerStats : MonoBehaviour
         get { return actualStats; }
     }
 
-    float health;
     public float CurrentHealth
     {
         get { return health; }
@@ -94,8 +93,10 @@ public class PlayerStats : MonoBehaviour
         collector.SetRadius(actualStats.magnet);
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         inventory.Add(characterData.StartingWeapon);
         experienceCap = levelRanges[0].experienceCapIncrease;
 
@@ -106,8 +107,9 @@ public class PlayerStats : MonoBehaviour
         UpdateLevelText();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (iFrameTimer > 0)
         {
             iFrameTimer -= Time.deltaTime;
@@ -119,7 +121,7 @@ public class PlayerStats : MonoBehaviour
         Recover();
     }
 
-    public void RecalculateStats()
+    public override void RecalculateStats()
     {
         actualStats = baseStats;
         foreach (PlayerInventory.Slot slot in inventory.passiveSlots)
@@ -130,6 +132,30 @@ public class PlayerStats : MonoBehaviour
                 actualStats += passive.GetBoosts();
             }
         }
+
+        CharacterData.Stats multiplier = new CharacterData.Stats
+        {
+            maxHealth = 1f, recovery = 1f, armor = 1f, moveSpeed = 1f, might = 1f,
+            area = 1f, speed = 1f, duration = 1f, amount = 1, cooldown = 1f,
+            luck = 1f, growth = 1f, greed = 1f, curse = 1f, magnet = 1f, revival = 1
+        };
+
+        foreach (Buff buff in activeBuffs)
+        {
+            BuffData.Stats buffStats = buff.GetData();
+            switch (buffStats.modifierType)
+            {
+                case BuffData.ModifierType.additive:
+                    actualStats += buffStats.playerModifier;
+                    break;
+                case BuffData.ModifierType.multiplicative:
+                    multiplier *= buffStats.playerModifier;
+                    break;
+            }
+        }
+
+        actualStats *= multiplier;
+
         actualStats.revival = Mathf.Max(0, actualStats.revival - revivesUsed);
         collector.SetRadius(actualStats.magnet);
     }
@@ -195,7 +221,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public override void TakeDamage(float damage)
     {
         if (!isInvincible)
         {
@@ -209,7 +235,7 @@ public class PlayerStats : MonoBehaviour
 
                 if (CurrentHealth <= 0)
                 {
-                    Die();
+                    Kill();
                 }
             }
             else
@@ -231,7 +257,7 @@ public class PlayerStats : MonoBehaviour
         }
     }
 
-    public void Die()
+    public override void Kill()
     {
         if (TryRevive())
         {
@@ -260,7 +286,7 @@ public class PlayerStats : MonoBehaviour
         return true;
     }
 
-    public void Heal(float amount)
+    public override void RestoreHealth(float amount)
     {
         if (characterData == null) return;
         if (CurrentHealth < actualStats.maxHealth)

@@ -59,6 +59,13 @@ public class SpawnManagerTests
             .GetValue(target);
     }
 
+    private void CallPrivateMethod(object target, string methodName)
+    {
+        target.GetType()
+            .GetMethod(methodName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .Invoke(target, null);
+    }
+
     private PlayerStats CreatePlayer(float curse)
     {
         GameObject playerObject = new GameObject("Player");
@@ -106,11 +113,7 @@ public class SpawnManagerTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var wave in Resources.FindObjectsOfTypeAll<WaveData>())
-        {
-            Object.DestroyImmediate(wave, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WaveData>();
 
         SpawnManager.instance = null;
         GameManager.instance = null;
@@ -168,6 +171,123 @@ public class SpawnManagerTests
         bool result = SpawnManager.HasExceededTotalSpawns();
 
         Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void Start_WhenNoExistingInstance_ShouldAssignSingleton()
+    {
+        WaveData wave = CreateWaveData();
+        SpawnManager manager = CreateManager(wave);
+        SpawnManager.instance = null;
+
+        CallPrivateMethod(manager, "Start");
+
+        Assert.AreSame(manager, SpawnManager.instance);
+    }
+
+    [Test]
+    public void Start_WhenInstanceAlreadyExists_ShouldLogWarningAndReplaceSingleton()
+    {
+        WaveData wave = CreateWaveData();
+        CreateManager(wave);
+
+        GameObject secondObject = new GameObject("SecondSpawnManager");
+        SpawnManager secondManager = secondObject.AddComponent<SpawnManager>();
+
+        LogAssert.Expect(
+            LogType.Warning,
+            "There is more than one Spawn Manager in the scene! Please remove the extra Spawn Managers."
+        );
+
+        CallPrivateMethod(secondManager, "Start");
+
+        Assert.AreSame(secondManager, SpawnManager.instance);
+    }
+
+    [Test]
+    public void Update_WhenSpawnTimerElapsed_ShouldSpawnPrefabAndIncrementSpawnCount()
+    {
+        WaveData wave = CreateWaveData(totalSpawns: 3, duration: 10f);
+        SpawnManager manager = CreateManager(wave);
+        SetPrivateField(manager, "spawnTimer", 0f);
+        EnemyStats.count = 0;
+
+        int before = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).Length;
+
+        CallPrivateMethod(manager, "Update");
+
+        int after = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).Length;
+
+        Assert.Greater(after, before);
+        Assert.AreEqual(1, GetPrivateField<int>(manager, "currentWaveSpawnCount"));
+        Assert.Greater(GetPrivateField<float>(manager, "spawnTimer"), 0f);
+    }
+
+    [Test]
+    public void Update_WhenCannotSpawn_ShouldOnlyRefreshCooldown()
+    {
+        WaveData wave = CreateWaveData(totalSpawns: 0, duration: 10f);
+        wave.spawnInterval = new Vector2(2f, 2f);
+        SpawnManager manager = CreateManager(wave);
+        SetPrivateField(manager, "spawnTimer", 0f);
+
+        int before = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).Length;
+
+        CallPrivateMethod(manager, "Update");
+
+        int after = Object.FindObjectsByType<Transform>(FindObjectsSortMode.None).Length;
+
+        Assert.AreEqual(before, after);
+        Assert.AreEqual(0, GetPrivateField<int>(manager, "currentWaveSpawnCount"));
+        Assert.Greater(GetPrivateField<float>(manager, "spawnTimer"), 1.9f);
+    }
+
+    [Test]
+    public void Update_WhenStartingCountIsBelowEnemyCount_ShouldRefillEvenDuringCooldown()
+    {
+        WaveData wave = CreateWaveData(totalSpawns: 3, duration: 10f);
+        wave.startingCount = 2;
+        SpawnManager manager = CreateManager(wave);
+        SetPrivateField(manager, "spawnTimer", 99f);
+        EnemyStats.count = 0;
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.Greater(GetPrivateField<int>(manager, "currentWaveSpawnCount"), 0);
+    }
+
+    [Test]
+    public void Update_WhenWaveEndedAndMoreWavesRemain_ShouldAdvanceWaveAndResetCounters()
+    {
+        WaveData firstWave = CreateWaveData(duration: 1f);
+        WaveData secondWave = CreateWaveData(duration: 10f);
+        SpawnManager manager = CreateManager(firstWave);
+        manager.data = new WaveData[] { firstWave, secondWave };
+        SetPrivateField(manager, "currentWaveDuration", 1f);
+        SetPrivateField(manager, "currentWaveSpawnCount", 3);
+        SetPrivateField(manager, "spawnTimer", 4f);
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.AreEqual(1, GetPrivateField<int>(manager, "currentWaveIndex"));
+        Assert.AreEqual(0f, GetPrivateField<float>(manager, "currentWaveDuration"));
+        Assert.AreEqual(0, GetPrivateField<int>(manager, "currentWaveSpawnCount"));
+        Assert.AreEqual(0f, GetPrivateField<float>(manager, "spawnTimer"));
+    }
+
+    [Test]
+    public void Update_WhenFinalWaveEnded_ShouldDisableManager()
+    {
+        WaveData wave = CreateWaveData(duration: 1f);
+        SpawnManager manager = CreateManager(wave);
+        manager.enabled = true;
+        SetPrivateField(manager, "currentWaveDuration", 1f);
+
+        LogAssert.Expect(LogType.Log, "All waves completed!");
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.IsFalse(manager.enabled);
     }
 
     [Test]
@@ -307,6 +427,28 @@ public class SpawnManagerTests
 
         Assert.AreEqual(0f, result.z);
         Assert.IsNotNull(manager.referenceCamera);
+    }
+
+    [Test]
+    public void GeneratePosition_WhenVerticalEdgeIsSelected_ShouldReturnPositionOnHorizontalViewportEdge()
+    {
+        WaveData wave = CreateWaveData();
+        SpawnManager manager = CreateManager(wave);
+        bool foundVerticalEdgeCase = false;
+
+        for (int i = 0; i < 50; i++)
+        {
+            Vector3 result = SpawnManager.GeneratePosition();
+            Vector3 viewport = manager.referenceCamera.WorldToViewportPoint(result);
+
+            if (Mathf.Approximately(viewport.y, 0f) || Mathf.Approximately(viewport.y, 1f))
+            {
+                foundVerticalEdgeCase = true;
+                break;
+            }
+        }
+
+        Assert.IsTrue(foundVerticalEdgeCase);
     }
 
     [Test]

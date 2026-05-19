@@ -118,11 +118,7 @@ public class UIUpgradeWindowTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<TestItemData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<TestItemData>();
     }
 
     [Test]

@@ -20,16 +20,26 @@ public class EnemyStatsTests
 
     private T GetPrivateField<T>(object target, string fieldName)
     {
-        return (T)target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.GetValue(target);
+        return (T)GetPrivateField(target, fieldName).GetValue(target);
     }
 
     private void SetPrivateField(object target, string fieldName, object value)
     {
-        target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(target, value);
+        GetPrivateField(target, fieldName).SetValue(target, value);
+    }
+
+    private FieldInfo GetPrivateField(object target, string fieldName)
+    {
+        System.Type type = target.GetType();
+        while (type != null)
+        {
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field != null) return field;
+            type = type.BaseType;
+        }
+
+        Assert.Fail($"Could not find field {fieldName} on {target.GetType().Name}.");
+        return null;
     }
 
     private PlayerStats CreatePlayer(float curse, int level)
@@ -63,6 +73,41 @@ public class EnemyStatsTests
         return player;
     }
 
+    private EnemyStats CreateStartedEnemy()
+    {
+        EnemyStats stats = CreateEnemy();
+        CallStart(stats);
+        return stats;
+    }
+
+    private BuffData CreateEnemyBuff(
+        BuffData.Type type = BuffData.Type.debuff,
+        BuffData.ModifierType modifierType = BuffData.ModifierType.additive,
+        EnemyStats.Stats enemyModifier = default)
+    {
+        BuffData data = ScriptableObject.CreateInstance<BuffData>();
+        data.type = type;
+        data.variations = new[]
+        {
+            new BuffData.Stats
+            {
+                duration = 10f,
+                tickInterval = 10f,
+                damagePerSecond = 0f,
+                healPerSecond = 0f,
+                stackType = BuffData.StackType.stacksFully,
+                modifierType = modifierType,
+                enemyModifier = enemyModifier
+            }
+        };
+        return data;
+    }
+
+    private int GetActiveBuffCount(EnemyStats stats)
+    {
+        return GetPrivateField<System.Collections.IList>(stats, "activeBuffs").Count;
+    }
+
     private void CreateGameManagerWithPlayers(params PlayerStats[] players)
     {
         GameObject gameManagerObject = new GameObject("GameManager");
@@ -90,8 +135,8 @@ public class EnemyStatsTests
             resistances = new EnemyStats.Resitances()
         };
 
-        SetPrivateField(stats, "spriteRenderer", renderer);
-        SetPrivateField(stats, "originalColor", Color.white);
+        SetPrivateField(stats, "sprite", renderer);
+        SetPrivateField(stats, "originialColor", Color.white);
         SetPrivateField(stats, "enemyMovement", movement);
 
         return stats;
@@ -107,6 +152,7 @@ public class EnemyStatsTests
 
         EnemyStats.count = 0;
         GameManager.instance = null;
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<BuffData>();
     }
 
     [Test]
@@ -126,37 +172,11 @@ public class EnemyStatsTests
     [Test]
     public void TakeDamage_WhenDamageIsPositive_ShouldReduceHealth()
     {
-        GameObject enemyObject = new GameObject("Enemy");
-        SpriteRenderer renderer = enemyObject.AddComponent<SpriteRenderer>();
-
-        EnemyMovement movement = enemyObject.AddComponent<EnemyMovement>();
-        movement.enabled = false;
-
-        EnemyStats stats = enemyObject.AddComponent<EnemyStats>();
-
-        typeof(EnemyStats)
-            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(stats, 10f);
-
-        typeof(EnemyStats)
-            .GetField("spriteRenderer", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(stats, renderer);
-
-        typeof(EnemyStats)
-            .GetField("originalColor", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(stats, Color.white);
-
-        typeof(EnemyStats)
-            .GetField("enemyMovement", BindingFlags.Instance | BindingFlags.NonPublic)
-            .SetValue(stats, movement);
+        EnemyStats stats = CreateStartedEnemy();
 
         stats.TakeDamage(3f, Vector2.zero, 0f, 0f);
 
-        float currentHealth = (float)typeof(EnemyStats)
-            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
-            .GetValue(stats);
-
-        Assert.AreEqual(7f, currentHealth);
+        Assert.AreEqual(7f, GetPrivateField<float>(stats, "health"));
     }
 
     [Test]
@@ -181,7 +201,7 @@ public class EnemyStatsTests
         Assert.AreEqual(6f, stats.Actual.damage);
         Assert.AreEqual(6f, stats.Actual.moveSpeed);
         Assert.AreEqual(1f / 3f, stats.Actual.knockbackMultiplier, 0.001f);
-        Assert.AreEqual(20f, GetPrivateField<float>(stats, "currentHealth"));
+        Assert.AreEqual(20f, GetPrivateField<float>(stats, "health"));
     }
 
     [Test]
@@ -195,6 +215,87 @@ public class EnemyStatsTests
 
         stats.TakeDamage(stats.Actual.maxHealth, Vector2.zero, 0f, 0f);
 
-        Assert.AreEqual(stats.Actual.maxHealth, GetPrivateField<float>(stats, "currentHealth"));
+        Assert.AreEqual(stats.Actual.maxHealth, GetPrivateField<float>(stats, "health"));
+    }
+
+    [Test]
+    public void ApplyBuff_WhenFreezeResistanceAlwaysTriggers_ShouldRejectFreezeBuff()
+    {
+        EnemyStats stats = CreateStartedEnemy();
+        EnemyStats.Stats currentStats = stats.baseStats;
+        currentStats.resistances.freeze = 1f;
+        stats.baseStats = currentStats;
+        stats.RecalculateStats();
+
+        BuffData freezeBuff = CreateEnemyBuff(BuffData.Type.freeze);
+
+        bool result = stats.ApplyBuff(freezeBuff);
+
+        Assert.IsFalse(result);
+        Assert.AreEqual(0, GetActiveBuffCount(stats));
+    }
+
+    [Test]
+    public void ApplyBuff_WhenDebuffResistanceAlwaysTriggers_ShouldRejectDebuff()
+    {
+        EnemyStats stats = CreateStartedEnemy();
+        EnemyStats.Stats currentStats = stats.baseStats;
+        currentStats.resistances.debuff = 1f;
+        stats.baseStats = currentStats;
+        stats.RecalculateStats();
+
+        BuffData debuff = CreateEnemyBuff(BuffData.Type.debuff);
+
+        bool result = stats.ApplyBuff(debuff);
+
+        Assert.IsFalse(result);
+        Assert.AreEqual(0, GetActiveBuffCount(stats));
+    }
+
+    [Test]
+    public void RecalculateStats_WhenAdditiveEnemyBuffIsActive_ShouldAddEnemyModifier()
+    {
+        EnemyStats stats = CreateStartedEnemy();
+        BuffData buff = CreateEnemyBuff(
+            modifierType: BuffData.ModifierType.additive,
+            enemyModifier: new EnemyStats.Stats
+            {
+                maxHealth = 5f,
+                moveSpeed = 2f,
+                damage = 1f,
+                knockbackMultiplier = 0.5f
+            });
+
+        bool result = stats.ApplyBuff(buff);
+
+        Assert.IsTrue(result);
+        Assert.AreEqual(15f, stats.Actual.maxHealth);
+        Assert.AreEqual(4f, stats.Actual.moveSpeed);
+        Assert.AreEqual(4f, stats.Actual.damage);
+        Assert.AreEqual(1.5f, stats.Actual.knockbackMultiplier);
+    }
+
+    [Test]
+    public void RecalculateStats_WhenMultiplicativeEnemyBuffIsActive_ShouldMultiplyEnemyModifier()
+    {
+        EnemyStats stats = CreateStartedEnemy();
+        BuffData buff = CreateEnemyBuff(
+            modifierType: BuffData.ModifierType.multiplicative,
+            enemyModifier: new EnemyStats.Stats
+            {
+                maxHealth = 2f,
+                moveSpeed = 0.5f,
+                damage = 3f,
+                knockbackMultiplier = 0.25f,
+                resistances = new EnemyStats.Resitances { freeze = 1f, kill = 1f, debuff = 1f }
+            });
+
+        bool result = stats.ApplyBuff(buff);
+
+        Assert.IsTrue(result);
+        Assert.AreEqual(20f, stats.Actual.maxHealth);
+        Assert.AreEqual(1f, stats.Actual.moveSpeed);
+        Assert.AreEqual(9f, stats.Actual.damage);
+        Assert.AreEqual(0.25f, stats.Actual.knockbackMultiplier);
     }
 }

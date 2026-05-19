@@ -124,11 +124,7 @@ public class UIStatsDisplayTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
     }
 
     [Test]

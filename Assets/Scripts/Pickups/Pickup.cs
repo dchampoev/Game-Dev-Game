@@ -64,6 +64,6 @@ public class Pickup : Sortable
     {
         if (!target) return;
         if (experience != 0) target.IncreaseExperience(experience);
-        if(health != 0) target.Heal(health);
+        if(health != 0) target.RestoreHealth(health);
     }
 }

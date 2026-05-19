@@ -64,8 +64,8 @@ public class ProjectilePlayModeTests
 
     private float GetCurrentHealth(EnemyStats enemy)
     {
-        return (float)typeof(EnemyStats)
-            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
+        return (float)typeof(EntityStats)
+            .GetField("health", BindingFlags.Instance | BindingFlags.NonPublic)
             .GetValue(enemy);
     }
 

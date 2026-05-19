@@ -18,11 +18,7 @@ public class MobEventDataPlayModeTests
         }
 
         yield return null;
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<MobEventData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<MobEventData>();
     }
 
     [UnityTest]

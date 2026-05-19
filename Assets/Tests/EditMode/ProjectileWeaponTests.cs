@@ -136,16 +136,8 @@ public class ProjectileWeaponTests
         {
             Object.DestroyImmediate(obj);
         }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<WeaponData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WeaponData>();
     }
 
     [Test]

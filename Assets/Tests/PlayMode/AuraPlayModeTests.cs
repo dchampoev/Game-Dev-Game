@@ -48,9 +48,21 @@ public class AuraPlayModeTests
 
     private void SetPrivateField(object target, string fieldName, object value)
     {
-        target.GetType()
-            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
-            ?.SetValue(target, value);
+        GetPrivateField(target, fieldName).SetValue(target, value);
+    }
+
+    private FieldInfo GetPrivateField(object target, string fieldName)
+    {
+        System.Type type = target.GetType();
+        while (type != null)
+        {
+            FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (field != null) return field;
+            type = type.BaseType;
+        }
+
+        Assert.Fail($"Could not find field {fieldName} on {target.GetType().Name}.");
+        return null;
     }
 
     private PlayerStats CreatePlayer()
@@ -90,9 +102,7 @@ public class AuraPlayModeTests
 
     private float GetCurrentHealth(EnemyStats enemy)
     {
-        return (float)typeof(EnemyStats)
-            .GetField("currentHealth", BindingFlags.Instance | BindingFlags.NonPublic)
-            .GetValue(enemy);
+        return (float)GetPrivateField(enemy, "health").GetValue(enemy);
     }
 
     [UnityTearDown]
@@ -104,11 +114,7 @@ public class AuraPlayModeTests
         }
 
         yield return null;
-
-        foreach (var data in Resources.FindObjectsOfTypeAll<CharacterData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<CharacterData>();
     }
 
     [UnityTest]
@@ -150,10 +156,9 @@ public class AuraPlayModeTests
             resistances = new EnemyStats.Resitances()
         };
 
-        SetPrivateField(enemy, "currentHealth", 10f);
-
-        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
-        SetPrivateField(enemy, "originalColor", Color.white);
+        SetPrivateField(enemy, "health", 10f);
+        SetPrivateField(enemy, "sprite", spriteRenderer);
+        SetPrivateField(enemy, "originialColor", Color.white);
         SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();
@@ -205,9 +210,9 @@ public class AuraPlayModeTests
             resistances = new EnemyStats.Resitances()
         };
         
-        SetPrivateField(enemy, "currentHealth", 10f);
-        SetPrivateField(enemy, "spriteRenderer", spriteRenderer);
-        SetPrivateField(enemy, "originalColor", Color.white);
+        SetPrivateField(enemy, "health", 10f);
+        SetPrivateField(enemy, "sprite", spriteRenderer);
+        SetPrivateField(enemy, "originialColor", Color.white);
         SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();

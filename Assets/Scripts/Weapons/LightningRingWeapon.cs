@@ -80,6 +80,7 @@ public class LightningRingWeapon : ProjectileWeapon
             if (enemy)
             {
                 enemy.TakeDamage(damage, transform.position);
+                ApplyBuffs(enemy);
             }
         }
     }
