@@ -19,6 +19,9 @@ public class Projectile : WeaponEffect
     {
         rigidBody = GetComponent<Rigidbody2D>();
         Weapon.Stats stats = weapon.GetStats();
+
+        if (hasAutoAim) AcquireAutoAimFacing();
+
         if (rigidBody.bodyType == RigidbodyType2D.Dynamic)
         {
             rigidBody.angularVelocity = rotationSpeed.z;
@@ -39,7 +42,6 @@ public class Projectile : WeaponEffect
 
         if (stats.lifespan > 0) Destroy(gameObject, stats.lifespan);
 
-        if (hasAutoAim) AcquireAutoAimFacing();
     }
     public virtual void AcquireAutoAimFacing()
     {

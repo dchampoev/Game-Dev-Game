@@ -32,6 +32,16 @@ public class ProjectilePlayModeTests
         {
             return stats.area;
         }
+
+        public override float GetSpeed()
+        {
+            return stats.speed;
+        }
+
+        public override float GetLifespan()
+        {
+            return stats.lifespan;
+        }
     }
 
     private class TestProjectile : Projectile

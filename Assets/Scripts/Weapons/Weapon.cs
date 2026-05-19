@@ -18,7 +18,7 @@ public abstract class Weapon : Item
 
         [Header("Values")]
         public float lifespan;
-        public float damage, damageVariance, area, speed, cooldown, projectileInterval, knockback;
+        public float damage, damageVariance, area, speed, cooldown, projectileInterval, knockback, critChance;
         public int number, piercing, maxInstances;
 
         public EntityStats.BuffInfo[] appliedBuffs;
@@ -45,6 +45,7 @@ public abstract class Weapon : Item
             result.cooldown = s1.cooldown + s2.cooldown;
             result.projectileInterval = s1.projectileInterval + s2.projectileInterval;
             result.knockback = s1.knockback + s2.knockback;
+            result.critChance = s1.critChance + s2.critChance;
             result.appliedBuffs = s2.appliedBuffs == null || s2.appliedBuffs.Length <= 0 ? s1.appliedBuffs : s2.appliedBuffs;
 
             result.number = s1.number + s2.number;
@@ -60,7 +61,8 @@ public abstract class Weapon : Item
         }
     }
     protected Stats currentStats;
-    protected float currentCooldown;
+    public bool criticalHit;
+    protected float currentCooldown, currentCritChance;
     protected PlayerMovement movement;
 
     public virtual void Initialize(WeaponData data)
@@ -112,7 +114,26 @@ public abstract class Weapon : Item
 
     public virtual float GetDamage()
     {
-        return currentStats.GetDamage() * owner.Stats.might;
+        if (currentStats.critChance > 0)
+        {
+            currentCritChance = currentStats.critChance * owner.Stats.luck;
+
+            if (currentCritChance >= Random.Range(1f, 100f))
+            {
+                criticalHit = true;
+                return currentStats.GetDamage() * owner.Stats.might * 2;
+            }
+            else
+            {
+                criticalHit = false;
+                return currentStats.GetDamage() * owner.Stats.might;
+            }
+        }
+        else
+        {
+            criticalHit = false;
+            return currentStats.GetDamage() * owner.Stats.might;
+        }
     }
 
     public virtual float GetArea()

@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::PassiveData
   icon: {fileID: 21300000, guid: 1609f3519180f4e9dabaa57ad7abea68, type: 3}
   maxLevel: 5
-  evolutionData: []
+  evolutionData:
+  - name: Thousand Edge
+    condition: 1
+    consumes: 2
+    evolutionLevel: 5
+    catalysts:
+    - itemType: {fileID: 11400000, guid: 5a63623787aa74babb551adfb7cff0a0, type: 2}
+      level: 8
+    outcome:
+      itemType: {fileID: 11400000, guid: dad8bfeed16244b48a6698526b864f63, type: 2}
+      level: 1
   baseStats:
     name: Bracer
     description: Increases projectiles speed by 10%.

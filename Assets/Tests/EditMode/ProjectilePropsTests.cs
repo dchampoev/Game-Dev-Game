@@ -12,6 +12,8 @@ public class ProjectilePropsTests
         public override Stats GetStats() => stats;
         public override float GetDamage() => damage;
         public override float GetArea() => stats.area;
+        public override float GetSpeed() => stats.speed;
+        public override float GetLifespan() => stats.lifespan;
     }
 
     private class TestProjectile : Projectile

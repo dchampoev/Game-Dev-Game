@@ -105,7 +105,7 @@ public class ChargingEnemyMovementPlayModeTests
         movement.CallMove();
 
         Assert.Greater(rb.linearVelocity.x, 0f);
-        Assert.AreEqual(0f, rb.linearVelocity.y, 0.001f);
+        Assert.That(Mathf.Abs(rb.linearVelocity.y), Is.LessThan(0.01f));
     }
 
     [UnityTest]

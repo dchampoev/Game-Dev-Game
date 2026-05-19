@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::PassiveData
   icon: {fileID: 21300000, guid: 516cd6c0c99af4b328f450ee24c77110, type: 3}
   maxLevel: 5
-  evolutionData: []
+  evolutionData:
+  - name: Bloody Tear
+    condition: 1
+    consumes: 2
+    evolutionLevel: 5
+    catalysts:
+    - itemType: {fileID: 11400000, guid: 6be68000ae11a428a92c723790ae5306, type: 2}
+      level: 8
+    outcome:
+      itemType: {fileID: 11400000, guid: 6464adc3ef1804fdc9d226718048ae14, type: 2}
+      level: 1
   baseStats:
     name: Hollow Heart
     description: Augment max health by 20%.
