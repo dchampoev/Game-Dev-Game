@@ -27,29 +27,23 @@ public class SpawnManager : MonoBehaviour
         spawnTimer -= Time.deltaTime;
         currentWaveDuration += Time.deltaTime;
 
-        if (spawnTimer <= 0)
+        if (HasWaveEnded())
         {
-            if (HasWaveEnded())
-            {
-                currentWaveIndex++;
-                currentWaveDuration = currentWaveSpawnCount = 0;
+            AdvanceWave();
+            return;
+        }
 
-                if (currentWaveIndex >= data.Length)
-                {
-                    Debug.Log("All waves completed!");
-                    enabled = false;
-                }
-
-                return;
-            }
-
+        WaveData currentWave = data[currentWaveIndex];
+        bool shouldRefillWave = currentWave.startingCount > 0 && EnemyStats.count < currentWave.startingCount;
+        if (spawnTimer <= 0 || shouldRefillWave)
+        {
             if (!CanSpawn())
             {
                 ActiveCooldown();
                 return;
             }
 
-            GameObject[] spawns = data[currentWaveIndex].GetSpawns(EnemyStats.count);
+            GameObject[] spawns = currentWave.GetSpawns(EnemyStats.count);
 
             foreach (GameObject prefab in spawns)
             {
@@ -60,6 +54,19 @@ public class SpawnManager : MonoBehaviour
             }
 
             ActiveCooldown();
+        }
+    }
+
+    void AdvanceWave()
+    {
+        currentWaveIndex++;
+        currentWaveDuration = currentWaveSpawnCount = 0;
+        spawnTimer = 0f;
+
+        if (currentWaveIndex >= data.Length)
+        {
+            Debug.Log("All waves completed!");
+            enabled = false;
         }
     }
 

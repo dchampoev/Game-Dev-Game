@@ -18,7 +18,7 @@ public class WaveDataTests
     }
 
     [Test]
-    public void GetSpawns_WhenSpawnCountIsFixed_ShouldReturnCorrectCount()
+    public void GetSpawns_WhenSpawnCountHasRange_ShouldReturnCountInsideInclusiveRange()
     {
         WaveData data = ScriptableObject.CreateInstance<WaveData>();
 
@@ -33,7 +33,8 @@ public class WaveDataTests
 
         GameObject[] result = data.GetSpawns();
 
-        Assert.AreEqual(3, result.Length);
+        Assert.GreaterOrEqual(result.Length, 3);
+        Assert.LessOrEqual(result.Length, 4);
     }
 
     [Test]
@@ -54,7 +55,8 @@ public class WaveDataTests
 
         GameObject[] result = data.GetSpawns();
 
-        Assert.AreEqual(5, result.Length);
+        Assert.GreaterOrEqual(result.Length, 5);
+        Assert.LessOrEqual(result.Length, 6);
 
         foreach (GameObject spawn in result)
         {

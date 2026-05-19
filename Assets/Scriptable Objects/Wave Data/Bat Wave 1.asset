@@ -17,11 +17,11 @@ MonoBehaviour:
   - {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
   - {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
   - {fileID: 105203936361193110, guid: dce8e9d338911432a9508a402e04147b, type: 3}
-  spawnInterval: {x: 1, y: 2}
-  spawnCount: {x: 4, y: 5}
-  duration: 60
-  startingCount: 25
-  totalSpawns: 200
-  exitConditions: 2
-  mustKillAllEnemies: 1
+  spawnInterval: {x: 1.4, y: 2}
+  spawnCount: {x: 3, y: 5}
+  duration: 65
+  startingCount: 22
+  totalSpawns: 4294967295
+  exitConditions: 1
+  mustKillAllEnemies: 0
   spawnedCount: 0

@@ -52,12 +52,15 @@ public class TitleScreenLeaderboard : MonoBehaviour
         }
 
         GameObject panelObject = CreateUIObject(RootName, canvas.transform);
+        panelObject.AddComponent<TitleScreenLeaderboardVisibility>();
         RectTransform panel = panelObject.GetComponent<RectTransform>();
         panel.anchorMin = new Vector2(1f, 0.5f);
         panel.anchorMax = new Vector2(1f, 0.5f);
         panel.pivot = new Vector2(1f, 0.5f);
         panel.anchoredPosition = new Vector2(-44f, 5f);
         panel.sizeDelta = new Vector2(430f, 520f);
+
+        panelObject.AddComponent<CanvasGroup>();
 
         Image panelImage = panelObject.AddComponent<Image>();
         panelImage.color = PanelColor;
@@ -82,7 +85,7 @@ public class TitleScreenLeaderboard : MonoBehaviour
     {
         RectTransform row = CreateRow("Leaderboard Header", parent, 34f);
         CreateText("Rank Header", row, "#", 21f, MutedTextColor, TextAlignmentOptions.Left, 34f, 42f, 0f);
-        CreateText("Character Header", row, "Character", 21f, MutedTextColor, TextAlignmentOptions.Left, 34f, -1f, 2f);
+        CreateText("Character Header", row, "Name", 21f, MutedTextColor, TextAlignmentOptions.Left, 34f, -1f, 2f);
         CreateText("Score Header", row, "Score", 21f, MutedTextColor, TextAlignmentOptions.Right, 34f, -1f, 1f);
         CreateText("Time Header", row, "Time", 21f, MutedTextColor, TextAlignmentOptions.Right, 34f, -1f, 1f);
     }
@@ -184,5 +187,48 @@ public class TitleScreenLeaderboard : MonoBehaviour
     {
         int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(seconds));
         return $"{totalSeconds / 60:00}:{totalSeconds % 60:00}";
+    }
+}
+
+[ExcludeFromCodeCoverage]
+public class TitleScreenLeaderboardVisibility : MonoBehaviour
+{
+    const string InstructionsScreenName = "Instructions Screen";
+
+    CanvasGroup canvasGroup;
+    GameObject instructionsScreen;
+
+    void Awake()
+    {
+        canvasGroup = GetComponent<CanvasGroup>();
+    }
+
+    void Update()
+    {
+        if (!canvasGroup)
+            canvasGroup = GetComponent<CanvasGroup>();
+
+        if (!canvasGroup)
+            return;
+
+        if (!instructionsScreen)
+            instructionsScreen = FindSceneObject(InstructionsScreenName);
+
+        bool instructionsOpen = instructionsScreen && instructionsScreen.activeInHierarchy;
+        canvasGroup.alpha = instructionsOpen ? 0f : 1f;
+        canvasGroup.interactable = !instructionsOpen;
+        canvasGroup.blocksRaycasts = !instructionsOpen;
+    }
+
+    static GameObject FindSceneObject(string objectName)
+    {
+        GameObject[] objects = Resources.FindObjectsOfTypeAll<GameObject>();
+        foreach (GameObject sceneObject in objects)
+        {
+            if (sceneObject.name == objectName && sceneObject.scene.IsValid())
+                return sceneObject;
+        }
+
+        return null;
     }
 }

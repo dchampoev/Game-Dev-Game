@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::WaveData
   possibleSpawnablePrefabs:
   - {fileID: 105203936361193110, guid: 98ba0ba32973c49ff9c9151f431716ab, type: 3}
-  spawnInterval: {x: 3, y: 4}
-  spawnCount: {x: 3, y: 4}
-  duration: 80
-  startingCount: 5
-  totalSpawns: 100
-  exitConditions: 2
-  mustKillAllEnemies: 1
+  spawnInterval: {x: 2.5, y: 3.5}
+  spawnCount: {x: 2, y: 3}
+  duration: 45
+  startingCount: 8
+  totalSpawns: 4294967295
+  exitConditions: 1
+  mustKillAllEnemies: 0
   spawnedCount: 0

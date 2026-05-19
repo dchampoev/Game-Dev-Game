@@ -65,8 +65,6 @@ public class PlayerStats : MonoBehaviour
 
     PlayerCollector collector;
     PlayerInventory inventory;
-    public int weaponIndex;
-    public int passiveItemIndex;
 
     [Header("UI")]
     public Image healthBar;
@@ -242,13 +240,7 @@ public class PlayerStats : MonoBehaviour
 
         if (!GameManager.instance.isGameOver)
         {
-            GameManager.instance.AssignLevelReachedUI(level);
-            GameManager.instance.GameOver();
-            LeaderboardManager.SaveScore(
-                characterData.name,
-                level * 100 + Mathf.FloorToInt(GameManager.instance.GetElapsedTime()),
-                GameManager.instance.GetElapsedTime()
-            );
+            GameManager.instance.GameOver(level);
         }
     }
 

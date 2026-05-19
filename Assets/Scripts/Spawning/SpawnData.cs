@@ -16,7 +16,7 @@ public abstract class SpawnData : ScriptableObject
 
     public virtual GameObject[] GetSpawns(int totalEnemies = 0)
     {
-        int count = Random.Range(spawnCount.x, spawnCount.y);
+        int count = Random.Range(spawnCount.x, spawnCount.y + 1);
 
         GameObject[] result = new GameObject[count];
         for (int i = 0; i < count; i++)
