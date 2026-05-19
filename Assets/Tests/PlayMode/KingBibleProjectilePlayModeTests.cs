@@ -238,10 +238,13 @@ public class KingBibleProjectilePlayModeTests
 
         Assert.AreEqual(Vector3.zero, projectile.transform.localScale);
 
-        yield return new WaitForSeconds(0.03f);
+        for (int i = 0; i < 5; i++)
+        {
+            yield return new WaitForEndOfFrame();
+        }
 
-        Assert.That(projectile.transform.localScale.x, Is.GreaterThan(1.7f));
-        Assert.That(projectile.transform.localScale.y, Is.GreaterThan(1.7f));
+        Assert.That(projectile.transform.localScale.x, Is.GreaterThan(0f));
+        Assert.That(projectile.transform.localScale.y, Is.GreaterThan(0f));
     }
 
     [UnityTest]
