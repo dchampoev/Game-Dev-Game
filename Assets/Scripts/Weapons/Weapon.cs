@@ -125,6 +125,16 @@ public abstract class Weapon : Item
         return currentStats;
     }
 
+    public virtual float GetSpeed()
+    {
+        return currentStats.speed * owner.Stats.speed;
+    }
+
+    public virtual float GetLifespan()
+    {
+        return currentStats.lifespan * owner.Stats.duration;
+    }
+
     public virtual bool ActivateCooldown(bool strict = false)
     {
         if (strict && currentCooldown > 0) return false;

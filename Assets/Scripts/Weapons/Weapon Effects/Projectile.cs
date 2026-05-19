@@ -13,6 +13,7 @@ public class Projectile : WeaponEffect
 
     protected Rigidbody2D rigidBody;
     protected int piercing;
+    protected float area;
 
     protected virtual void Start()
     {
@@ -21,11 +22,11 @@ public class Projectile : WeaponEffect
         if (rigidBody.bodyType == RigidbodyType2D.Dynamic)
         {
             rigidBody.angularVelocity = rotationSpeed.z;
-            rigidBody.linearVelocity = transform.right * stats.speed * weapon.Owner.Stats.speed;
+            rigidBody.linearVelocity = transform.right * weapon.GetSpeed();
         }
 
-        float area = weapon.GetArea();
-        if(area <= 0) area = 1;
+        area = weapon.GetArea();
+        if (area <= 0) area = 1;
         transform.localScale = new Vector3(
             area * Mathf.Sign(transform.localScale.x),
             area * Mathf.Sign(transform.localScale.y),
@@ -33,6 +34,8 @@ public class Projectile : WeaponEffect
         );
 
         piercing = stats.piercing;
+
+        if(weapon.GetLifespan() > 0) Destroy(gameObject, weapon.GetLifespan());
 
         if (stats.lifespan > 0) Destroy(gameObject, stats.lifespan);
 
