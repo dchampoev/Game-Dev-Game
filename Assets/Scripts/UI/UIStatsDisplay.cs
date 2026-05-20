@@ -9,6 +9,7 @@ using UnityEngine.PlayerLoop;
 public class UIStatsDisplay : MonoBehaviour
 {
     public PlayerStats player;
+    public CharacterData character;
     public bool displayCurrentHealth = false;
     public bool updateInEditor = false;
     TextMeshProUGUI statNames, statValues;
@@ -23,9 +24,16 @@ public class UIStatsDisplay : MonoBehaviour
         if (updateInEditor) UpdateStatFields();
     }
 
+    public CharacterData.Stats GetDisplayedStats()
+    {
+        if (player) return player.Stats;
+        else if (character) return character.stats;
+        return new CharacterData.Stats();
+    }
+
     public void UpdateStatFields()
     {
-        if (!player) return;
+        if (!player && !character) return;
 
         if (!statNames) statNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         if (!statValues) statValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
@@ -43,7 +51,7 @@ public class UIStatsDisplay : MonoBehaviour
         foreach (FieldInfo field in fields)
         {
             names.AppendLine(field.Name);
-            object value = field.GetValue(player.Stats);
+            object value = field.GetValue(GetDisplayedStats());
             float floatValue = value is int ? (int)value : (float)value;
 
             PropertyAttribute attribute = (PropertyAttribute)PropertyAttribute.GetCustomAttribute(field, typeof(PropertyAttribute));

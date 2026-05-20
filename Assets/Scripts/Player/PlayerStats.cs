@@ -73,17 +73,7 @@ public class PlayerStats : EntityStats
 
     void Awake()
     {
-        characterData = CharacterSelector.GetData();
-
-        if (characterData == null)
-        {
-            Debug.LogError("No character data found! Make sure to select a character in the Character Selector scene.");
-            return;
-        }
-        if (CharacterSelector.instance != null)
-        {
-            CharacterSelector.instance.DestroySingleton();
-        }
+        characterData = UICharacterSelector.GetData();
 
         inventory = GetComponent<PlayerInventory>();
         collector = GetComponentInChildren<PlayerCollector>();

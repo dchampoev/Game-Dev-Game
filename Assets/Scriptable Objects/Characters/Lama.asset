@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::CharacterData
   icon: {fileID: 21300000, guid: a86b1158c7a594554852073d0a7316eb, type: 3}
   name: Lama
+  fullName: Lama Ladonna
+  characterDescription: Gains +5% Might, Move Speed, and Curse every 10 levels (max
+    +20%).
   startingWeapon: {fileID: 11400000, guid: 4f7874a84043d4076be993ee29d67c13, type: 2}
   stats:
     maxHealth: 110

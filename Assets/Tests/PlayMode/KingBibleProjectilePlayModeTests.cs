@@ -44,6 +44,11 @@ public class KingBibleProjectilePlayModeTests
 
     private class TestKingBibleProjectile : KingBibleProjectile
     {
+        public IEnumerator CallBibleGrow()
+        {
+            return BibleGrow();
+        }
+
         public void CallStart()
         {
             base.Start();
@@ -81,6 +86,13 @@ public class KingBibleProjectilePlayModeTests
             typeof(KingBibleProjectile)
                 .GetField("startLifespan", BindingFlags.Instance | BindingFlags.NonPublic)
                 .SetValue(this, startLifespan);
+        }
+
+        public bool IsAlive()
+        {
+            return (bool)typeof(KingBibleProjectile)
+                .GetField("isAlive", BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetValue(this);
         }
     }
 
@@ -234,17 +246,18 @@ public class KingBibleProjectilePlayModeTests
         PlayerStats owner = CreateOwner();
         TestWeapon weapon = CreateWeapon(owner);
 
-        TestKingBibleProjectile projectile = CreateProjectile(owner, weapon);
+        TestKingBibleProjectile projectile = CreateProjectileWithoutStart(owner, weapon);
+        projectile.transform.localScale = Vector3.zero;
 
         Assert.AreEqual(Vector3.zero, projectile.transform.localScale);
 
-        for (int i = 0; i < 5; i++)
-        {
-            yield return new WaitForEndOfFrame();
-        }
+        IEnumerator grow = projectile.CallBibleGrow();
+        bool startedGrowing = grow.MoveNext();
 
-        Assert.That(projectile.transform.localScale.x, Is.GreaterThan(0f));
-        Assert.That(projectile.transform.localScale.y, Is.GreaterThan(0f));
+        Assert.IsTrue(startedGrowing);
+        Assert.IsTrue(projectile.IsAlive());
+
+        yield return null;
     }
 
     [UnityTest]

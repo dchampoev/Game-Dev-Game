@@ -110,6 +110,31 @@ public class UIStatsDisplayTests
         return display;
     }
 
+    private CharacterData CreateCharacterStats(float maxHealth, float moveSpeed, float magnet)
+    {
+        CharacterData data = ScriptableObject.CreateInstance<CharacterData>();
+        data.stats = new CharacterData.Stats
+        {
+            maxHealth = maxHealth,
+            recovery = 1f,
+            armor = 0f,
+            moveSpeed = moveSpeed,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 0,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 0f,
+            magnet = magnet,
+            revival = 0
+        };
+        return data;
+    }
+
     private PlayerStats CreateActivePlayer()
     {
         PlayerStats player = CreatePlayer();
@@ -148,7 +173,7 @@ public class UIStatsDisplayTests
     }
 
     [Test]
-    public void UpdateStatFields_WhenPlayerIsNull_ShouldLeaveTextsUnchanged()
+    public void UpdateStatFields_WhenPlayerAndCharacterAreNull_ShouldLeaveTextsUnchanged()
     {
         UIStatsDisplay display = CreateDisplay(null);
 
@@ -162,6 +187,38 @@ public class UIStatsDisplayTests
 
         Assert.AreEqual("OldNames", statNames.text);
         Assert.AreEqual("OldValues", statValues.text);
+    }
+
+    [Test]
+    public void GetDisplayedStats_WhenCharacterExistsAndPlayerIsNull_ShouldReturnCharacterStats()
+    {
+        CharacterData character = CreateCharacterStats(80f, 3f, 2f);
+        UIStatsDisplay display = CreateDisplay(null);
+        display.character = character;
+
+        CharacterData.Stats result = display.GetDisplayedStats();
+
+        Assert.AreEqual(80f, result.maxHealth);
+        Assert.AreEqual(3f, result.moveSpeed);
+        Assert.AreEqual(2f, result.magnet);
+    }
+
+    [Test]
+    public void UpdateStatFields_WhenCharacterExistsAndPlayerIsNull_ShouldPopulateCharacterStats()
+    {
+        CharacterData character = CreateCharacterStats(80f, 3f, 2f);
+        UIStatsDisplay display = CreateDisplay(null);
+        display.character = character;
+
+        TextMeshProUGUI statNames = display.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI statValues = display.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        display.UpdateStatFields();
+
+        StringAssert.Contains("Max Health", statNames.text);
+        StringAssert.Contains("Move Speed", statNames.text);
+        StringAssert.Contains("80", statValues.text);
+        StringAssert.Contains("+200%", statValues.text);
     }
 
     [Test]
