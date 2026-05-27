@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class PlayerStats : EntityStats
 {
+    const string LevelPrefix = "LV ";
+    const float ReviveHealthFactor = 0.5f;
+
     CharacterData characterData;
     public CharacterData.Stats baseStats;
     CharacterData.Stats actualStats;
@@ -74,13 +76,25 @@ public class PlayerStats : EntityStats
     void Awake()
     {
         characterData = UICharacterSelector.GetData();
+        if (!characterData)
+        {
+            Debug.LogError("No character data found. Select a character before loading the game scene.");
+            enabled = false;
+            return;
+        }
 
         inventory = GetComponent<PlayerInventory>();
         collector = GetComponentInChildren<PlayerCollector>();
+        if (!inventory)
+        {
+            Debug.LogError("PlayerStats requires a PlayerInventory on the same GameObject.");
+            enabled = false;
+            return;
+        }
 
         baseStats = actualStats = characterData.stats;
         health = actualStats.maxHealth;
-        collector.SetRadius(actualStats.magnet);
+        if (collector) collector.SetRadius(actualStats.magnet);
     }
 
     protected override void Start()
@@ -88,9 +102,9 @@ public class PlayerStats : EntityStats
         base.Start();
 
         inventory.Add(characterData.StartingWeapon);
-        experienceCap = levelRanges[0].experienceCapIncrease;
+        experienceCap = GetExperienceCapIncreaseForCurrentLevel();
 
-        GameManager.instance.AssignChosenCharacterUI(characterData);
+        if (GameManager.instance) GameManager.instance.AssignChosenCharacterUI(characterData);
 
         UpdateHealthBar();
         UpdateExpBar();
@@ -100,15 +114,16 @@ public class PlayerStats : EntityStats
     protected override void Update()
     {
         base.Update();
-        if (iFrameTimer > 0)
-        {
-            iFrameTimer -= Time.deltaTime;
-            if (iFrameTimer <= 0)
-            {
-                isInvincible = false;
-            }
-        }
+        UpdateInvincibilityTimer();
         Recover();
+    }
+
+    void UpdateInvincibilityTimer()
+    {
+        if (iFrameTimer <= 0) return;
+
+        iFrameTimer -= Time.deltaTime;
+        if (iFrameTimer <= 0) isInvincible = false;
     }
 
     public override void RecalculateStats()
@@ -147,7 +162,7 @@ public class PlayerStats : EntityStats
         actualStats *= multiplier;
 
         actualStats.revival = Mathf.Max(0, actualStats.revival - revivesUsed);
-        collector.SetRadius(actualStats.magnet);
+        if (collector) collector.SetRadius(actualStats.magnet);
     }
 
     public void IncreaseExperience(int amount)
@@ -165,21 +180,7 @@ public class PlayerStats : EntityStats
             level++;
             experience -= experienceCap;
 
-            int experienceCapIncrease = 0;
-
-            if (levelRanges != null)
-            {
-                foreach (LevelRange range in levelRanges)
-                {
-                    if (level >= range.startLevel && level <= range.endLevel)
-                    {
-                        experienceCapIncrease = range.experienceCapIncrease;
-                        break;
-                    }
-                }
-            }
-
-            experienceCap += experienceCapIncrease;
+            experienceCap += GetExperienceCapIncreaseForCurrentLevel();
 
             UpdateLevelText();
 
@@ -199,7 +200,7 @@ public class PlayerStats : EntityStats
     {
         if (expBar != null)
         {
-            expBar.fillAmount = (float)experience / experienceCap;
+            expBar.fillAmount = experienceCap > 0 ? (float)experience / experienceCap : 0f;
         }
     }
 
@@ -207,8 +208,21 @@ public class PlayerStats : EntityStats
     {
         if (levelText != null)
         {
-            levelText.text = "LV " + level.ToString();
+            levelText.text = LevelPrefix + level;
         }
+    }
+
+    int GetExperienceCapIncreaseForCurrentLevel()
+    {
+        if (levelRanges == null) return 0;
+
+        foreach (LevelRange range in levelRanges)
+        {
+            if (level >= range.startLevel && level <= range.endLevel)
+                return range.experienceCapIncrease;
+        }
+
+        return 0;
     }
 
     public override void TakeDamage(float damage)
@@ -269,7 +283,7 @@ public class PlayerStats : EntityStats
 
         actualStats.revival--;
         revivesUsed++;
-        CurrentHealth = actualStats.maxHealth * 0.5f;
+        CurrentHealth = actualStats.maxHealth * ReviveHealthFactor;
         iFrameTimer = iFrameDuration;
         isInvincible = true;
 

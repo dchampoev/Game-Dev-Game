@@ -37,8 +37,10 @@ MonoBehaviour:
     cooldown: 1
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   linearGrowth: []
   randomGrowth: []

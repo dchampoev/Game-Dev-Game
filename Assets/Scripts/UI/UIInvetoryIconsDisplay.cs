@@ -35,14 +35,18 @@ public class UIInvetoryIconsDisplay : MonoBehaviour
 
     public void Refresh()
     {
-        if (!inventory) Debug.LogWarning("No inventory assigned");
+        if (!inventory)
+        {
+            Debug.LogWarning("No inventory assigned");
+            return;
+        }
 
         Type type = typeof(PlayerInventory);
         FieldInfo field = type.GetField(targetedItemList, BindingFlags.Public | BindingFlags.Instance);
 
         if (field == null)
         {
-            Debug.LogWarning("The list in invetory is not found.");
+            Debug.LogWarning("The list in inventory is not found.");
             return;
         }
 

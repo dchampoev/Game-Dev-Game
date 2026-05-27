@@ -3,8 +3,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Events;
-using UnityEditor.Events;
 
 #if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
@@ -81,14 +79,6 @@ public class UICharacterSelectorEditor : Editor
 
             selector.selectableToggles.Add(toggle);
 
-            for (int j = 0; j < toggle.onValueChanged.GetPersistentEventCount(); j++)
-            {
-                if (toggle.onValueChanged.GetPersistentMethodName(j) == "Select")
-                {
-                    UnityEventTools.RemovePersistentListener(toggle.onValueChanged, j);
-                }
-            }
-            UnityEventTools.AddObjectPersistentListener(toggle.onValueChanged, selector.Select, characters[i]);
         }
 
         EditorUtility.SetDirty(selector);

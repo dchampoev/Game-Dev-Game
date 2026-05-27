@@ -1,10 +1,7 @@
-using System;
-using System.Data;
 using System.Reflection;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
 
 public class UIStatsDisplay : MonoBehaviour
 {
@@ -27,7 +24,7 @@ public class UIStatsDisplay : MonoBehaviour
     public CharacterData.Stats GetDisplayedStats()
     {
         if (player) return player.Stats;
-        else if (character) return character.stats;
+        if (character) return character.stats;
         return new CharacterData.Stats();
     }
 
@@ -44,14 +41,15 @@ public class UIStatsDisplay : MonoBehaviour
         if (displayCurrentHealth)
         {
             names.AppendLine("Health");
-            values.AppendLine(player.CurrentHealth.ToString());
+            values.AppendLine(player ? player.CurrentHealth.ToString() : "-");
         }
 
+        CharacterData.Stats displayedStats = GetDisplayedStats();
         FieldInfo[] fields = typeof(CharacterData.Stats).GetFields(BindingFlags.Public | BindingFlags.Instance);
         foreach (FieldInfo field in fields)
         {
             names.AppendLine(field.Name);
-            object value = field.GetValue(GetDisplayedStats());
+            object value = field.GetValue(displayedStats);
             float floatValue = value is int ? (int)value : (float)value;
 
             PropertyAttribute attribute = (PropertyAttribute)PropertyAttribute.GetCustomAttribute(field, typeof(PropertyAttribute));
@@ -75,9 +73,10 @@ public class UIStatsDisplay : MonoBehaviour
                 values.Append(floatValue).Append('\n');
             }
 
-            statNames.text = PrettifyNames(names);
-            statValues.text = values.ToString();
         }
+
+        statNames.text = PrettifyNames(names);
+        statValues.text = values.ToString();
     }
 
     public static string PrettifyNames(StringBuilder input)

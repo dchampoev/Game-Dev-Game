@@ -4,45 +4,45 @@ using UnityEngine;
 
 public class KingBibleProjectile : Projectile
 {
-    Dictionary<EnemyStats, float> affectedTargets = new Dictionary<EnemyStats, float>();
-    List<EnemyStats> targetsToUnaffect = new List<EnemyStats>();
+    readonly Dictionary<EnemyStats, float> affectedTargets = new Dictionary<EnemyStats, float>();
+    readonly List<EnemyStats> targetsToUnaffect = new List<EnemyStats>();
+
     public float hitDelay = 1.7f;
 
-    public float speedMultiplier = 5f; 
+    public float speedMultiplier = 5f;
 
-    public float radiusMultiplier = 1.1f; 
+    public float radiusMultiplier = 1.1f;
     public float projectileSizeMultiplier = 0.9f;
 
     public float transitionTime = 0.5f;
 
-    private float currentLifespan;
-
     Vector3 startScale;
     float startLifespan;
     bool isAlive = false;
-    private float angle;
+    float currentLifespan;
+    float angle;
 
     protected override void Start()
     {
         base.Start();
-        startScale = new Vector3(area, area,1);
+        startScale = new Vector3(area, area, 1);
         startLifespan = weapon.GetLifespan();
         transform.localScale = Vector3.zero;
         StartCoroutine(BibleGrow());
-        Vector3 offset = transform.position - owner.transform.position; //Get the initial spawn position
-        angle = Mathf.Atan2(offset.y, offset.x); // Get the angle in radians
+
+        Vector3 offset = transform.position - owner.transform.position;
+        angle = Mathf.Atan2(offset.y, offset.x);
     }
 
     protected override void FixedUpdate()
     {
         if (rigidBody && rigidBody.bodyType == RigidbodyType2D.Kinematic)
         {
-            float x = owner.transform.position.x + Mathf.Cos(angle) * startScale.x * radiusMultiplier;
-            float y = owner.transform.position.y + Mathf.Sin(angle) * startScale.y * radiusMultiplier;
-            rigidBody.MovePosition(new Vector3(x, y, 0));
-            angle -= weapon.GetStats().speed * speedMultiplier * Time.fixedDeltaTime;
+            rigidBody.MovePosition(GetOrbitPosition());
+            AdvanceOrbit(Time.fixedDeltaTime);
         }
     }
+
     private void Update()
     {
         HitDelay();
@@ -51,23 +51,35 @@ public class KingBibleProjectile : Projectile
 
         if (!rigidBody)
         {
-            float x = owner.transform.position.x + Mathf.Cos(angle) * startScale.x * radiusMultiplier;
-            float y = owner.transform.position.y + Mathf.Sin(angle) * startScale.y * radiusMultiplier;
-            transform.position = new Vector3(x, y, 0);
-            angle -= weapon.GetStats().speed * speedMultiplier * Time.deltaTime;
+            transform.position = GetOrbitPosition();
+            AdvanceOrbit(Time.deltaTime);
         }
 
-        if (currentLifespan > startLifespan-transitionTime && isAlive)
+        if (currentLifespan > startLifespan - transitionTime && isAlive)
         {
             StartCoroutine(BibleShrink());
             isAlive = false;
         }
+
         if (!weapon && isAlive)
         {
             StartCoroutine(BibleShrink());
             isAlive = false;
         }
     }
+
+    Vector3 GetOrbitPosition()
+    {
+        float x = owner.transform.position.x + Mathf.Cos(angle) * startScale.x * radiusMultiplier;
+        float y = owner.transform.position.y + Mathf.Sin(angle) * startScale.y * radiusMultiplier;
+        return new Vector3(x, y, 0);
+    }
+
+    void AdvanceOrbit(float deltaTime)
+    {
+        angle -= weapon.GetStats().speed * speedMultiplier * deltaTime;
+    }
+
     public void HitDelay()
     {
         Dictionary<EnemyStats, float> affectedTargsCopy = new Dictionary<EnemyStats, float>(affectedTargets);
@@ -109,34 +121,39 @@ public class KingBibleProjectile : Projectile
     {
         Vector3 currentScale = transform.localScale;
 
-        WaitForEndOfFrame w = new WaitForEndOfFrame();
+        WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
         float t = 0;
 
         while (t < transitionTime)
         {
-            yield return w;
+            yield return waitForEndOfFrame;
             t += Time.deltaTime;
 
-           transform.localScale = new Vector3(currentScale.x - (t/ transitionTime), currentScale.y - (t / transitionTime), 1f);
+            transform.localScale = new Vector3(currentScale.x - t / transitionTime, currentScale.y - t / transitionTime, 1f);
         }
+
         if (!weapon) Destroy(gameObject);
     }
+
     public IEnumerator BibleGrow()
     {
         if (!isAlive)
         {
             isAlive = true;
-            WaitForEndOfFrame w = new WaitForEndOfFrame();
+            WaitForEndOfFrame waitForEndOfFrame = new WaitForEndOfFrame();
             float t = 0;
 
             while (t < transitionTime)
             {
-                yield return w;
+                yield return waitForEndOfFrame;
                 t += Time.deltaTime;
 
-                transform.localScale = new Vector3(0 + (t/ transitionTime * startScale.x) * projectileSizeMultiplier, 0 + (t/ transitionTime * startScale.y) * projectileSizeMultiplier, 1f);
+                float growProgress = t / transitionTime;
+                transform.localScale = new Vector3(
+                    growProgress * startScale.x * projectileSizeMultiplier,
+                    growProgress * startScale.y * projectileSizeMultiplier,
+                    1f);
             }
-
         }
     }
 

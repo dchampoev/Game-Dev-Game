@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine.TestTools;
 using System.Collections;
 using UnityEngine.EventSystems;
-using System;
 
 [ExcludeFromCoverage]
 public class GameManager : MonoBehaviour
@@ -173,9 +172,9 @@ public class GameManager : MonoBehaviour
 
     void DisableScreens()
     {
-        pauseMenu.SetActive(false);
-        resultsScreen.SetActive(false);
-        levelUpScreen.SetActive(false);
+        if (pauseMenu) pauseMenu.SetActive(false);
+        if (resultsScreen) resultsScreen.SetActive(false);
+        if (levelUpScreen) levelUpScreen.SetActive(false);
     }
 
     public void GameOver()
@@ -300,8 +299,10 @@ public class GameManager : MonoBehaviour
 
     public void AssignChosenCharacterUI(CharacterData chosenCharacter)
     {
+        if (!chosenCharacter) return;
+
         chosenCharacterImage.sprite = chosenCharacter.Icon;
-        chosenCharacterName.text = chosenCharacter.name;
+        chosenCharacterName.text = chosenCharacter.Name;
     }
 
     public void AssignLevelReachedUI(int levelReached)
@@ -373,24 +374,23 @@ public class GameManager : MonoBehaviour
 
     void SelectFirstLevelUpButton()
     {
-        Button firstButton = levelUpScreen.GetComponentInChildren<Button>();
-
-        if (firstButton != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
-        }
+        SelectFirstButton(levelUpScreen);
     }
 
     void SelectFirstPauseButton()
     {
-        Button firstButton = pauseMenu.GetComponentInChildren<Button>();
+        SelectFirstButton(pauseMenu);
+    }
 
-        if (firstButton != null)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
-        }
+    void SelectFirstButton(GameObject root)
+    {
+        if (!root || !EventSystem.current) return;
+
+        Button firstButton = root.GetComponentInChildren<Button>();
+        if (!firstButton) return;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
     }
 
     IEnumerator GenerateFloatingTextCoroutine(string text, Transform target, float duration = 1f, float speed = 50f)
@@ -424,7 +424,7 @@ public class GameManager : MonoBehaviour
         WaitForEndOfFrame wait = new WaitForEndOfFrame();
         float elapsedTime = 0f;
         float yOffset = 0f;
-        Vector3 lastKnownPosition = target.position;
+        Vector3 lastKnownPosition = worldPos;
 
         while (elapsedTime < duration)
         {

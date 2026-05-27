@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "RingEventData", menuName = "2D Rogue-like/Event Data/Ring")]

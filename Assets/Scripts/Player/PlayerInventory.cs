@@ -1,7 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -13,15 +12,6 @@ public class PlayerInventory : MonoBehaviour
         public void Assign(Item assignedItem)
         {
             item = assignedItem;
-            if (item is Weapon)
-            {
-                Weapon weapon = item as Weapon;
-            }
-            else
-            {
-                Passive passive = item as Passive;
-            }
-            Debug.Log(string.Format("Assigned {0} to inventory slot.", item.name));
         }
 
         public void Clear()
@@ -47,13 +37,16 @@ public class PlayerInventory : MonoBehaviour
         player = GetComponent<PlayerStats>();
     }
 
-    public bool Has(ItemData type) { return Get(type) != null; }
+    public bool Has(ItemData type) => Get(type) != null;
 
     public Item Get(ItemData type)
     {
-        if (type is WeaponData) return Get(type as WeaponData);
-        else if (type is PassiveData) return Get(type as PassiveData);
-        return null;
+        return type switch
+        {
+            WeaponData weaponData => Get(weaponData),
+            PassiveData passiveData => Get(passiveData),
+            _ => null
+        };
     }
 
     public Passive Get(PassiveData type)
@@ -120,9 +113,12 @@ public class PlayerInventory : MonoBehaviour
 
     public bool Remove(ItemData data, bool removeUpgradeAvailability = false)
     {
-        if (data is WeaponData) return Remove(data as WeaponData, removeUpgradeAvailability);
-        else if (data is PassiveData) return Remove(data as PassiveData, removeUpgradeAvailability);
-        return false;
+        return data switch
+        {
+            WeaponData weaponData => Remove(weaponData, removeUpgradeAvailability),
+            PassiveData passiveData => Remove(passiveData, removeUpgradeAvailability),
+            _ => false
+        };
     }
 
     public int Add(WeaponData data)
@@ -152,7 +148,7 @@ public class PlayerInventory : MonoBehaviour
             spawnedWeapon.OnEquip();
 
             weaponSlots[slotIndex].Assign(spawnedWeapon);
-            if(weaponUI != null) weaponUI.Refresh();
+            if (weaponUI != null) weaponUI.Refresh();
 
             if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
@@ -188,20 +184,23 @@ public class PlayerInventory : MonoBehaviour
         spawnedPassive.Initialize(data);
 
         passiveSlots[slotIndex].Assign(spawnedPassive);
-        if(passiveUI != null) passiveUI.Refresh();
+        if (passiveUI != null) passiveUI.Refresh();
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
-        player.RecalculateStats();
+        if (player) player.RecalculateStats();
 
         return slotIndex;
     }
 
     public int Add(ItemData data)
     {
-        if (data is WeaponData) return Add(data as WeaponData);
-        else if (data is PassiveData) return Add(data as PassiveData);
-        return -1;
+        return data switch
+        {
+            WeaponData weaponData => Add(weaponData),
+            PassiveData passiveData => Add(passiveData),
+            _ => -1
+        };
     }
 
     public bool LevelUp(Item item)
@@ -215,14 +214,13 @@ public class PlayerInventory : MonoBehaviour
             return false;
         }
 
-        if(weaponUI!=null) weaponUI.Refresh();
-        if(passiveUI!=null) passiveUI.Refresh();
+        if (weaponUI != null) weaponUI.Refresh();
+        if (passiveUI != null) passiveUI.Refresh();
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
             GameManager.instance.EndLevelUp();
 
-        if (item is Passive)
-            player.RecalculateStats();
+        if (item is Passive && player) player.RecalculateStats();
 
         return true;
     }
@@ -233,6 +231,9 @@ public class PlayerInventory : MonoBehaviour
 
     void ApplyUpgradeOptions()
     {
+        if (!player || !upgradeWindow)
+            return;
+
         List<ItemData> availableUpgrades = GetAvailableUpgrades();
         int availableUpgradeCount = availableUpgrades.Count;
 

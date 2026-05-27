@@ -231,6 +231,7 @@ MonoBehaviour:
       debuff: 0
     curseBoosts: 3
     levelBoosts: 0
+  attackEffects: []
   damageColor: {r: 1, g: 0, b: 0, a: 1}
   damageFlashDuration: 0.2
   deathFadeDuration: 0.6
@@ -254,3 +255,6 @@ MonoBehaviour:
   - dropName: Green gem
     dropPrefab: {fileID: 8368989066321366195, guid: 75b9588414e5743cfbc7fd949d7feec0, type: 3}
     dropRate: 5
+  - dropName: Chest
+    dropPrefab: {fileID: 4254462943046021590, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+    dropRate: 10

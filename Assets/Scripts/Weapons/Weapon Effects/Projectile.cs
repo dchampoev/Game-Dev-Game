@@ -22,7 +22,7 @@ public class Projectile : WeaponEffect
 
         if (hasAutoAim) AcquireAutoAimFacing();
 
-        if (rigidBody.bodyType == RigidbodyType2D.Dynamic)
+        if (rigidBody && rigidBody.bodyType == RigidbodyType2D.Dynamic)
         {
             rigidBody.angularVelocity = rotationSpeed.z;
             rigidBody.linearVelocity = transform.right * weapon.GetSpeed();
@@ -38,7 +38,7 @@ public class Projectile : WeaponEffect
 
         piercing = stats.piercing;
 
-        if(weapon.GetLifespan() > 0) Destroy(gameObject, weapon.GetLifespan());
+        if (weapon.GetLifespan() > 0) Destroy(gameObject, weapon.GetLifespan());
 
         if (stats.lifespan > 0) Destroy(gameObject, stats.lifespan);
 
@@ -52,8 +52,8 @@ public class Projectile : WeaponEffect
         if (targets.Length > 0)
         {
             EnemyStats selectedTarget = targets[Random.Range(0, targets.Length)];
-            Vector2 differnce = selectedTarget.transform.position - transform.position;
-            aimAngle = Mathf.Atan2(differnce.y, differnce.x) * Mathf.Rad2Deg;
+            Vector2 difference = selectedTarget.transform.position - transform.position;
+            aimAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
         }
         else
         {
@@ -65,19 +65,19 @@ public class Projectile : WeaponEffect
 
     protected virtual void FixedUpdate()
     {
-        if (rigidBody.bodyType == RigidbodyType2D.Kinematic)
+        if (rigidBody && rigidBody.bodyType == RigidbodyType2D.Kinematic)
         {
             Weapon.Stats stats = weapon.GetStats();
-            transform.position += transform.right * stats.speed* weapon.Owner.Stats.speed * Time.fixedDeltaTime;
+            transform.position += transform.right * stats.speed * weapon.Owner.Stats.speed * Time.fixedDeltaTime;
             rigidBody.MovePosition(transform.position);
             transform.Rotate(rotationSpeed * Time.fixedDeltaTime);
         }
     }
 
-    protected virtual void OnTriggerEnter2D(Collider2D collison)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyStats enemies = collison.GetComponent<EnemyStats>();
-        BreakableProps props = collison.GetComponent<BreakableProps>();
+        EnemyStats enemies = collision.GetComponent<EnemyStats>();
+        BreakableProps props = collision.GetComponent<BreakableProps>();
 
         if (enemies)
         {

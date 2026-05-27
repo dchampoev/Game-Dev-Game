@@ -2,11 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Stats is a class that is inhereted by both PlayerStats and EnemyStats.
-/// It is here to provide a way for Buffs to be applied to both PlayersStats 
-/// and EnemyStats.
+/// Stats base class inherited by PlayerStats and EnemyStats.
+/// It provides shared buff application, tinting, and buff ticking behavior.
 /// </summary>
-
 public abstract class EntityStats : MonoBehaviour
 {
     protected float health;
@@ -16,6 +14,7 @@ public abstract class EntityStats : MonoBehaviour
     protected Color originialColor;
     protected List<Color> appliedTints = new List<Color>();
     public const float TINT_FACTOR = 4f;
+    const float MinAnimationSpeedFactor = 0.000001f;
 
     [System.Serializable]
     public class Buff
@@ -66,18 +65,23 @@ public abstract class EntityStats : MonoBehaviour
     protected virtual void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
-        originialColor = sprite.color;
+        if (sprite) originialColor = sprite.color;
         animator = GetComponent<Animator>();
     }
 
     public virtual void ApplyAnimationMultiplier(float factor)
     {
-        if (animator) animator.speed *= Mathf.Approximately(0,factor) ? 0.000001f : factor;
+        if (animator) animator.speed *= GetSafeAnimationFactor(factor);
     }
 
     public virtual void RemoveAnimationMultiplier(float factor)
     {
-        if (animator) animator.speed /= Mathf.Approximately(0, factor) ? 0.000001f : factor;
+        if (animator) animator.speed /= GetSafeAnimationFactor(factor);
+    }
+
+    static float GetSafeAnimationFactor(float factor)
+    {
+        return Mathf.Approximately(0, factor) ? MinAnimationSpeedFactor : factor;
     }
 
     public virtual void ApplyTint(Color c)
@@ -94,6 +98,8 @@ public abstract class EntityStats : MonoBehaviour
 
     protected virtual void UpdateColor()
     {
+        if (!sprite) return;
+
         Color targetedColor = originialColor;
         float totalWeight = 1f;
         foreach (Color c in appliedTints)
