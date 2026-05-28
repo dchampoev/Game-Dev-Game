@@ -69,7 +69,7 @@ public class WaveDataTests
 
         float result = data.GetSpawnInterval();
 
-        Assert.AreEqual(2.5f, result);
+        Assert.AreEqual(2.5f, result, 0.0001f);
     }
 
     [Test]

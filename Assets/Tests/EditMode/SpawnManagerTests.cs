@@ -224,6 +224,43 @@ public class SpawnManagerTests
     }
 
     [Test]
+    public void Update_WhenWaveDataIsMissing_ShouldDisableManager()
+    {
+        SpawnManager manager = CreateManager(CreateWaveData());
+        manager.data = null;
+        manager.enabled = true;
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.IsFalse(manager.enabled);
+    }
+
+    [Test]
+    public void Update_WhenCurrentWaveIsNull_ShouldDisableManager()
+    {
+        SpawnManager manager = CreateManager(CreateWaveData());
+        manager.data = new WaveData[] { null };
+        manager.enabled = true;
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.IsFalse(manager.enabled);
+    }
+
+    [Test]
+    public void Update_WhenWaveHasNoPrefabs_ShouldNotThrowOrIncrementSpawnCount()
+    {
+        WaveData wave = CreateWaveData(totalSpawns: 3, duration: 10f);
+        wave.possibleSpawnablePrefabs = new GameObject[0];
+        SpawnManager manager = CreateManager(wave);
+        SetPrivateField(manager, "spawnTimer", 0f);
+
+        CallPrivateMethod(manager, "Update");
+
+        Assert.AreEqual(0, GetPrivateField<int>(manager, "currentWaveSpawnCount"));
+    }
+
+    [Test]
     public void Update_WhenCannotSpawn_ShouldOnlyRefreshCooldown()
     {
         WaveData wave = CreateWaveData(totalSpawns: 0, duration: 10f);
@@ -430,6 +467,22 @@ public class SpawnManagerTests
     }
 
     [Test]
+    public void GeneratePosition_WhenNoCameraExists_ShouldReturnZero()
+    {
+        CreateManager(CreateWaveData());
+        SpawnManager.instance.referenceCamera = null;
+
+        foreach (Camera camera in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(camera.gameObject);
+        }
+
+        Vector3 result = SpawnManager.GeneratePosition();
+
+        Assert.AreEqual(Vector3.zero, result);
+    }
+
+    [Test]
     public void GeneratePosition_WhenVerticalEdgeIsSelected_ShouldReturnPositionOnHorizontalViewportEdge()
     {
         WaveData wave = CreateWaveData();
@@ -474,6 +527,24 @@ public class SpawnManagerTests
 
         GameObject obj = new GameObject("CheckedObject");
         obj.transform.position = new Vector3(100f, 100f, 0f);
+
+        bool result = SpawnManager.IsWithinBoundaries(obj.transform);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public void IsWithinBoundaries_WhenNoCameraExists_ShouldReturnFalse()
+    {
+        CreateManager(CreateWaveData());
+        SpawnManager.instance.referenceCamera = null;
+
+        foreach (Camera camera in Object.FindObjectsByType<Camera>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(camera.gameObject);
+        }
+
+        GameObject obj = new GameObject("CheckedObject");
 
         bool result = SpawnManager.IsWithinBoundaries(obj.transform);
 

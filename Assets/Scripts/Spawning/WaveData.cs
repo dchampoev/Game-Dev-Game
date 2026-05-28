@@ -22,6 +22,9 @@ public class WaveData : SpawnData
 
     public override GameObject[] GetSpawns(int totalEnemies = 0)
     {
+        if (possibleSpawnablePrefabs == null || possibleSpawnablePrefabs.Length == 0)
+            return new GameObject[0];
+
         int count = Random.Range(spawnCount.x, spawnCount.y + 1);
 
         if (totalEnemies + count < startingCount)

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    const float SpawnDepthFromCamera = 10f;
+
     int currentWaveIndex;
     int currentWaveSpawnCount = 0;
 
@@ -24,6 +26,12 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
+        if (!TryGetCurrentWave(out WaveData currentWave))
+        {
+            enabled = false;
+            return;
+        }
+
         spawnTimer -= Time.deltaTime;
         currentWaveDuration += Time.deltaTime;
 
@@ -33,7 +41,6 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        WaveData currentWave = data[currentWaveIndex];
         bool shouldRefillWave = currentWave.startingCount > 0 && EnemyStats.count < currentWave.startingCount;
         if (spawnTimer <= 0 || shouldRefillWave)
         {
@@ -72,15 +79,17 @@ public class SpawnManager : MonoBehaviour
 
     public void ActiveCooldown()
     {
+        if (!TryGetCurrentWave(out WaveData currentWave)) return;
+
         float curseBoost = boostedByCurse ? GameManager.GetCumulativeCurse() : 1;
-        spawnTimer += data[currentWaveIndex].GetSpawnInterval() / curseBoost;
+        spawnTimer += currentWave.GetSpawnInterval() / curseBoost;
     }
 
     public bool CanSpawn()
     {
         if (HasExceededTotalSpawns()) return false;
 
-        WaveData currentWave = data[currentWaveIndex];
+        if (!TryGetCurrentWave(out WaveData currentWave)) return false;
 
         if (currentWaveSpawnCount >= currentWave.totalSpawns)
             return false;
@@ -97,7 +106,7 @@ public class SpawnManager : MonoBehaviour
 
     public bool HasWaveEnded()
     {
-        WaveData currentWave = data[currentWaveIndex];
+        if (!TryGetCurrentWave(out WaveData currentWave)) return true;
 
         if ((currentWave.exitConditions & WaveData.ExitCondition.waveDuration) > 0)
         {
@@ -122,9 +131,21 @@ public class SpawnManager : MonoBehaviour
         referenceCamera = Camera.main;
     }
 
+    bool TryGetCurrentWave(out WaveData currentWave)
+    {
+        currentWave = null;
+
+        if (data == null || data.Length == 0) return false;
+        if (currentWaveIndex < 0 || currentWaveIndex >= data.Length) return false;
+
+        currentWave = data[currentWaveIndex];
+        return currentWave != null;
+    }
+
     public static Vector3 GeneratePosition()
     {
-        if (!instance.referenceCamera) instance.referenceCamera = Camera.main;
+        Camera camera = GetSpawnCamera();
+        if (!camera) return Vector3.zero;
 
         float x = Random.Range(0f, 1f);
         float y = Random.Range(0f, 1f);
@@ -135,11 +156,11 @@ public class SpawnManager : MonoBehaviour
         {
             case 0:
             default:
-                position = instance.referenceCamera.ViewportToWorldPoint(new Vector3(Mathf.Round(x), y, 10f));
+                position = camera.ViewportToWorldPoint(new Vector3(Mathf.Round(x), y, SpawnDepthFromCamera));
                 break;
 
             case 1:
-                position = instance.referenceCamera.ViewportToWorldPoint(new Vector3(x, Mathf.Round(y), 10f));
+                position = camera.ViewportToWorldPoint(new Vector3(x, Mathf.Round(y), SpawnDepthFromCamera));
                 break;
         }
 
@@ -149,11 +170,25 @@ public class SpawnManager : MonoBehaviour
 
     public static bool IsWithinBoundaries(Transform checkedObj)
     {
-        Camera camera = instance && instance.referenceCamera ? instance.referenceCamera : Camera.main;
+        if (!checkedObj) return false;
+
+        Camera camera = GetSpawnCamera();
+        if (!camera) return false;
 
         Vector2 viewport = camera.WorldToViewportPoint(checkedObj.position);
         if (viewport.x < 0f || viewport.x > 1f) return false;
         if (viewport.y < 0f || viewport.y > 1f) return false;
         return true;
+    }
+
+    static Camera GetSpawnCamera()
+    {
+        if (instance && !instance.referenceCamera)
+            instance.referenceCamera = Camera.main;
+
+        if (instance && instance.referenceCamera)
+            return instance.referenceCamera;
+
+        return Camera.main;
     }
 }

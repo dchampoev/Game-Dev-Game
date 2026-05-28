@@ -35,7 +35,13 @@ public class GameManagerSplitTests
 
     EventSystem CreateEventSystem()
     {
-        return new GameObject("EventSystem").AddComponent<EventSystem>();
+        EventSystem eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
+        typeof(EventSystem)
+            .GetMethod("OnEnable", BindingFlags.Instance | BindingFlags.NonPublic)
+            ?.Invoke(eventSystem, null);
+
+        EventSystem.current = eventSystem;
+        return eventSystem;
     }
 
     [SetUp]

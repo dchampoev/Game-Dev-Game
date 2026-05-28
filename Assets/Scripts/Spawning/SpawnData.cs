@@ -16,6 +16,9 @@ public abstract class SpawnData : ScriptableObject
 
     public virtual GameObject[] GetSpawns(int totalEnemies = 0)
     {
+        if (possibleSpawnablePrefabs == null || possibleSpawnablePrefabs.Length == 0)
+            return new GameObject[0];
+
         int count = Random.Range(spawnCount.x, spawnCount.y + 1);
 
         GameObject[] result = new GameObject[count];
