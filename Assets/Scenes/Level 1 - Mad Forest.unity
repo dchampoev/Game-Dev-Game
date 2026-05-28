@@ -2093,8 +2093,10 @@ MonoBehaviour:
   chosenCharacterName: {fileID: 1632218956}
   levelReachedDisplay: {fileID: 2000566214}
   timeSurvivedDisplay: {fileID: 257577926}
-  timeLimit: 1200
+  timeLimit: 1800
   stopwatchDisplay: {fileID: 694733765}
+  reaperPrefab: {fileID: 105203936361193110, guid: 037622ba4174d4cb9ae092b894e40aff, type: 3}
+  reaperSpawnDistance: 50
 --- !u!4 &361517097
 Transform:
   m_ObjectHideFlags: 0

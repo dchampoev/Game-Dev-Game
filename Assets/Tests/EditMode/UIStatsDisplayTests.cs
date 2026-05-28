@@ -157,7 +157,7 @@ public class UIStatsDisplayTests
     {
         StringBuilder input = new StringBuilder("maxHealth\nmoveSpeed\ncooldown\n");
 
-        string result = UIStatsDisplay.PrettifyNames(input);
+        string result = UIPropertyDisplay.PrettifyNames(input).ToString();
 
         Assert.AreEqual("Max Health\nMove Speed\nCooldown\n", result);
     }
@@ -167,13 +167,13 @@ public class UIStatsDisplayTests
     {
         StringBuilder input = new StringBuilder();
 
-        string result = UIStatsDisplay.PrettifyNames(input);
+        string result = UIPropertyDisplay.PrettifyNames(input).ToString();
 
         Assert.AreEqual(string.Empty, result);
     }
 
     [Test]
-    public void UpdateStatFields_WhenPlayerAndCharacterAreNull_ShouldLeaveTextsUnchanged()
+    public void UpdateFields_WhenPlayerAndCharacterAreNull_ShouldLeaveTextsUnchanged()
     {
         UIStatsDisplay display = CreateDisplay(null);
 
@@ -183,20 +183,20 @@ public class UIStatsDisplayTests
         statNames.text = "OldNames";
         statValues.text = "OldValues";
 
-        display.UpdateStatFields();
+        display.UpdateFields();
 
         Assert.AreEqual("OldNames", statNames.text);
         Assert.AreEqual("OldValues", statValues.text);
     }
 
     [Test]
-    public void GetDisplayedStats_WhenCharacterExistsAndPlayerIsNull_ShouldReturnCharacterStats()
+    public void GetReadObject_WhenCharacterExistsAndPlayerIsNull_ShouldReturnCharacterStats()
     {
         CharacterData character = CreateCharacterStats(80f, 3f, 2f);
         UIStatsDisplay display = CreateDisplay(null);
         display.character = character;
 
-        CharacterData.Stats result = display.GetDisplayedStats();
+        CharacterData.Stats result = (CharacterData.Stats)display.GetReadObject();
 
         Assert.AreEqual(80f, result.maxHealth);
         Assert.AreEqual(3f, result.moveSpeed);
@@ -204,7 +204,7 @@ public class UIStatsDisplayTests
     }
 
     [Test]
-    public void UpdateStatFields_WhenCharacterExistsAndPlayerIsNull_ShouldPopulateCharacterStats()
+    public void UpdateFields_WhenCharacterExistsAndPlayerIsNull_ShouldPopulateCharacterStats()
     {
         CharacterData character = CreateCharacterStats(80f, 3f, 2f);
         UIStatsDisplay display = CreateDisplay(null);
@@ -213,7 +213,7 @@ public class UIStatsDisplayTests
         TextMeshProUGUI statNames = display.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI statValues = display.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
-        display.UpdateStatFields();
+        display.UpdateFields();
 
         StringAssert.Contains("Max Health", statNames.text);
         StringAssert.Contains("Move Speed", statNames.text);
@@ -222,7 +222,21 @@ public class UIStatsDisplayTests
     }
 
     [Test]
-    public void UpdateStatFields_WhenDisplayCurrentHealthIsTrue_ShouldIncludeHealthLine()
+    public void UpdateFields_WhenCurseIsZero_ShouldDisplayNeutralValue()
+    {
+        CharacterData character = CreateCharacterStats(80f, 3f, 2f);
+        UIStatsDisplay display = CreateDisplay(null);
+        display.character = character;
+
+        TextMeshProUGUI statValues = display.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+        display.UpdateFields();
+
+        Assert.False(statValues.text.Contains("-100%"));
+    }
+
+    [Test]
+    public void UpdateFields_WhenDisplayCurrentHealthIsTrue_ShouldIncludeHealthLine()
     {
         PlayerStats player = CreatePlayer();
         UIStatsDisplay display = CreateDisplay(player);
@@ -231,21 +245,21 @@ public class UIStatsDisplayTests
         TextMeshProUGUI statNames = display.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         TextMeshProUGUI statValues = display.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
-        display.UpdateStatFields();
+        display.UpdateFields();
 
         StringAssert.StartsWith("Health", statNames.text);
         StringAssert.StartsWith("12", statValues.text);
     }
 
     [Test]
-    public void UpdateStatFields_WhenCalled_ShouldPopulateStatNames()
+    public void UpdateFields_WhenCalled_ShouldPopulateStatNames()
     {
         PlayerStats player = CreatePlayer();
         UIStatsDisplay display = CreateDisplay(player);
 
         TextMeshProUGUI statNames = display.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-        display.UpdateStatFields();
+        display.UpdateFields();
 
         StringAssert.Contains("Max Health", statNames.text);
         StringAssert.Contains("Move Speed", statNames.text);

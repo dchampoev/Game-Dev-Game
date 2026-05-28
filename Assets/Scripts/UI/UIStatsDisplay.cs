@@ -3,105 +3,59 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class UIStatsDisplay : MonoBehaviour
+public class UIStatsDisplay : UIPropertyDisplay
 {
     public PlayerStats player;
     public CharacterData character;
     public bool displayCurrentHealth = false;
-    public bool updateInEditor = false;
-    TextMeshProUGUI statNames, statValues;
+    const string CurseFieldName = nameof(CharacterData.Stats.curse);
 
-    void OnEnable()
+    public override object GetReadObject()
     {
-        UpdateStatFields();
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (updateInEditor) UpdateStatFields();
-    }
-
-    public CharacterData.Stats GetDisplayedStats()
-    {
-        if (player) return player.Stats;
-        if (character) return character.stats;
+        if(player) return player.Stats;
+        else if (character) return character.stats;
         return new CharacterData.Stats();
     }
 
-    public void UpdateStatFields()
+    protected override StringBuilder ProcessValue(object value, StringBuilder output, FieldInfo field)
+    {
+        if (field.Name != CurseFieldName || field.FieldType != typeof(float))
+        {
+            return base.ProcessValue(value, output, field);
+        }
+
+        float percentage = Mathf.Round((float)value * 100);
+        if (Mathf.Approximately(percentage, 0))
+        {
+            return output.Append(DASH).Append('\n');
+        }
+
+        if (percentage > 0) output.Append('+');
+        return output.Append(percentage).Append('%').Append('\n');
+    }
+
+    public override void UpdateFields()
     {
         if (!player && !character) return;
 
-        if (!statNames) statNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        if (!statValues) statValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        StringBuilder[] allStats = GetProperties(
+            BindingFlags.Public | BindingFlags.Instance,
+            typeof(CharacterData.Stats)
+        );
 
-        StringBuilder names = new StringBuilder();
-        StringBuilder values = new StringBuilder();
+        if (!propertyNames && transform.childCount > 0) propertyNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        if (!propertyValues && transform.childCount > 1) propertyValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
         if (displayCurrentHealth)
         {
-            names.AppendLine("Health");
-            values.AppendLine(player ? player.CurrentHealth.ToString() : "-");
+            allStats[0].Insert(0, "Health\n");
+            allStats[1].Insert(0, (player ? player.CurrentHealth.ToString() : DASH) + "\n");
         }
 
-        CharacterData.Stats displayedStats = GetDisplayedStats();
-        FieldInfo[] fields = typeof(CharacterData.Stats).GetFields(BindingFlags.Public | BindingFlags.Instance);
-        foreach (FieldInfo field in fields)
-        {
-            names.AppendLine(field.Name);
-            object value = field.GetValue(displayedStats);
-            float floatValue = value is int ? (int)value : (float)value;
+        if (propertyNames) propertyNames.text = allStats[0].ToString();
+        if (propertyValues) propertyValues.text = allStats[1].ToString();
 
-            PropertyAttribute attribute = (PropertyAttribute)PropertyAttribute.GetCustomAttribute(field, typeof(PropertyAttribute));
-            if (attribute != null && field.FieldType == typeof(float))
-            {
-                float neutralValue = field.Name == nameof(CharacterData.Stats.curse) ? 0f : 1f;
-                float percentage = Mathf.Round((floatValue - neutralValue) * 100);
-
-                if (Mathf.Approximately(percentage, 0))
-                {
-                    values.Append("-").Append('\n');
-                }
-                else
-                {
-                    if (percentage > 0) values.Append("+");
-                    values.Append(percentage).Append("%").Append('\n');
-                }
-            }
-            else
-            {
-                values.Append(floatValue).Append('\n');
-            }
-
-        }
-
-        statNames.text = PrettifyNames(names);
-        statValues.text = values.ToString();
-    }
-
-    public static string PrettifyNames(StringBuilder input)
-    {
-        if (input.Length == 0) return string.Empty;
-
-        StringBuilder output = new StringBuilder();
-        char last = '\0';
-        for (int i = 0; i < input.Length; i++)
-        {
-            char c = input[i];
-
-            if (last == '\0' || char.IsWhiteSpace(last))
-            {
-                c = char.ToUpper(c);
-            }
-            else if (char.IsUpper(c))
-            {
-                output.Append(' ');
-            }
-            output.Append(c);
-
-            last = c;
-        }
-        return output.ToString();
+        if (propertyNames && propertyValues) propertyValues.fontSize = propertyNames.fontSize;
     }
 
     void Reset()
