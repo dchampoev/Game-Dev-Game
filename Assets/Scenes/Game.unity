@@ -984,7 +984,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587c2ae714dfd4032b0585a7366ea278, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GameStats::UIInvetoryIconsDisplay
+  m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 1863055131}
   maxSlots: 6
   showLevels: 1
@@ -9237,7 +9237,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587c2ae714dfd4032b0585a7366ea278, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GameStats::UIInvetoryIconsDisplay
+  m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 896395865}
   maxSlots: 6
   showLevels: 0
@@ -9718,7 +9718,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587c2ae714dfd4032b0585a7366ea278, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GameStats::UIInvetoryIconsDisplay
+  m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 535593384}
   maxSlots: 6
   showLevels: 0
@@ -10884,7 +10884,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 587c2ae714dfd4032b0585a7366ea278, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: GameStats::UIInvetoryIconsDisplay
+  m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 246481349}
   maxSlots: 6
   showLevels: 1

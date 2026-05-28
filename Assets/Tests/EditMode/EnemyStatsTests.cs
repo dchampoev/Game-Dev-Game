@@ -132,11 +132,11 @@ public class EnemyStatsTests
             moveSpeed = 2f,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         SetPrivateField(stats, "sprite", renderer);
-        SetPrivateField(stats, "originialColor", Color.white);
+        SetPrivateField(stats, "originalColor", Color.white);
         SetPrivateField(stats, "enemyMovement", movement);
 
         return stats;
@@ -190,7 +190,7 @@ public class EnemyStatsTests
             moveSpeed = 2f,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances(),
+            resistances = new EnemyStats.Resistances(),
             curseBoosts = EnemyStats.Stats.Boostable.health | EnemyStats.Stats.Boostable.damage,
             levelBoosts = EnemyStats.Stats.Boostable.moveSpeed | EnemyStats.Stats.Boostable.knockback
         };
@@ -287,7 +287,7 @@ public class EnemyStatsTests
                 moveSpeed = 0.5f,
                 damage = 3f,
                 knockbackMultiplier = 0.25f,
-                resistances = new EnemyStats.Resitances { freeze = 1f, kill = 1f, debuff = 1f }
+                resistances = new EnemyStats.Resistances { freeze = 1f, kill = 1f, debuff = 1f }
             });
 
         bool result = stats.ApplyBuff(buff);

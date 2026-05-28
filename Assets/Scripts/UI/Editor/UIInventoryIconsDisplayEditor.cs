@@ -9,16 +9,16 @@ using UnityEngine;
 
 #if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
-[CustomEditor(typeof(UIInvetoryIconsDisplay))]
-public class UIInvetoryIconsDisplayEditor : Editor
+[CustomEditor(typeof(UIInventoryIconsDisplay))]
+public class UIInventoryIconsDisplayEditor : Editor
 {
-    UIInvetoryIconsDisplay display;
+    UIInventoryIconsDisplay display;
     int targetedItemListIndex = 0;
     string[] itemListOptions;
 
     private void OnEnable()
     {
-        display = target as UIInvetoryIconsDisplay;
+        display = target as UIInventoryIconsDisplay;
         Type playerInventoryType = typeof(PlayerInventory);
         FieldInfo[] fields = playerInventoryType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -53,7 +53,7 @@ public class UIInvetoryIconsDisplayEditor : Editor
 
     void RegenerateIcons()
     {
-        display = target as UIInvetoryIconsDisplay;
+        display = target as UIInventoryIconsDisplay;
 
         Undo.RegisterCompleteObjectUndo(display, "Regenerate Icons");
 

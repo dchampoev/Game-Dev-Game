@@ -65,7 +65,7 @@ public class EnemyMovementPlayModeTests
             moveSpeed = 1f,
             damage = 3f,
             knockbackMultiplier = knockbackMultiplier,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         SetField(stats, "actualStats", actualStats);
@@ -114,7 +114,7 @@ public class EnemyMovementPlayModeTests
             moveSpeed = 5f,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         CallEnemyStatsStart(enemyStats);
@@ -166,7 +166,7 @@ public class EnemyMovementPlayModeTests
             moveSpeed = 5f,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         CallEnemyStatsStart(enemyStats);

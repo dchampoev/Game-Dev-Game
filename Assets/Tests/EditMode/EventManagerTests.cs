@@ -74,7 +74,7 @@ public class EventManagerTests
     {
         TestEventData data = ScriptableObject.CreateInstance<TestEventData>();
         data.duration = duration;
-        data.probality = 1f;
+        data.probability = 1f;
         data.spawnInterval = new Vector2(1f, 1f);
         return data;
     }

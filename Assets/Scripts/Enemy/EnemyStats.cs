@@ -5,22 +5,22 @@ using UnityEngine;
 public class EnemyStats : EntityStats
 {
     [System.Serializable]
-    public class Resitances
+    public class Resistances
     {
         [Range(-1f, 1f)] public float freeze = 0f, kill = 0f, debuff = 0f;
 
-        public static Resitances operator *(Resitances r, float multiplier)
+        public static Resistances operator *(Resistances r, float multiplier)
         {
-            if (r == null) return new Resitances();
+            if (r == null) return new Resistances();
             r.freeze = Mathf.Min(1, r.freeze * multiplier);
             r.kill = Mathf.Min(1, r.kill * multiplier);
             r.debuff = Mathf.Min(1, r.debuff * multiplier);
             return r;
         }
 
-        public static Resitances operator +(Resitances r, Resitances r2)
+        public static Resistances operator +(Resistances r, Resistances r2)
         {
-            if (r == null) r = new Resitances();
+            if (r == null) r = new Resistances();
             if (r2 == null) return r;
             r.freeze += r2.freeze;
             r.kill = r2.kill;
@@ -28,9 +28,9 @@ public class EnemyStats : EntityStats
             return r;
         }
 
-        public static Resitances operator *(Resitances r1, Resitances r2)
+        public static Resistances operator *(Resistances r1, Resistances r2)
         {
-            if (r1 == null) r1 = new Resitances { freeze = 1f, kill = 1f, debuff = 1f };
+            if (r1 == null) r1 = new Resistances { freeze = 1f, kill = 1f, debuff = 1f };
             if (r2 == null) return r1;
             r1.freeze = Mathf.Min(1, r1.freeze * r2.freeze);
             r1.kill = Mathf.Min(1, r1.kill * r2.kill);
@@ -44,7 +44,7 @@ public class EnemyStats : EntityStats
     {
         public float maxHealth, moveSpeed, damage;
         public float knockbackMultiplier;
-        public Resitances resistances;
+        public Resistances resistances;
 
         [System.Flags]
         public enum Boostable { health = 1, moveSpeed = 2, damage = 4, knockback = 8, resistances = 16 }
@@ -146,7 +146,7 @@ public class EnemyStats : EntityStats
             moveSpeed = 1f,
             damage = 1f,
             knockbackMultiplier = 1,
-            resistances = new Resitances { freeze = 1f, kill = 1f, debuff = 1f }
+            resistances = new Resistances { freeze = 1f, kill = 1f, debuff = 1f }
         };
 
         foreach (Buff buff in activeBuffs)
@@ -166,7 +166,7 @@ public class EnemyStats : EntityStats
         actualStats *= multiplier;
 
         if (actualStats.resistances == null)
-            actualStats.resistances = new Resitances();
+            actualStats.resistances = new Resistances();
     }
 
     public override void TakeDamage(float damage)

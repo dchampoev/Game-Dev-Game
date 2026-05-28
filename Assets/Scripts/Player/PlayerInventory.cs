@@ -23,7 +23,7 @@ public class PlayerInventory : MonoBehaviour
     }
     public List<Slot> weaponSlots = new List<Slot>(6);
     public List<Slot> passiveSlots = new List<Slot>(6);
-    public UIInvetoryIconsDisplay weaponUI, passiveUI;
+    public UIInventoryIconsDisplay weaponUI, passiveUI;
 
     [Header("UI Elements")]
     public List<WeaponData> availableWeapons = new List<WeaponData>();

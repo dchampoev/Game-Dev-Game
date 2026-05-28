@@ -328,7 +328,7 @@ public class ProjectilePlayModeTests
             moveSpeed = 1f,
             damage = 1f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         yield return null;

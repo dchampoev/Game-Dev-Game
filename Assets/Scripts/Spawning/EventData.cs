@@ -1,11 +1,13 @@
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [ExcludeFromCodeCoverage]
 public abstract class EventData : SpawnData
 {
     [Header("Event Data")]
-    [Range(0f, 1f)] public float probality = 1f;
+    [FormerlySerializedAs("probality")]
+    [Range(0f, 1f)] public float probability = 1f;
     [Range(0f, 1f)] public float luckFactor = 1f;
 
     [Tooltip("If a value is specified, this event will occur after the level runs for this amount of time (in seconds).")]
@@ -22,9 +24,9 @@ public abstract class EventData : SpawnData
 
     public bool CheckIfWillHappen(PlayerStats player)
     {
-        if (probality >= 1) return true;
+        if (probability >= 1) return true;
 
-        if (probality / Mathf.Max(1, (player.Stats.luck * luckFactor)) >= Random.Range(0f, 1f))
+        if (probability / Mathf.Max(1, (player.Stats.luck * luckFactor)) >= Random.Range(0f, 1f))
         {
             return true;
         }

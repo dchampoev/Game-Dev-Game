@@ -11,7 +11,7 @@ public abstract class EntityStats : MonoBehaviour
 
     protected SpriteRenderer sprite;
     protected Animator animator;
-    protected Color originialColor;
+    protected Color originalColor;
     protected List<Color> appliedTints = new List<Color>();
     public const float TINT_FACTOR = 4f;
     const float MinAnimationSpeedFactor = 0.000001f;
@@ -65,7 +65,7 @@ public abstract class EntityStats : MonoBehaviour
     protected virtual void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
-        if (sprite) originialColor = sprite.color;
+        if (sprite) originalColor = sprite.color;
         animator = GetComponent<Animator>();
     }
 
@@ -100,7 +100,7 @@ public abstract class EntityStats : MonoBehaviour
     {
         if (!sprite) return;
 
-        Color targetedColor = originialColor;
+        Color targetedColor = originalColor;
         float totalWeight = 1f;
         foreach (Color c in appliedTints)
         {

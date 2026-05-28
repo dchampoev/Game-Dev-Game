@@ -17,7 +17,7 @@ MonoBehaviour:
   spawnInterval: {x: 3, y: 4}
   spawnCount: {x: 20, y: 25}
   duration: 10
-  probality: 0.5
+  probability: 0.5
   luckFactor: 1
   activeAfter: 80
   possibleAngles: 360

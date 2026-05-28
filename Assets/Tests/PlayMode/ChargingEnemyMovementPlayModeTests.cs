@@ -68,7 +68,7 @@ public class ChargingEnemyMovementPlayModeTests
             moveSpeed = speed,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         TestChargingEnemyMovement movement = enemyObject.AddComponent<TestChargingEnemyMovement>();

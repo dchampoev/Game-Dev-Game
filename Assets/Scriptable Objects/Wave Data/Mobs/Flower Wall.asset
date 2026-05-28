@@ -17,7 +17,7 @@ MonoBehaviour:
   spawnInterval: {x: 2, y: 3}
   spawnCount: {x: 40, y: 50}
   duration: 1
-  probality: 1
+  probability: 1
   luckFactor: 1
   activeAfter: 180
   spawnEffectPrefab: {fileID: 0}

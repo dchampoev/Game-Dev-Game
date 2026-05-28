@@ -30,7 +30,7 @@ public class EnemyStatsPlayModeTests
             moveSpeed = 1f,
             damage = 3f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         stats.damageFlashDuration = flash;

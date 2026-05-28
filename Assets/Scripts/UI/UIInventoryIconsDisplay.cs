@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 [RequireComponent(typeof(LayoutGroup))]
 [ExcludeFromCodeCoverage]
-public class UIInvetoryIconsDisplay : MonoBehaviour
+public class UIInventoryIconsDisplay : MonoBehaviour
 {
     public GameObject slotTemplate;
     public uint maxSlots = 6;

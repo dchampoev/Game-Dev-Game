@@ -153,12 +153,12 @@ public class AuraPlayModeTests
             moveSpeed = 1f,
             damage = 1f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
 
         SetPrivateField(enemy, "health", 10f);
         SetPrivateField(enemy, "sprite", spriteRenderer);
-        SetPrivateField(enemy, "originialColor", Color.white);
+        SetPrivateField(enemy, "originalColor", Color.white);
         SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();
@@ -207,12 +207,12 @@ public class AuraPlayModeTests
             moveSpeed = 1f,
             damage = 1f,
             knockbackMultiplier = 1f,
-            resistances = new EnemyStats.Resitances()
+            resistances = new EnemyStats.Resistances()
         };
         
         SetPrivateField(enemy, "health", 10f);
         SetPrivateField(enemy, "sprite", spriteRenderer);
-        SetPrivateField(enemy, "originialColor", Color.white);
+        SetPrivateField(enemy, "originalColor", Color.white);
         SetPrivateField(enemy, "enemyMovement", enemyMovement);
 
         CircleCollider2D enemyCollider = enemyObject.AddComponent<CircleCollider2D>();
