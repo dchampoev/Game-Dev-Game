@@ -114,6 +114,11 @@ public class EnemyStats : EntityStats
     {
         base.Start();
 
+        if (UILevelSelector.globalBuff && !UILevelSelector.globalBuffAffectsEnemies)
+        {
+            ApplyBuff(UILevelSelector.globalBuff);
+        }
+
         RecalculateStats();
         health = actualStats.maxHealth;
     }

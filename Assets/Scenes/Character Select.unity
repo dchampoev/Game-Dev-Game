@@ -667,7 +667,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Game
+          m_StringArgument: Level Select
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &178105240
@@ -683,7 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 1, b: 0.06265998, a: 1}
+  m_Color: {r: 0.19607843, g: 0.8039216, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1811,6 +1811,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::UICharacterSelector
   defaultCharacter: {fileID: 11400000, guid: 297d6b082046c4dddbe11fd5da383cf7, type: 2}
   statsUI: {fileID: 2717134288363126688}
+  startButton: {fileID: 0}
+  selectFirstToggleOnStart: 1
+  keyboardFocusColor: {r: 1, g: 0.86, b: 0.25, a: 1}
+  keyboardFocusDistance: {x: 5, y: -5}
   toggleTemplate: {fileID: 366108496}
   characterNamePath: Character Name
   weaponIconPath: Weapon Icon
@@ -3113,8 +3117,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -6550,10 +6554,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 588559405da3840c486fa56f70a5121b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameStats::UIStatsDisplay
+  updateInEditor: 0
   player: {fileID: 0}
   character: {fileID: 0}
   displayCurrentHealth: 0
-  updateInEditor: 0
 --- !u!1 &2737284756460952107
 GameObject:
   m_ObjectHideFlags: 0

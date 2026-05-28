@@ -8,6 +8,7 @@ public class GameTimer : MonoBehaviour
 {
     float elapsedTime;
     float timeLimit;
+    float clockSpeed = 1f;
     bool timeLimitReached;
     TextMeshProUGUI stopwatchDisplay;
 
@@ -16,16 +17,17 @@ public class GameTimer : MonoBehaviour
     public float ElapsedTime => elapsedTime;
     public string FormattedTime => FormatTime(elapsedTime);
 
-    public void Initialize(float limit, TextMeshProUGUI display)
+    public void Initialize(float limit, TextMeshProUGUI display, float speed = 1f)
     {
         timeLimit = limit;
+        clockSpeed = speed;
         stopwatchDisplay = display;
         UpdateDisplay();
     }
 
     public void Tick(float deltaTime)
     {
-        elapsedTime += deltaTime;
+        elapsedTime += deltaTime * clockSpeed;
         UpdateDisplay();
 
         if (!timeLimitReached && timeLimit > 0f && elapsedTime >= timeLimit)

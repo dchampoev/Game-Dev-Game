@@ -42,13 +42,14 @@ public class UICharacterSelector : MonoBehaviour
         SetupToggleNavigation();
         SetupFocusOutlines();
 
-        if(defaultCharacter) Select(defaultCharacter);
-
         if (selectFirstToggleOnStart)
         {
-            Toggle initialToggle = GetSelectedCharacterToggle();
-            if (!initialToggle && selectableToggles.Count > 0) initialToggle = selectableToggles[0];
+            Toggle initialToggle = selectableToggles.Count > 0 ? selectableToggles[0] : GetSelectedCharacterToggle();
             SelectToggle(initialToggle);
+        }
+        else if (defaultCharacter)
+        {
+            Select(defaultCharacter);
         }
 
         RefreshFocusHighlight();
@@ -94,7 +95,7 @@ public class UICharacterSelector : MonoBehaviour
     public void Select(CharacterData character)
     {
         selected = statsUI.character = character;
-        statsUI.UpdateStatFields();
+        statsUI.UpdateFields();
 
         characterFullName.text = character.FullName;
         characterDescription.text = character.CharacterDescription;

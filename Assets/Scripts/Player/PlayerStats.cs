@@ -101,6 +101,11 @@ public class PlayerStats : EntityStats
     {
         base.Start();
 
+        if(UILevelSelector.globalBuff && !UILevelSelector.globalBuffAffectsPlayer)
+        {
+            ApplyBuff(UILevelSelector.globalBuff);
+        }
+
         inventory.Add(characterData.StartingWeapon);
         experienceCap = GetExperienceCapIncreaseForCurrentLevel();
 

@@ -53,6 +53,11 @@ public class GameManager : MonoBehaviour
     public float timeLimit;
     public TextMeshProUGUI stopwatchDisplay;
 
+    [Header("Level End")]
+    public GameObject reaperPrefab;
+    public float reaperSpawnDistance = 50f;
+    bool levelEnded = false;
+
     public bool isGameOver { get { return currentState == GameState.GameOver; } }
     public bool choosingUpgrade { get { return currentState == GameState.LevelUp; } }
 
@@ -109,8 +114,12 @@ public class GameManager : MonoBehaviour
 
     void InitializeSplitComponents()
     {
+        UILevelSelector.SceneData currentLevel = UILevelSelector.currentLevel;
+        float currentTimeLimit = currentLevel != null ? currentLevel.timeLimit : timeLimit;
+        float currentClockSpeed = currentLevel != null ? currentLevel.clockSpeed : 1f;
+
         gameTimer = GetOrAddComponent<GameTimer>();
-        gameTimer.Initialize(timeLimit, stopwatchDisplay);
+        gameTimer.Initialize(currentTimeLimit, stopwatchDisplay, currentClockSpeed);
         gameTimer.TimeLimitReached -= EndRunByTimeLimit;
         gameTimer.TimeLimitReached += EndRunByTimeLimit;
 
@@ -225,12 +234,56 @@ public class GameManager : MonoBehaviour
         if (levelReachedDisplay) levelReachedDisplay.text = levelReached.ToString();
     }
 
+    public Vector2 GetRandomPlayerLocation()
+    {
+        if (players == null || players.Length == 0) return transform.position;
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            PlayerStats player = players[Random.Range(0, players.Length)];
+            if (player) return player.transform.position;
+        }
+
+        return transform.position;
+    }
+
     void EndRunByTimeLimit()
     {
-        foreach (PlayerStats player in players)
+        if (levelEnded) return;
+
+        levelEnded = true;
+        StopSpawning();
+        KillRemainingEnemies();
+        SpawnReaper();
+    }
+
+    void StopSpawning()
+    {
+        SpawnManager spawnManager = FindFirstObjectByType<SpawnManager>();
+        if (spawnManager) spawnManager.gameObject.SetActive(false);
+
+        EventManager eventManager = FindFirstObjectByType<EventManager>();
+        if (eventManager) eventManager.gameObject.SetActive(false);
+    }
+
+    void KillRemainingEnemies()
+    {
+        EnemyStats[] enemies = FindObjectsByType<EnemyStats>(FindObjectsSortMode.None);
+        foreach (EnemyStats enemy in enemies)
         {
-            if (player) player.Kill();
+            if (enemy) enemy.Kill();
         }
+    }
+
+    void SpawnReaper()
+    {
+        if (!reaperPrefab) return;
+
+        Vector2 reaperOffset = Random.insideUnitCircle.normalized * reaperSpawnDistance;
+        if (reaperOffset == Vector2.zero) reaperOffset = Vector2.right * reaperSpawnDistance;
+
+        Vector2 spawnPosition = GetRandomPlayerLocation() + reaperOffset;
+        Instantiate(reaperPrefab, spawnPosition, Quaternion.identity);
     }
 
     public void StartLevelUp()

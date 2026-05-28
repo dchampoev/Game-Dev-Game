@@ -16,6 +16,13 @@ public class GameManagerSplitTests
             .Invoke(target, null);
     }
 
+    void SetPrivateField(object target, string fieldName, object value)
+    {
+        target.GetType()
+            .GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic)
+            .SetValue(target, value);
+    }
+
     TextMeshProUGUI CreateText(string name = "Text")
     {
         return new GameObject(name).AddComponent<TextMeshProUGUI>();
@@ -47,6 +54,8 @@ public class GameManagerSplitTests
     [SetUp]
     public void SetUp()
     {
+        UILevelSelector.currentLevel = null;
+        UILevelSelector.selectedLevel = -1;
         PlayerPrefs.DeleteKey(LeaderboardKey);
         PlayerPrefs.Save();
     }
@@ -61,6 +70,9 @@ public class GameManagerSplitTests
 
         PlayerPrefs.DeleteKey(LeaderboardKey);
         PlayerPrefs.Save();
+
+        UILevelSelector.currentLevel = null;
+        UILevelSelector.selectedLevel = -1;
     }
 
     [Test]
@@ -87,6 +99,19 @@ public class GameManagerSplitTests
     }
 
     [Test]
+    public void GameTimer_Tick_WhenClockSpeedIsSet_ShouldScaleElapsedTime()
+    {
+        GameTimer timer = new GameObject("Timer").AddComponent<GameTimer>();
+        TextMeshProUGUI display = CreateText("Stopwatch");
+
+        timer.Initialize(0f, display, 2f);
+        timer.Tick(10f);
+
+        Assert.AreEqual(20f, timer.ElapsedTime);
+        Assert.AreEqual("00:20", display.text);
+    }
+
+    [Test]
     public void GameTimer_WhenTimeLimitReached_ShouldFireEventOnlyOnce()
     {
         GameTimer timer = new GameObject("Timer").AddComponent<GameTimer>();
@@ -99,6 +124,34 @@ public class GameManagerSplitTests
         timer.Tick(10f);
 
         Assert.AreEqual(1, eventCount);
+    }
+
+    [Test]
+    public void GameManager_WhenTimeLimitReached_ShouldStopSpawningAndSpawnOneReaper()
+    {
+        GameManager manager = new GameObject("GameManager").AddComponent<GameManager>();
+        manager.reaperPrefab = new GameObject("ReaperPrefab");
+        manager.reaperSpawnDistance = 10f;
+        SetPrivateField(manager, "players", new PlayerStats[0]);
+
+        GameObject spawnManagerObject = new GameObject("SpawnManager");
+        spawnManagerObject.AddComponent<SpawnManager>();
+
+        GameObject eventManagerObject = new GameObject("EventManager");
+        eventManagerObject.AddComponent<EventManager>();
+
+        CallPrivateMethod(manager, "EndRunByTimeLimit");
+        CallPrivateMethod(manager, "EndRunByTimeLimit");
+
+        int reaperCloneCount = 0;
+        foreach (GameObject obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            if (obj.name == "ReaperPrefab(Clone)") reaperCloneCount++;
+        }
+
+        Assert.IsFalse(spawnManagerObject.activeSelf);
+        Assert.IsFalse(eventManagerObject.activeSelf);
+        Assert.AreEqual(1, reaperCloneCount);
     }
 
     [Test]
