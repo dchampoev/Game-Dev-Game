@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.TestTools;
-using System.Collections;
 using UnityEngine.EventSystems;
 
 [ExcludeFromCoverage]
@@ -49,24 +48,22 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI chosenCharacterName;
     public TextMeshProUGUI levelReachedDisplay;
     public TextMeshProUGUI timeSurvivedDisplay;
-    TMP_InputField leaderboardNameInput;
-    GameObject leaderboardNamePrompt;
-    int pendingLeaderboardLevel;
-    float pendingLeaderboardTime;
 
     [Header("Stopwatch")]
     public float timeLimit;
-    float stopwatchTime;
     public TextMeshProUGUI stopwatchDisplay;
 
     public bool isGameOver { get { return currentState == GameState.GameOver; } }
     public bool choosingUpgrade { get { return currentState == GameState.LevelUp; } }
 
     PlayerStats[] players;
+    GameTimer gameTimer;
+    ResultsScreenUI resultsScreenUI;
+    FloatingTextSpawner floatingTextSpawner;
 
     public float GetElapsedTime()
     {
-        return stopwatchTime;
+        return gameTimer ? gameTimer.ElapsedTime : 0f;
     }
 
     public static float GetCumulativeCurse()
@@ -105,7 +102,34 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        InitializeSplitComponents();
         DisableScreens();
+    }
+
+    void InitializeSplitComponents()
+    {
+        gameTimer = GetOrAddComponent<GameTimer>();
+        gameTimer.Initialize(timeLimit, stopwatchDisplay);
+        gameTimer.TimeLimitReached -= EndRunByTimeLimit;
+        gameTimer.TimeLimitReached += EndRunByTimeLimit;
+
+        resultsScreenUI = GetOrAddComponent<ResultsScreenUI>();
+        resultsScreenUI.Initialize(
+            resultsScreen,
+            chosenCharacterImage,
+            chosenCharacterName,
+            levelReachedDisplay,
+            timeSurvivedDisplay);
+
+        floatingTextSpawner = GetOrAddComponent<FloatingTextSpawner>();
+        floatingTextSpawner.Initialize(damageTextCanvas, textFontSize, damageTextFont, referenceCamera);
+    }
+
+    T GetOrAddComponent<T>() where T : Component
+    {
+        T component = GetComponent<T>();
+        return component ? component : gameObject.AddComponent<T>();
     }
 
     void Update()
@@ -114,7 +138,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Gameplay:
                 CheckForPauseAndResume();
-                UpdateStopwatch();
+                gameTimer.Tick(Time.deltaTime);
                 break;
             case GameState.Paused:
                 CheckForPauseAndResume();
@@ -180,156 +204,33 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0f;
-        timeSurvivedDisplay.text = stopwatchDisplay.text;
         ChangeState(GameState.GameOver);
-        DisplayResults();
+        resultsScreenUI.Show(gameTimer.FormattedTime);
     }
 
     public void GameOver(int levelReached)
     {
-        pendingLeaderboardLevel = levelReached;
-        pendingLeaderboardTime = GetElapsedTime();
-        AssignLevelReachedUI(levelReached);
-        GameOver();
-        ShowLeaderboardNamePrompt();
-    }
-
-    void DisplayResults()
-    {
-        resultsScreen.SetActive(true);
-    }
-
-    void ShowLeaderboardNamePrompt()
-    {
-        if (leaderboardNamePrompt == null)
-            CreateLeaderboardNamePrompt();
-
-        leaderboardNamePrompt.SetActive(true);
-        leaderboardNameInput.text = string.Empty;
-        leaderboardNameInput.ActivateInputField();
-
-        if (EventSystem.current != null)
-            EventSystem.current.SetSelectedGameObject(leaderboardNameInput.gameObject);
-    }
-
-    void CreateLeaderboardNamePrompt()
-    {
-        leaderboardNamePrompt = CreateUIObject("Leaderboard Name Prompt", resultsScreen.transform);
-        RectTransform promptRect = leaderboardNamePrompt.GetComponent<RectTransform>();
-        promptRect.anchorMin = Vector2.zero;
-        promptRect.anchorMax = Vector2.one;
-        promptRect.offsetMin = Vector2.zero;
-        promptRect.offsetMax = Vector2.zero;
-
-        Image overlay = leaderboardNamePrompt.AddComponent<Image>();
-        overlay.color = new Color(0f, 0f, 0f, 0.78f);
-
-        GameObject labelObject = CreateUIObject("Leaderboard Name Label", leaderboardNamePrompt.transform);
-        RectTransform labelRect = labelObject.GetComponent<RectTransform>();
-        labelRect.anchorMin = new Vector2(0.5f, 0.5f);
-        labelRect.anchorMax = new Vector2(0.5f, 0.5f);
-        labelRect.pivot = new Vector2(0.5f, 0.5f);
-        labelRect.anchoredPosition = new Vector2(0f, 78f);
-        labelRect.sizeDelta = new Vector2(720f, 70f);
-
-        TextMeshProUGUI label = labelObject.AddComponent<TextMeshProUGUI>();
-        label.text = "Enter a name for the leaderboard";
-        label.fontSize = 38f;
-        label.alignment = TextAlignmentOptions.Center;
-        label.color = Color.white;
-
-        GameObject inputObject = CreateUIObject("Leaderboard Name Input", leaderboardNamePrompt.transform);
-        RectTransform inputRect = inputObject.GetComponent<RectTransform>();
-        inputRect.anchorMin = new Vector2(0.5f, 0.5f);
-        inputRect.anchorMax = new Vector2(0.5f, 0.5f);
-        inputRect.pivot = new Vector2(0.5f, 0.5f);
-        inputRect.anchoredPosition = Vector2.zero;
-        inputRect.sizeDelta = new Vector2(520f, 72f);
-
-        Image inputBackground = inputObject.AddComponent<Image>();
-        inputBackground.color = new Color(0.08f, 0.08f, 0.1f, 1f);
-
-        leaderboardNameInput = inputObject.AddComponent<TMP_InputField>();
-        leaderboardNameInput.targetGraphic = inputBackground;
-        leaderboardNameInput.characterLimit = 16;
-        leaderboardNameInput.lineType = TMP_InputField.LineType.SingleLine;
-        leaderboardNameInput.caretWidth = 4;
-        leaderboardNameInput.caretBlinkRate = 1.25f;
-        leaderboardNameInput.customCaretColor = true;
-        leaderboardNameInput.caretColor = Color.white;
-        leaderboardNameInput.selectionColor = new Color(1f, 1f, 1f, 0.25f);
-        leaderboardNameInput.onSubmit.AddListener(SubmitLeaderboardName);
-
-        GameObject textObject = CreateUIObject("Text", inputObject.transform);
-        RectTransform textRect = textObject.GetComponent<RectTransform>();
-        textRect.anchorMin = Vector2.zero;
-        textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(22f, 8f);
-        textRect.offsetMax = new Vector2(-22f, -8f);
-
-        TextMeshProUGUI inputText = textObject.AddComponent<TextMeshProUGUI>();
-        inputText.fontSize = 36f;
-        inputText.alignment = TextAlignmentOptions.MidlineLeft;
-        inputText.color = Color.white;
-
-        leaderboardNameInput.textComponent = inputText;
-    }
-
-    void SubmitLeaderboardName(string playerName)
-    {
-        string trimmedName = playerName.Trim();
-        if (trimmedName.Length == 0)
-        {
-            leaderboardNameInput.ActivateInputField();
-            return;
-        }
-
-        int score = pendingLeaderboardLevel * 100 + Mathf.FloorToInt(pendingLeaderboardTime);
-        LeaderboardManager.SaveScore(trimmedName, score, pendingLeaderboardTime);
-        leaderboardNamePrompt.SetActive(false);
-    }
-
-    GameObject CreateUIObject(string objectName, Transform parent)
-    {
-        GameObject uiObject = new GameObject(objectName, typeof(RectTransform));
-        uiObject.layer = LayerMask.NameToLayer("UI");
-        uiObject.transform.SetParent(parent, false);
-        return uiObject;
+        Time.timeScale = 0f;
+        ChangeState(GameState.GameOver);
+        resultsScreenUI.ShowWithLeaderboardPrompt(levelReached, GetElapsedTime(), gameTimer.FormattedTime);
     }
 
     public void AssignChosenCharacterUI(CharacterData chosenCharacter)
     {
-        if (!chosenCharacter) return;
-
-        chosenCharacterImage.sprite = chosenCharacter.Icon;
-        chosenCharacterName.text = chosenCharacter.Name;
+        resultsScreenUI.SetChosenCharacter(chosenCharacter);
     }
 
     public void AssignLevelReachedUI(int levelReached)
     {
-        levelReachedDisplay.text = levelReached.ToString();
+        if (levelReachedDisplay) levelReachedDisplay.text = levelReached.ToString();
     }
 
-    void UpdateStopwatch()
+    void EndRunByTimeLimit()
     {
-        stopwatchTime += Time.deltaTime;
-
-        UpdateStopwatchDisplay();
-
-        if (stopwatchTime >= timeLimit)
+        foreach (PlayerStats player in players)
         {
-            foreach(PlayerStats player in players)
-            {
-                player.SendMessage("Die");
-            }
+            if (player) player.Kill();
         }
-    }
-
-    void UpdateStopwatchDisplay()
-    {
-        int minutes = Mathf.FloorToInt(stopwatchTime / 60f);
-        int seconds = Mathf.FloorToInt(stopwatchTime % 60f);
-        stopwatchDisplay.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     public void StartLevelUp()
@@ -352,7 +253,10 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             foreach (PlayerStats player in players)
             {
-                player.SendMessage("RemoveAndApplyUpgrades");
+                if (!player) continue;
+
+                PlayerInventory inventory = player.GetComponent<PlayerInventory>();
+                if (inventory) inventory.RemoveAndApplyUpgrades();
             }
 
             SelectFirstLevelUpButton();
@@ -393,69 +297,11 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
     }
 
-    IEnumerator GenerateFloatingTextCoroutine(string text, Transform target, float duration = 1f, float speed = 50f)
-    {
-        if (instance == null || instance.damageTextCanvas == null)
-            yield break;
-
-        GameObject floatingTextObj = new GameObject("Damage Floating Text");
-        RectTransform rectTransform = floatingTextObj.AddComponent<RectTransform>();
-        TextMeshProUGUI textComponent = floatingTextObj.AddComponent<TextMeshProUGUI>();
-
-        textComponent.text = text;
-        textComponent.horizontalAlignment = HorizontalAlignmentOptions.Center;
-        textComponent.verticalAlignment = VerticalAlignmentOptions.Middle;
-        textComponent.fontSize = textFontSize;
-
-        if (damageTextFont != null)
-            textComponent.font = damageTextFont;
-
-        Vector3 worldPos = Vector3.zero;
-        if (target != null)
-            worldPos = target.position;
-
-        rectTransform.position = referenceCamera.WorldToScreenPoint(worldPos);
-
-        Destroy(floatingTextObj, duration);
-
-        floatingTextObj.transform.SetParent(instance.damageTextCanvas.transform, false);
-        floatingTextObj.transform.SetAsFirstSibling();
-
-        WaitForEndOfFrame wait = new WaitForEndOfFrame();
-        float elapsedTime = 0f;
-        float yOffset = 0f;
-        Vector3 lastKnownPosition = worldPos;
-
-        while (elapsedTime < duration)
-        {
-            if (floatingTextObj == null || rectTransform == null || textComponent == null)
-                yield break;
-
-            if (target != null)
-                lastKnownPosition = target.position;
-
-            Color c = textComponent.color;
-            textComponent.color = new Color(c.r, c.g, c.b, 1f - elapsedTime / duration);
-
-            yOffset += speed * Time.deltaTime;
-            rectTransform.position = referenceCamera.WorldToScreenPoint(
-                lastKnownPosition + new Vector3(0f, yOffset, 0f)
-            );
-
-            yield return wait;
-            elapsedTime += Time.deltaTime;
-        }
-
-        if (floatingTextObj != null)
-            Destroy(floatingTextObj);
-    }
-
     public static void GenerateFloatingText(string text, Transform target, float duration = 1f, float speed = 1f)
     {
         if (instance == null) return;
-        if (!instance.damageTextCanvas) return;
-        if (!instance.referenceCamera) instance.referenceCamera = Camera.main;
+        if (!instance.floatingTextSpawner) return;
 
-        instance.StartCoroutine(instance.GenerateFloatingTextCoroutine(text, target, duration, speed));
+        instance.floatingTextSpawner.Show(text, target, duration, speed);
     }
 }
