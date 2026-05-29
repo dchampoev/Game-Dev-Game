@@ -160,3 +160,12 @@ MonoBehaviour:
   - dropName: Health Potion
     dropPrefab: {fileID: 2621639212542214925, guid: a430dbdb901ce4390b1e4d009892b9e3, type: 3}
     dropRate: 50
+  - dropName: Small Coin
+    dropPrefab: {fileID: 3209618322874599607, guid: f22c3520608ac4a78951f77d8639f55f, type: 3}
+    dropRate: 50
+  - dropName: Medium Coin
+    dropPrefab: {fileID: 2097600235994263916, guid: 7bacb195ea0904aa6a5dfcbd2a48a61a, type: 3}
+    dropRate: 10
+  - dropName: Big Coin
+    dropPrefab: {fileID: 7953917055421192704, guid: bd5e6bf940afa44e798465b991ec82d7, type: 3}
+    dropRate: 1

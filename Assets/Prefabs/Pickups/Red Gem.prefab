@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7880281569134082933
+--- !u!1 &8368989066321366195
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6951102726225606757}
-  - component: {fileID: 6281861532251647620}
-  - component: {fileID: 8268974929280836777}
-  - component: {fileID: -7684562876810771928}
-  - component: {fileID: 4999535432936164788}
+  - component: {fileID: 2273752683264309445}
+  - component: {fileID: 2050489491435122034}
+  - component: {fileID: 1496061956337239595}
+  - component: {fileID: -2628940313537063785}
+  - component: {fileID: 3808049332612572941}
   m_Layer: 0
-  m_Name: Terrain Sprite Sheet_15
-  m_TagString: Prop
+  m_Name: Red Gem
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6951102726225606757
+--- !u!4 &2273752683264309445
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7880281569134082933}
+  m_GameObject: {fileID: 8368989066321366195}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -35,14 +35,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &6281861532251647620
+--- !u!212 &2050489491435122034
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7880281569134082933}
+  m_GameObject: {fileID: 8368989066321366195}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -80,27 +80,27 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1913981165
-  m_SortingLayer: 1
+  m_SortingLayerID: 1369980945
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 1920228130, guid: 433b40c72911c4680bdc09c9396f10a7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -1302744866, guid: 2aa7ef9164b83491c9b662040f2a7720, type: 3}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.65625, y: 0.65625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!58 &8268974929280836777
+--- !u!58 &1496061956337239595
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7880281569134082933}
+  m_GameObject: {fileID: 8368989066321366195}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -124,48 +124,56 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.47
---- !u!114 &-7684562876810771928
+  m_Radius: 0.328125
+--- !u!50 &-2628940313537063785
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8368989066321366195}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &3808049332612572941
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7880281569134082933}
+  m_GameObject: {fileID: 8368989066321366195}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e01ba4012f4af4bd7a422c531c98c9b4, type: 3}
+  m_Script: {fileID: 11500000, guid: c6ccdf5775d4848a6896f49565d6e8cc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BreakableProps
-  health: 10
---- !u!114 &4999535432936164788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7880281569134082933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0caa45d764844aba8b3e5daaf757752, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DropRateManager
-  active: 0
-  drops:
-  - dropName: Health Potion
-    dropPrefab: {fileID: 2621639212542214925, guid: a430dbdb901ce4390b1e4d009892b9e3, type: 3}
-    dropRate: 50
-  - dropName: Small Coin
-    dropPrefab: {fileID: 3209618322874599607, guid: f22c3520608ac4a78951f77d8639f55f, type: 3}
-    dropRate: 50
-  - dropName: Medium Coin
-    dropPrefab: {fileID: 2097600235994263916, guid: 7bacb195ea0904aa6a5dfcbd2a48a61a, type: 3}
-    dropRate: 10
-  - dropName: Big Coin
-    dropPrefab: {fileID: 7953917055421192704, guid: bd5e6bf940afa44e798465b991ec82d7, type: 3}
-    dropRate: 1
+  m_EditorClassIdentifier: GameStats::Pickup
+  sortingActive: 1
+  minimumDistance: 0.2
+  lifespan: 0.5
+  bobbingAnimation:
+    frequency: 2
+    direction: {x: 0, y: 0.3}
+  experience: 50
+  health: 0

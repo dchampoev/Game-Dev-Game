@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     GameTimer gameTimer;
     ResultsScreenUI resultsScreenUI;
     FloatingTextSpawner floatingTextSpawner;
+    bool runCoinsSaved;
 
     public float GetElapsedTime()
     {
@@ -212,6 +213,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        SaveRunCoins();
         Time.timeScale = 0f;
         ChangeState(GameState.GameOver);
         resultsScreenUI.Show(gameTimer.FormattedTime);
@@ -219,6 +221,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(int levelReached)
     {
+        SaveRunCoins();
         Time.timeScale = 0f;
         ChangeState(GameState.GameOver);
         resultsScreenUI.ShowWithLeaderboardPrompt(levelReached, GetElapsedTime(), gameTimer.FormattedTime);
@@ -232,6 +235,37 @@ public class GameManager : MonoBehaviour
     public void AssignLevelReachedUI(int levelReached)
     {
         if (levelReachedDisplay) levelReachedDisplay.text = levelReached.ToString();
+    }
+
+    public void SaveRunCoins()
+    {
+        if (runCoinsSaved) return;
+
+        runCoinsSaved = true;
+        if (players == null || players.Length == 0)
+        {
+            players = FindObjectsByType<PlayerStats>(FindObjectsSortMode.None);
+        }
+
+        bool savedFromPlayer = false;
+        foreach (PlayerStats player in players)
+        {
+            if (!player) continue;
+
+            PlayerCollector collector = player.GetComponentInChildren<PlayerCollector>();
+            if (!collector) continue;
+
+            collector.SaveCoinsToStash();
+            savedFromPlayer = true;
+        }
+
+        if (savedFromPlayer) return;
+
+        PlayerCollector[] collectors = FindObjectsByType<PlayerCollector>(FindObjectsSortMode.None);
+        foreach (PlayerCollector collector in collectors)
+        {
+            if (collector) collector.SaveCoinsToStash();
+        }
     }
 
     public Vector2 GetRandomPlayerLocation()

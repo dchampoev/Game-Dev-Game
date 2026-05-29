@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEditor;
-using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -133,15 +132,6 @@ public class UILevelSelectorEditor : Editor
             }
 
             selector.selectableToggles.Add(toggle);
-
-            for (int j = 0; j < toggle.onValueChanged.GetPersistentEventCount(); j++)
-            {
-                if (toggle.onValueChanged.GetPersistentMethodName(j) == "Select")
-                {
-                    UnityEventTools.RemovePersistentListener(toggle.onValueChanged, j);
-                }
-            }
-            UnityEventTools.AddIntPersistentListener(toggle.onValueChanged, selector.Select, i);
         }
 
         EditorUtility.SetDirty(selector);

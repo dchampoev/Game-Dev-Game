@@ -46,6 +46,7 @@ public class UILevelSelector : MonoBehaviour
         if (!selectLevelButton) selectLevelButton = FindButton("Select Level");
         if (!backButton) backButton = FindButton("Back to Character Select");
 
+        ConfigureToggleCallbacks();
         SetupToggleNavigation();
         UpdateButtonNavigation();
         SetupFocusOutlines();
@@ -176,6 +177,22 @@ public class UILevelSelector : MonoBehaviour
         }
 
         return Mathf.Approximately(sum, 0);
+    }
+
+    void ConfigureToggleCallbacks()
+    {
+        for (int i = 0; i < selectableToggles.Count; i++)
+        {
+            Toggle toggle = selectableToggles[i];
+            if (!toggle) continue;
+
+            int levelIndex = i;
+            toggle.onValueChanged.RemoveAllListeners();
+            toggle.onValueChanged.AddListener(isOn =>
+            {
+                if (isOn) Select(levelIndex);
+            });
+        }
     }
 
     void SetupToggleNavigation()

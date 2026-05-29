@@ -155,6 +155,47 @@ public class GameManagerSplitTests
     }
 
     [Test]
+    public void SaveRunCoins_WhenCalledMultipleTimes_ShouldAddCoinsToStashOnce()
+    {
+        GameManager manager = new GameObject("GameManager").AddComponent<GameManager>();
+
+        GameObject playerObject = new GameObject("Player");
+        PlayerStats player = playerObject.AddComponent<PlayerStats>();
+
+        GameObject collectorObject = new GameObject("Collector");
+        collectorObject.transform.SetParent(playerObject.transform);
+        PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
+        collector.AddCoins(25f);
+
+        SaveManager.LastLoadedGameData.coins = 100f;
+        SetPrivateField(manager, "players", new[] { player });
+
+        manager.SaveRunCoins();
+        manager.SaveRunCoins();
+
+        Assert.AreEqual(125f, SaveManager.LastLoadedGameData.coins);
+        Assert.AreEqual(0f, collector.GetCoins());
+    }
+
+    [Test]
+    public void SaveRunCoins_WhenPlayersAreNotCached_ShouldFindCollectorsInScene()
+    {
+        GameManager manager = new GameObject("GameManager").AddComponent<GameManager>();
+
+        GameObject collectorObject = new GameObject("Collector");
+        PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
+        collector.AddCoins(1f);
+
+        SaveManager.LastLoadedGameData.coins = 0f;
+        SetPrivateField(manager, "players", new PlayerStats[0]);
+
+        manager.SaveRunCoins();
+
+        Assert.AreEqual(1f, SaveManager.LastLoadedGameData.coins);
+        Assert.AreEqual(0f, collector.GetCoins());
+    }
+
+    [Test]
     public void ResultsScreen_ShowWithLeaderboardPrompt_ShouldPopulateLevelTimeAndSelectInput()
     {
         CreateEventSystem();
