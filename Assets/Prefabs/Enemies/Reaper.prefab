@@ -252,3 +252,9 @@ MonoBehaviour:
   - dropName: Blue gem
     dropPrefab: {fileID: 8368989066321366195, guid: fca43c83c466f48c1bc0e391d32ebbde, type: 3}
     dropRate: 50
+  - dropName: Red gem
+    dropPrefab: {fileID: 8368989066321366195, guid: 7d2f5c8ca07fa41c09fbebbb30c7c6ee, type: 3}
+    dropRate: 100
+  - dropName: Big Coin
+    dropPrefab: {fileID: 7953917055421192704, guid: bd5e6bf940afa44e798465b991ec82d7, type: 3}
+    dropRate: 100

@@ -70,4 +70,37 @@ public class LeaderboardManagerTests
         Assert.AreEqual(110, result.entries[0].score);
         Assert.AreEqual(20, result.entries[9].score);
     }
+
+    [Test]
+    public void SaveScore_WhenNewEntryBeatsTenthPlace_ShouldInsertAndDropOldTenth()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            LeaderboardManager.SaveScore("Hero" + i, 100 - i, i);
+        }
+
+        LeaderboardManager.SaveScore("Better", 101, 99f);
+
+        LeaderboardManager.EntryList result = LeaderboardManager.Load();
+
+        Assert.AreEqual(10, result.entries.Count);
+        Assert.AreEqual("Better", result.entries[0].characterName);
+        Assert.False(result.entries.Exists(entry => entry.characterName == "Hero9"));
+    }
+
+    [Test]
+    public void SaveScore_WhenNewEntryDoesNotReachTopTen_ShouldDiscardEntry()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            LeaderboardManager.SaveScore("Hero" + i, 100 - i, i);
+        }
+
+        LeaderboardManager.SaveScore("TooLow", 1, 99f);
+
+        LeaderboardManager.EntryList result = LeaderboardManager.Load();
+
+        Assert.AreEqual(10, result.entries.Count);
+        Assert.False(result.entries.Exists(entry => entry.characterName == "TooLow"));
+    }
 }

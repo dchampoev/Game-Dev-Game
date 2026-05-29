@@ -10,6 +10,10 @@ public class TitleScreenLeaderboard : MonoBehaviour
 {
     const string TitleSceneName = "Title Screen";
     const string RootName = "Leaderboard Panel";
+    const int MaxVisibleEntries = 10;
+    const float EntryRowHeight = 28f;
+    const float EntryRowSpacing = 2f;
+    const float EntriesViewportHeight = 340f;
 
     static readonly Color PanelColor = new Color(0.03f, 0.04f, 0.08f, 0.82f);
     static readonly Color HeaderColor = new Color(1f, 0.87f, 0.42f, 1f);
@@ -69,16 +73,13 @@ public class TitleScreenLeaderboard : MonoBehaviour
         layout.padding = new RectOffset(24, 24, 22, 22);
         layout.spacing = 10f;
         layout.childControlWidth = true;
-        layout.childControlHeight = false;
+        layout.childControlHeight = true;
         layout.childForceExpandWidth = true;
         layout.childForceExpandHeight = false;
 
-        ContentSizeFitter fitter = panelObject.AddComponent<ContentSizeFitter>();
-        fitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-
         CreateText("Leaderboard Title", panel, "LEADERBOARD", 34f, HeaderColor, TextAlignmentOptions.Center, 42f);
         CreateHeaderRow(panel);
-        PopulateEntries(panel);
+        PopulateEntries(CreateEntriesScrollView(panel));
     }
 
     static void CreateHeaderRow(RectTransform parent)
@@ -99,16 +100,59 @@ public class TitleScreenLeaderboard : MonoBehaviour
             return;
         }
 
-        int count = Mathf.Min(entries.Count, 10);
+        int count = Mathf.Min(entries.Count, MaxVisibleEntries);
         for (int i = 0; i < count; i++)
         {
             LeaderboardManager.Entry entry = entries[i];
-            RectTransform row = CreateRow($"Leaderboard Entry {i + 1}", parent, 36f);
-            CreateText("Rank", row, (i + 1).ToString(), 22f, TextColor, TextAlignmentOptions.Left, 36f, 42f, 0f);
-            CreateText("Character", row, CleanCharacterName(entry.characterName), 22f, TextColor, TextAlignmentOptions.Left, 36f, -1f, 2f);
-            CreateText("Score", row, entry.score.ToString(), 22f, TextColor, TextAlignmentOptions.Right, 36f, -1f, 1f);
-            CreateText("Time", row, FormatTime(entry.survivedTime), 22f, TextColor, TextAlignmentOptions.Right, 36f, -1f, 1f);
+            RectTransform row = CreateRow($"Leaderboard Entry {i + 1}", parent, EntryRowHeight);
+            CreateText("Rank", row, (i + 1).ToString(), 20f, TextColor, TextAlignmentOptions.Left, EntryRowHeight, 42f, 0f);
+            CreateText("Character", row, CleanCharacterName(entry.characterName), 20f, TextColor, TextAlignmentOptions.Left, EntryRowHeight, -1f, 2f);
+            CreateText("Score", row, entry.score.ToString(), 20f, TextColor, TextAlignmentOptions.Right, EntryRowHeight, -1f, 1f);
+            CreateText("Time", row, FormatTime(entry.survivedTime), 20f, TextColor, TextAlignmentOptions.Right, EntryRowHeight, -1f, 1f);
         }
+    }
+
+    static RectTransform CreateEntriesScrollView(RectTransform parent)
+    {
+        GameObject viewportObject = CreateUIObject("Leaderboard Entries Viewport", parent);
+        RectTransform viewport = viewportObject.GetComponent<RectTransform>();
+
+        Image viewportImage = viewportObject.AddComponent<Image>();
+        viewportImage.color = new Color(1f, 1f, 1f, 0f);
+        viewportObject.AddComponent<RectMask2D>();
+
+        LayoutElement viewportLayout = viewportObject.AddComponent<LayoutElement>();
+        viewportLayout.flexibleHeight = 1f;
+        viewportLayout.minHeight = EntriesViewportHeight;
+        viewportLayout.preferredHeight = EntriesViewportHeight;
+
+        GameObject contentObject = CreateUIObject("Leaderboard Entries Content", viewport);
+        RectTransform content = contentObject.GetComponent<RectTransform>();
+        content.anchorMin = new Vector2(0f, 1f);
+        content.anchorMax = new Vector2(1f, 1f);
+        content.pivot = new Vector2(0.5f, 1f);
+        content.anchoredPosition = Vector2.zero;
+        content.sizeDelta = Vector2.zero;
+
+        VerticalLayoutGroup contentLayout = contentObject.AddComponent<VerticalLayoutGroup>();
+        contentLayout.spacing = EntryRowSpacing;
+        contentLayout.childControlWidth = true;
+        contentLayout.childControlHeight = true;
+        contentLayout.childForceExpandWidth = true;
+        contentLayout.childForceExpandHeight = false;
+
+        ContentSizeFitter contentFitter = contentObject.AddComponent<ContentSizeFitter>();
+        contentFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        ScrollRect scrollRect = viewportObject.AddComponent<ScrollRect>();
+        scrollRect.content = content;
+        scrollRect.viewport = viewport;
+        scrollRect.horizontal = false;
+        scrollRect.vertical = true;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.scrollSensitivity = 18f;
+
+        return content;
     }
 
     static RectTransform CreateRow(string name, RectTransform parent, float height)
@@ -124,6 +168,7 @@ public class TitleScreenLeaderboard : MonoBehaviour
         layout.childForceExpandHeight = true;
 
         LayoutElement layoutElement = rowObject.AddComponent<LayoutElement>();
+        layoutElement.minHeight = height;
         layoutElement.preferredHeight = height;
 
         return row;
