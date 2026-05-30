@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
         Gameplay,
         Paused,
         GameOver,
-        LevelUp
+        LevelUp,
+        TreasureChest
     }
 
     public GameState currentState;
@@ -107,6 +108,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+            return;
         }
 
         InitializeSplitComponents();
@@ -155,6 +157,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
             case GameState.LevelUp:
+            case GameState.TreasureChest:
                 break;
             default:
                 Debug.LogWarning("Unhandled game state: " + currentState);
@@ -167,6 +170,20 @@ public class GameManager : MonoBehaviour
         previousState = currentState;
         currentState = newState;
     }
+
+    public void StartTreasureChest()
+    {
+        ChangeState(GameState.TreasureChest);
+        StopPlayerMovement();
+        Time.timeScale = 0f;
+    }
+
+    public void EndTreasureChest()
+    {
+        Time.timeScale = 1f;
+        ChangeState(GameState.Gameplay);
+    }
+
     public void PauseGame()
     {
         if (currentState != GameState.Paused)
@@ -209,14 +226,6 @@ public class GameManager : MonoBehaviour
         if (pauseMenu) pauseMenu.SetActive(false);
         if (resultsScreen) resultsScreen.SetActive(false);
         if (levelUpScreen) levelUpScreen.SetActive(false);
-    }
-
-    public void GameOver()
-    {
-        SaveRunCoins();
-        Time.timeScale = 0f;
-        ChangeState(GameState.GameOver);
-        resultsScreenUI.Show(gameTimer.FormattedTime);
     }
 
     public void GameOver(int levelReached)
@@ -324,14 +333,7 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.LevelUp);
 
-        foreach (PlayerStats player in players)
-        {
-            if (player == null) continue;
-
-            PlayerMovement movement = player.GetComponent<PlayerMovement>();
-            if(movement != null)
-                movement.StopMovement();
-        }
+        StopPlayerMovement();
 
         if (levelUpScreen.activeSelf) stackedLevelUps++;
         else
@@ -366,6 +368,18 @@ public class GameManager : MonoBehaviour
     void SelectFirstLevelUpButton()
     {
         SelectFirstButton(levelUpScreen);
+    }
+
+    void StopPlayerMovement()
+    {
+        foreach (PlayerStats player in players)
+        {
+            if (player == null) continue;
+
+            PlayerMovement movement = player.GetComponent<PlayerMovement>();
+            if (movement != null)
+                movement.StopMovement();
+        }
     }
 
     void SelectFirstPauseButton()

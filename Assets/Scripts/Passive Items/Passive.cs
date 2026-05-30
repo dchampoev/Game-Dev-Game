@@ -25,9 +25,9 @@ public class Passive : Item
         return currentBoosts;
     }
 
-    public override bool DoLevelUp()
+    public override bool DoLevelUp(bool updateUI = true)
     {
-        base.DoLevelUp();
+        if (!base.DoLevelUp(updateUI)) return false;
 
         if (!CanLevelUp())
         {

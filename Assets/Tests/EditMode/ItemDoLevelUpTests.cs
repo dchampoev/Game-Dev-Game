@@ -7,7 +7,7 @@ public class ItemDoLevelUpTests
     {
         public bool wasCalled = false;
 
-        public override bool AttemptEvolution(ItemData.Evolution evo, int levelUpAmount = 1)
+        public override bool AttemptEvolution(ItemData.Evolution evo, int levelUpAmount = 1, bool updateUI = true)
         {
             wasCalled = true;
             return true;

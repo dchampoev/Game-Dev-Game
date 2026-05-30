@@ -121,7 +121,7 @@ public class PlayerInventory : MonoBehaviour
         };
     }
 
-    public int Add(WeaponData data)
+    public int Add(WeaponData data, bool updateUI = true)
     {
         int slotIndex = -1;
 
@@ -148,7 +148,7 @@ public class PlayerInventory : MonoBehaviour
             spawnedWeapon.OnEquip();
 
             weaponSlots[slotIndex].Assign(spawnedWeapon);
-            if (weaponUI != null) weaponUI.Refresh();
+            RefreshInventoryUI(updateUI);
 
             if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
@@ -161,7 +161,7 @@ public class PlayerInventory : MonoBehaviour
         return -1;
     }
 
-    public int Add(PassiveData data)
+    public int Add(PassiveData data, bool updateUI = true)
     {
         int slotIndex = -1;
 
@@ -184,7 +184,7 @@ public class PlayerInventory : MonoBehaviour
         spawnedPassive.Initialize(data);
 
         passiveSlots[slotIndex].Assign(spawnedPassive);
-        if (passiveUI != null) passiveUI.Refresh();
+        RefreshInventoryUI(updateUI);
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
 
@@ -193,29 +193,35 @@ public class PlayerInventory : MonoBehaviour
         return slotIndex;
     }
 
-    public int Add(ItemData data)
+    public int Add(ItemData data, bool updateUI = true)
     {
         return data switch
         {
-            WeaponData weaponData => Add(weaponData),
-            PassiveData passiveData => Add(passiveData),
+            WeaponData weaponData => Add(weaponData, updateUI),
+            PassiveData passiveData => Add(passiveData, updateUI),
             _ => -1
         };
     }
 
-    public bool LevelUp(Item item)
+    public bool LevelUp(ItemData data, bool updateUI = true)
+    {
+        Item item = Get(data);
+        if (item) return LevelUp(item, updateUI);
+        return false;
+    }
+
+    public bool LevelUp(Item item, bool updateUI = true)
     {
         if (item == null)
             return false;
 
-        if (!item.DoLevelUp())
+        if (!item.DoLevelUp(updateUI))
         {
             Debug.LogWarning(string.Format("Failed to level up {0}", item.name));
             return false;
         }
 
-        if (weaponUI != null) weaponUI.Refresh();
-        if (passiveUI != null) passiveUI.Refresh();
+        RefreshInventoryUI(updateUI);
 
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
             GameManager.instance.EndLevelUp();
@@ -308,5 +314,137 @@ public class PlayerInventory : MonoBehaviour
         }
 
         return count;
+    }
+
+    void RefreshInventoryUI(bool updateUI)
+    {
+        if (!updateUI) return;
+
+        if (weaponUI) weaponUI.Refresh();
+        if (passiveUI) passiveUI.Refresh();
+    }
+
+    public int GetSlotsLeft<T>() where T : Item
+    {
+        Slot[] slots = GetSlots<T>();
+        return slots == null ? 0 : GetSlotsLeft(new List<Slot>(slots));
+    }
+
+    public int GetSlotsLeftFor<T>() where T : ItemData
+    {
+        Slot[] slots = GetSlotsFor<T>();
+        return slots == null ? 0 : GetSlotsLeft(new List<Slot>(slots));
+    }
+
+    public Slot[] GetSlots<T>() where T : Item
+    {
+        if (typeof(T) == typeof(Passive))
+        {
+            return passiveSlots.ToArray();
+        }
+
+        if (typeof(T) == typeof(Weapon))
+        {
+            return weaponSlots.ToArray();
+        }
+
+        if (typeof(T) == typeof(Item))
+        {
+            List<Slot> allSlots = new List<Slot>(passiveSlots);
+            allSlots.AddRange(weaponSlots);
+            return allSlots.ToArray();
+        }
+
+        Debug.LogWarning(string.Format("Invalid type parameter {0} in GetSlots<T>()", typeof(T)));
+        return null;
+    }
+
+    public Slot[] GetSlotsFor<T>() where T : ItemData
+    {
+        if (typeof(T) == typeof(PassiveData))
+        {
+            return passiveSlots.ToArray();
+        }
+        else if (typeof(T) == typeof(WeaponData))
+        {
+            return weaponSlots.ToArray();
+        }
+        else if (typeof(T) == typeof(ItemData))
+        {
+            List<Slot> allSlots = new List<Slot>(passiveSlots);
+            allSlots.AddRange(weaponSlots);
+            return allSlots.ToArray();
+        }
+        Debug.LogWarning(string.Format("Invalid type parameter {0} in GetSlotsFor<T>()", typeof(T)));
+        return null;
+    }
+
+    public T[] GetAvailable<T>() where T : ItemData
+    {
+        if (typeof(T) == typeof(PassiveData))
+        {
+            return availablePassives.ToArray() as T[];
+        }
+        else if (typeof(T) == typeof(WeaponData))
+        {
+            return availableWeapons.ToArray() as T[];
+        }
+        else if (typeof(T) == typeof(ItemData))
+        {
+            List<ItemData> allAvailable = new List<ItemData>(availablePassives);
+            allAvailable.AddRange(availableWeapons);
+            return allAvailable.ToArray() as T[];
+        }
+
+        Debug.LogWarning(string.Format("Invalid type parameter {0} in GetAvailable<T>()", typeof(T)));
+        return null;
+    }
+
+    public T[] GetUnowned<T>() where T : ItemData
+    {
+        var available = GetAvailable<T>();
+
+        if (available == null || available.Length == 0) return new T[0];
+
+        List<T> list = new List<T>(available);
+
+        var slots = GetSlotsFor<T>();
+        if (slots != null)
+        {
+            foreach (Slot s in slots)
+            {
+                if (s?.item?.data != null && list.Contains(s.item.data as T))
+                {
+                    list.Remove(s.item.data as T);
+                }
+            }
+        }
+        return list.ToArray();
+    }
+
+    public T[] GetEvolvables<T>() where T : Item
+    {
+        List<T> result = new List<T>();
+        Slot[] slots = GetSlots<T>();
+        if (slots == null) return result.ToArray();
+
+        foreach (Slot s in slots)
+        {
+            if (s?.item is T t && t.CanEvolve(0).Length > 0) result.Add(t);
+        }
+        return result.ToArray();
+    }
+
+    public T[] GetUpgradables<T>() where T : Item
+    {
+        List<T> result = new List<T>();
+        Slot[] slots = GetSlots<T>();
+        if (slots == null) return result.ToArray();
+
+        foreach (Slot s in slots)
+        {
+            if (s?.item is T t && t.CanLevelUp()) result.Add(t);
+        }
+        return result.ToArray();
     }
 }

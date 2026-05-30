@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f262c3cc309264b1396054a9bb4f3e30
+guid: e5deaa937d1d84684bea8a0f1b1f7044
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6316942781454338528
-    second: Garlic Sprite (1)_0
+      213: -5435975157608329870
+    second: Garlic Sprite 16x16_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Garlic Sprite (1)_0
+      name: Garlic Sprite 16x16_0
       rect:
         serializedVersion: 2
-        x: 3
-        y: 3
-        width: 26
-        height: 27
+        x: 1
+        y: 1
+        width: 14
+        height: 14
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0e9cd0bbdf94aa750800000000000000
-      internalID: 6316942781454338528
+      spriteID: 27d48ea25698f84b0800000000000000
+      internalID: -5435975157608329870
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Garlic Sprite (1)_0: 6316942781454338528
+      Garlic Sprite 16x16_0: -5435975157608329870
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

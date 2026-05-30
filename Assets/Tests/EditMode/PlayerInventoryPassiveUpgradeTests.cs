@@ -186,7 +186,7 @@ public class PlayerInventoryPassiveUpgradeTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        bool result = inventory.LevelUp(null);
+        bool result = inventory.LevelUp((Item)null);
 
         Assert.IsFalse(result);
     }

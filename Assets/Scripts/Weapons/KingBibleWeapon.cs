@@ -60,9 +60,10 @@ public class KingBibleWeapon : ProjectileWeapon
         return true;
     }
 
-    public override bool DoLevelUp()
+    public override bool DoLevelUp(bool updateUI = true)
     {
-        base.DoLevelUp();
+        if (!base.DoLevelUp(updateUI)) return false;
+
         SpawnRing(owner);
         ActivateCooldown(false);
         return true;

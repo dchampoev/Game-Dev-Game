@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class TreasureChestTests
         public int attemptCalls;
         public bool attemptResult;
 
-        public override bool AttemptEvolution(ItemData.Evolution evolutionData, int levelUpAmount = 1)
+        public override bool AttemptEvolution(ItemData.Evolution evolutionData, int levelUpAmount = 1, bool updateUI = true)
         {
             attemptCalls++;
             return attemptResult;
@@ -30,6 +31,7 @@ public class TreasureChestTests
     private WeaponData CreateWeaponData(ItemData.Evolution[] evolutions = null)
     {
         WeaponData data = ScriptableObject.CreateInstance<WeaponData>();
+        data.maxLevel = 3;
         data.baseStats = new Weapon.Stats
         {
             name = "Weapon",
@@ -43,12 +45,133 @@ public class TreasureChestTests
 
     private ItemData.Evolution CreateEvolution(ItemData.Evolution.Condition condition)
     {
+        WeaponData outcomeData = ScriptableObject.CreateInstance<WeaponData>();
+        outcomeData.baseStats = new Weapon.Stats
+        {
+            name = "Evolution Outcome",
+            description = "Evolution Outcome"
+        };
+        outcomeData.linearGrowth = new Weapon.Stats[0];
+        outcomeData.randomGrowth = new Weapon.Stats[0];
+
         return new ItemData.Evolution
         {
+            evolutionLevel = 3,
             condition = condition,
             catalysts = new ItemData.Evolution.Config[0],
-            outcome = new ItemData.Evolution.Config()
+            outcome = new ItemData.Evolution.Config
+            {
+                itemType = outcomeData,
+                level = 1
+            }
         };
+    }
+
+    private TreasureChestDropProfile CreateDropProfile(int numberOfItems = 1)
+    {
+        TreasureChestDropProfile profile = ScriptableObject.CreateInstance<TreasureChestDropProfile>();
+        profile.numberOfItems = numberOfItems;
+        profile.baseDropChance = 100f;
+        return profile;
+    }
+
+    private TreasureChest CreateChest(bool evolutionUnlocked = false)
+    {
+        GameObject chestObject = new GameObject("Chest");
+        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        chest.possibleDrops = TreasureChest.DropType.Evolution;
+        chest.dropProfiles = new[] { CreateDropProfile() };
+
+        if (evolutionUnlocked)
+        {
+            chest.evolutionUnlockTime = 0f;
+        }
+
+        return chest;
+    }
+
+    private void SetFieldInHierarchy(object target, string fieldName, object value)
+    {
+        System.Type type = target.GetType();
+
+        while (type != null)
+        {
+            FieldInfo field = type.GetField(
+                fieldName,
+                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+            );
+
+            if (field != null)
+            {
+                field.SetValue(target, value);
+                return;
+            }
+
+            type = type.BaseType;
+        }
+
+        Assert.Fail($"Field '{fieldName}' was not found.");
+    }
+
+    private void SetFieldOnType(System.Type type, object target, string fieldName, object value)
+    {
+        FieldInfo field = type.GetField(
+            fieldName,
+            BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public
+        );
+
+        Assert.NotNull(field, $"Field '{fieldName}' was not found on {type.Name}.");
+        field.SetValue(target, value);
+    }
+
+    private void SetCurrentStats(Weapon weapon, Weapon.Stats stats)
+    {
+        SetFieldOnType(typeof(Weapon), weapon, "currentStats", stats);
+    }
+
+    private TestWeapon CreateWeapon(PlayerInventory inventory, ItemData.Evolution[] evolutions, bool attemptResult)
+    {
+        GameObject weaponObject = new GameObject("Weapon");
+        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
+
+        WeaponData weaponData = CreateWeaponData(evolutions);
+
+        weapon.data = weaponData;
+        weapon.maxLevel = weaponData.maxLevel;
+        weapon.currentLevel = weaponData.maxLevel;
+        weapon.attemptResult = attemptResult;
+
+        SetFieldOnType(typeof(Item), weapon, "data", weaponData);
+        SetFieldInHierarchy(weapon, "evolutionData", evolutions ?? new ItemData.Evolution[0]);
+        SetCurrentStats(weapon, weaponData.baseStats);
+
+        inventory.weaponSlots.Add(new PlayerInventory.Slot
+        {
+            item = weapon
+        });
+
+        return weapon;
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        foreach (GameObject obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
+        foreach (WeaponData data in Resources.FindObjectsOfTypeAll<WeaponData>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
+
+        foreach (TreasureChestDropProfile data in Resources.FindObjectsOfTypeAll<TreasureChestDropProfile>())
+        {
+            Object.DestroyImmediate(data, true);
+        }
+
+        TreasureChest.totalPickups = 0;
     }
 
     [Test]
@@ -56,17 +179,9 @@ public class TreasureChestTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
-        weapon.data = CreateWeaponData(null);
+        TestWeapon weapon = CreateWeapon(inventory, null, false);
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = weapon
-        });
-
-        GameObject chestObject = new GameObject("Chest");
-        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        TreasureChest chest = CreateChest(true);
 
         chest.OpenTreasureChest(inventory, false);
 
@@ -78,20 +193,12 @@ public class TreasureChestTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
-        weapon.data = CreateWeaponData(new[]
+        TestWeapon weapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.auto)
-        });
+        }, false);
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = weapon
-        });
-
-        GameObject chestObject = new GameObject("Chest");
-        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        TreasureChest chest = CreateChest(true);
 
         chest.OpenTreasureChest(inventory, false);
 
@@ -103,21 +210,12 @@ public class TreasureChestTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        GameObject weaponObject = new GameObject("Weapon");
-        TestWeapon weapon = weaponObject.AddComponent<TestWeapon>();
-        weapon.attemptResult = false;
-        weapon.data = CreateWeaponData(new[]
+        TestWeapon weapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.treasureChest)
-        });
+        }, false);
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = weapon
-        });
-
-        GameObject chestObject = new GameObject("Chest");
-        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        TreasureChest chest = CreateChest(true);
 
         chest.OpenTreasureChest(inventory, false);
 
@@ -129,34 +227,17 @@ public class TreasureChestTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        GameObject firstWeaponObject = new GameObject("FirstWeapon");
-        TestWeapon firstWeapon = firstWeaponObject.AddComponent<TestWeapon>();
-        firstWeapon.attemptResult = true;
-        firstWeapon.data = CreateWeaponData(new[]
+        TestWeapon firstWeapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.treasureChest)
-        });
+        }, true);
 
-        GameObject secondWeaponObject = new GameObject("SecondWeapon");
-        TestWeapon secondWeapon = secondWeaponObject.AddComponent<TestWeapon>();
-        secondWeapon.attemptResult = false;
-        secondWeapon.data = CreateWeaponData(new[]
+        TestWeapon secondWeapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.treasureChest)
-        });
+        }, false);
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = firstWeapon
-        });
-
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = secondWeapon
-        });
-
-        GameObject chestObject = new GameObject("Chest");
-        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        TreasureChest chest = CreateChest(true);
 
         chest.OpenTreasureChest(inventory, false);
 
@@ -169,38 +250,62 @@ public class TreasureChestTests
     {
         PlayerInventory inventory = CreateInventory();
 
-        GameObject firstWeaponObject = new GameObject("FirstWeapon");
-        TestWeapon firstWeapon = firstWeaponObject.AddComponent<TestWeapon>();
-        firstWeapon.attemptResult = false;
-        firstWeapon.data = CreateWeaponData(new[]
+        TestWeapon firstWeapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.treasureChest)
-        });
+        }, false);
 
-        GameObject secondWeaponObject = new GameObject("SecondWeapon");
-        TestWeapon secondWeapon = secondWeaponObject.AddComponent<TestWeapon>();
-        secondWeapon.attemptResult = false;
-        secondWeapon.data = CreateWeaponData(new[]
+        TestWeapon secondWeapon = CreateWeapon(inventory, new[]
         {
             CreateEvolution(ItemData.Evolution.Condition.treasureChest)
-        });
+        }, false);
 
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = firstWeapon
-        });
-
-        inventory.weaponSlots.Add(new PlayerInventory.Slot
-        {
-            item = secondWeapon
-        });
-
-        GameObject chestObject = new GameObject("Chest");
-        TreasureChest chest = chestObject.AddComponent<TreasureChest>();
+        TreasureChest chest = CreateChest(true);
 
         chest.OpenTreasureChest(inventory, false);
 
         Assert.AreEqual(1, firstWeapon.attemptCalls);
         Assert.AreEqual(1, secondWeapon.attemptCalls);
+    }
+
+    [Test]
+    public void OpenTreasureChest_WhenEvolutionIsLocked_ShouldNotAttemptEvolution()
+    {
+        PlayerInventory inventory = CreateInventory();
+
+        TestWeapon weapon = CreateWeapon(inventory, new[]
+        {
+            CreateEvolution(ItemData.Evolution.Condition.treasureChest)
+        }, true);
+
+        TreasureChest chest = CreateChest(false);
+
+        chest.OpenTreasureChest(inventory, false);
+
+        Assert.AreEqual(0, weapon.attemptCalls);
+    }
+
+    [Test]
+    public void OpenTreasureChest_WhenEvolutionAlreadyAwarded_ShouldNotAwardSecondEvolution()
+    {
+        PlayerInventory inventory = CreateInventory();
+
+        TestWeapon firstWeapon = CreateWeapon(inventory, new[]
+        {
+            CreateEvolution(ItemData.Evolution.Condition.treasureChest)
+        }, true);
+
+        TestWeapon secondWeapon = CreateWeapon(inventory, new[]
+        {
+            CreateEvolution(ItemData.Evolution.Condition.treasureChest)
+        }, true);
+
+        TreasureChest chest = CreateChest(true);
+
+        chest.OpenTreasureChest(inventory, false);
+        chest.OpenTreasureChest(inventory, false);
+
+        Assert.AreEqual(1, firstWeapon.attemptCalls);
+        Assert.AreEqual(0, secondWeapon.attemptCalls);
     }
 }

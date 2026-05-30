@@ -83,9 +83,10 @@ public abstract class Weapon : Item
         }
     }
 
-    public override bool DoLevelUp()
+    public override bool DoLevelUp(bool updateUI = true)
     {
-        base.DoLevelUp();
+        if (!base.DoLevelUp(updateUI)) return false;
+
         if (!CanLevelUp())
         {
             Debug.LogWarning(string.Format("Cannot level up {0} to Level {1}, max level of {2} already reached.", name, currentLevel, data.maxLevel));

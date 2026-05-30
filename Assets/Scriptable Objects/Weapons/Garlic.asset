@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab39000a1972a4bf19a087695f8f6938, type: 3}
   m_Name: Garlic
   m_EditorClassIdentifier: GameStats::WeaponData
-  icon: {fileID: 21300000, guid: f262c3cc309264b1396054a9bb4f3e30, type: 3}
+  icon: {fileID: 21300000, guid: e5deaa937d1d84684bea8a0f1b1f7044, type: 3}
   maxLevel: 8
   evolutionData:
   - name: Soul Eater

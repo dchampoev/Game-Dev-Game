@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab39000a1972a4bf19a087695f8f6938, type: 3}
   m_Name: Knife
   m_EditorClassIdentifier: GameStats::WeaponData
-  icon: {fileID: 959323415, guid: ee8514ee803b9490d86927983331eb33, type: 3}
+  icon: {fileID: 21300000, guid: f1143bc3776a94744af26849a99c0211, type: 3}
   maxLevel: 8
   evolutionData:
   - name: Thousand Edge

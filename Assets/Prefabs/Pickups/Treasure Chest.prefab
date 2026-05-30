@@ -151,3 +151,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c8a3555df354d56ac9e49abebc703e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GameStats::TreasureChest
+  possibleDrops: -1
+  dropCountType: 1
+  dropProfiles:
+  - {fileID: 11400000, guid: bc91031cc90db450baf850ff446c2bfb, type: 2}
+  - {fileID: 11400000, guid: f6b922c734abc47cf9a0c462f4d77ab4, type: 2}
+  - {fileID: 11400000, guid: 55662c7a65f3a407bb7bde11877b3e20, type: 2}
+  defaultDropSprite: {fileID: 2290397429888000610, guid: b4af760ea80c247e89456b90e8f052e6, type: 3}
+  evolutionUnlockTime: 600

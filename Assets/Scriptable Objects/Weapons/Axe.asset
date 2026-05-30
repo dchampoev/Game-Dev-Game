@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab39000a1972a4bf19a087695f8f6938, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: GameStats::WeaponData
-  icon: {fileID: 1425214793, guid: ee8514ee803b9490d86927983331eb33, type: 3}
+  icon: {fileID: 21300000, guid: 6aebec4999685418fa0b641a339c9114, type: 3}
   maxLevel: 8
   evolutionData: []
   behaviour: AxeWeapon
@@ -37,9 +37,11 @@ MonoBehaviour:
     cooldown: 4
     projectileInterval: 0.2
     knockback: 1
+    critChance: 0
     number: 1
     piercing: 3
     maxInstances: 0
+    appliedBuffs: []
   linearGrowth:
   - name: Level 2
     description: Fires 1 more projectile.
@@ -61,9 +63,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 1
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 3
     description: Base Damage up by 20.
     projectilePrefab: {fileID: 0}
@@ -84,9 +88,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 4
     description: Passes through 2 more enemies.
     projectilePrefab: {fileID: 0}
@@ -107,9 +113,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 2
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 5
     description: Fires 1 more projectile.
     projectilePrefab: {fileID: 0}
@@ -130,9 +138,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 1
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 6
     description: Base Damage up by 20.
     projectilePrefab: {fileID: 0}
@@ -153,9 +163,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 7
     description: Passes through 2 more enemies.
     projectilePrefab: {fileID: 0}
@@ -176,9 +188,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 2
     maxInstances: 0
+    appliedBuffs: []
   - name: Level 8
     description: Base Damage up by 20.
     projectilePrefab: {fileID: 0}
@@ -199,9 +213,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   randomGrowth:
   - name: 
     description: 
@@ -223,9 +239,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 1
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: 
     description: 
     projectilePrefab: {fileID: 0}
@@ -246,9 +264,11 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
+    appliedBuffs: []
   - name: 
     description: 
     projectilePrefab: {fileID: 0}
@@ -269,6 +289,8 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 2
     maxInstances: 0
+    appliedBuffs: []

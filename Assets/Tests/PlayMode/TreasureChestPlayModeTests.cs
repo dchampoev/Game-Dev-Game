@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 public class TreasureChestPlayModeTests
 {
     [UnityTest]
-    public IEnumerator OnTriggerEnter2D_WhenPlayerTouchesChest_ShouldDestroyChest()
+    public IEnumerator OnTriggerEnter2D_WhenPlayerTouchesChest_ShouldDeactivateChest()
     {
         GameObject player = new GameObject("Player");
         player.tag = "Player";
@@ -36,7 +36,7 @@ public class TreasureChestPlayModeTests
         yield return new WaitForFixedUpdate();
         yield return null;
 
-        Assert.IsTrue(chestObject == null);
+        Assert.IsFalse(chestObject.activeSelf);
 
         if (player != null)
             Object.Destroy(player);
