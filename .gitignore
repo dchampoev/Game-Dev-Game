@@ -61,6 +61,7 @@
 ExportedObj/
 .consulo/
 *.csproj
+!CodeQuality.csproj
 *.unityproj
 *.sln
 *.suo

@@ -25,14 +25,8 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Validate runtime code formatting
-        run: dotnet format GameStats.csproj --verify-no-changes --no-restore --verbosity minimal
-
-      - name: Validate EditMode test formatting
-        run: dotnet format EditModeTests.csproj --verify-no-changes --no-restore --verbosity minimal
-
-      - name: Validate PlayMode test formatting
-        run: dotnet format PlayModeTests.csproj --verify-no-changes --no-restore --verbosity minimal
+      - name: Validate C# formatting
+        run: dotnet format whitespace CodeQuality.csproj --verify-no-changes --verbosity minimal
 
   test:
     name: Run Unity tests
