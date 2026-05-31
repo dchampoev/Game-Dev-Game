@@ -263,3 +263,6 @@ MonoBehaviour:
   - dropName: Medium Coin
     dropPrefab: {fileID: 2097600235994263916, guid: 7bacb195ea0904aa6a5dfcbd2a48a61a, type: 3}
     dropRate: 1
+  - dropName: Treasure Chest
+    dropPrefab: {fileID: 4254462943046021590, guid: 9de29e18eb7a649cbab989ed54563bc0, type: 3}
+    dropRate: 0.5

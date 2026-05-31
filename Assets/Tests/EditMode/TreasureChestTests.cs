@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 public class TreasureChestTests
 {
@@ -14,6 +15,13 @@ public class TreasureChestTests
         {
             attemptCalls++;
             return attemptResult;
+        }
+
+        public override ItemData.Evolution[] CanEvolve(int levelUpAmount = 1)
+        {
+            return data != null && data.evolutionData != null
+                ? data.evolutionData
+                : new ItemData.Evolution[0];
         }
     }
 
@@ -90,6 +98,17 @@ public class TreasureChestTests
         return chest;
     }
 
+    private void CallOnTriggerEnter(TreasureChest chest, Collider2D collider)
+    {
+        MethodInfo method = typeof(TreasureChest).GetMethod(
+            "OnTriggerEnter2D",
+            BindingFlags.Instance | BindingFlags.NonPublic
+        );
+
+        Assert.NotNull(method);
+        method.Invoke(chest, new object[] { collider });
+    }
+
     private void SetFieldInHierarchy(object target, string fieldName, object value)
     {
         System.Type type = target.GetType();
@@ -161,15 +180,8 @@ public class TreasureChestTests
             Object.DestroyImmediate(obj);
         }
 
-        foreach (WeaponData data in Resources.FindObjectsOfTypeAll<WeaponData>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
-
-        foreach (TreasureChestDropProfile data in Resources.FindObjectsOfTypeAll<TreasureChestDropProfile>())
-        {
-            Object.DestroyImmediate(data, true);
-        }
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<WeaponData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<TreasureChestDropProfile>();
 
         TreasureChest.totalPickups = 0;
     }
@@ -186,6 +198,69 @@ public class TreasureChestTests
         chest.OpenTreasureChest(inventory, false);
 
         Assert.AreEqual(0, weapon.attemptCalls);
+    }
+
+    [Test]
+    public void GetCurrentDropProfile_WhenNoProfilesAssigned_ShouldWarnAndReturnNull()
+    {
+        TreasureChest chest = CreateChest(true);
+        chest.dropProfiles = new TreasureChestDropProfile[0];
+
+        LogAssert.Expect(LogType.Warning, "No drop profiles assigned to the treasure chest.");
+
+        Assert.IsNull(chest.GetCurrentDropProfile());
+    }
+
+    [Test]
+    public void GetNextDropProfile_WhenSequential_ShouldUsePickupCountAndClampToLastProfile()
+    {
+        TreasureChest chest = CreateChest(true);
+        TreasureChestDropProfile firstProfile = CreateDropProfile(1);
+        TreasureChestDropProfile secondProfile = CreateDropProfile(3);
+        chest.dropProfiles = new[] { firstProfile, secondProfile };
+
+        TreasureChest.totalPickups = 1;
+
+        Assert.AreSame(secondProfile, chest.GetNextDropProfile());
+
+        TreasureChest.totalPickups = 99;
+
+        Assert.AreSame(secondProfile, chest.GetNextDropProfile());
+    }
+
+    [Test]
+    public void GetNextDropProfile_WhenRandomProfilesHaveNoWeight_ShouldKeepCurrentProfile()
+    {
+        TreasureChest chest = CreateChest(true);
+        TreasureChestDropProfile firstProfile = CreateDropProfile(1);
+        TreasureChestDropProfile secondProfile = CreateDropProfile(3);
+        firstProfile.baseDropChance = 0f;
+        secondProfile.baseDropChance = 0f;
+        chest.dropCountType = TreasureChest.DropCountType.random;
+        chest.dropProfiles = new[] { firstProfile, secondProfile };
+
+        Assert.AreSame(firstProfile, chest.GetNextDropProfile());
+    }
+
+    [Test]
+    public void OnTriggerEnter2D_WhenPlayerInventoryEnters_ShouldDisableChestAndAdvancePickupCount()
+    {
+        TreasureChest chest = CreateChest(true);
+        chest.dropProfiles = new[]
+        {
+            CreateDropProfile(1),
+            CreateDropProfile(3)
+        };
+
+        PlayerInventory inventory = CreateInventory();
+        BoxCollider2D collider = inventory.gameObject.AddComponent<BoxCollider2D>();
+
+        LogAssert.Expect(LogType.Warning, "UITreasureChest instance not found in the scene.");
+
+        CallOnTriggerEnter(chest, collider);
+
+        Assert.IsFalse(chest.gameObject.activeSelf);
+        Assert.AreEqual(1, TreasureChest.totalPickups);
     }
 
     [Test]
