@@ -10,7 +10,8 @@ public class CoinPickup : Pickup
         if (target != null)
         {
             collector = target.GetComponentInChildren<PlayerCollector>();
-            if (collector != null) collector.AddCoins(coins);
+            if (collector != null)
+                collector.AddCoins(coins);
         }
     }
 }

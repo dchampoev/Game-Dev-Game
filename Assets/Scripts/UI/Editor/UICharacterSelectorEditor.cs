@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 #if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
@@ -37,7 +37,8 @@ public class UICharacterSelectorEditor : Editor
         for (int i = selector.toggleTemplate.transform.parent.childCount - 1; i >= 0; i--)
         {
             Toggle toggle = selector.toggleTemplate.transform.parent.GetChild(i).GetComponent<Toggle>();
-            if (toggle == selector.toggleTemplate) continue;
+            if (toggle == selector.toggleTemplate)
+                continue;
             Undo.DestroyObjectImmediate(toggle.gameObject);
         }
 

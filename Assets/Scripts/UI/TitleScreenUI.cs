@@ -40,7 +40,8 @@ public class TitleScreenUI : MonoBehaviour
 
     void SelectInstructionsButtonIfNeeded()
     {
-        if (!instructionsScreen) return;
+        if (!instructionsScreen)
+            return;
 
         GameObject selectedObject = EventSystem.current ? EventSystem.current.currentSelectedGameObject : null;
         if (selectedObject && selectedObject.activeInHierarchy && selectedObject.transform.IsChildOf(instructionsScreen.transform))
@@ -57,7 +58,8 @@ public class TitleScreenUI : MonoBehaviour
 
     void SelectButton(Button button)
     {
-        if (!button || !EventSystem.current) return;
+        if (!button || !EventSystem.current)
+            return;
 
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(button.gameObject);

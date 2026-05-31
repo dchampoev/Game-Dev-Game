@@ -1,8 +1,8 @@
-using System.Text;
 using System;
 using System.Reflection;
-using UnityEngine;
+using System.Text;
 using TMPro;
+using UnityEngine;
 
 public class UISceneDataDisplay : UIPropertyDisplay
 {
@@ -20,9 +20,12 @@ public class UISceneDataDisplay : UIPropertyDisplay
 
     public override void UpdateFields()
     {
-        if (!propertyNames && transform.childCount > 0) propertyNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        if (!propertyValues && transform.childCount > 1) propertyValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-        if (!extraStageInfo && transform.childCount > 2) extraStageInfo = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        if (!propertyNames && transform.childCount > 0)
+            propertyNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        if (!propertyValues && transform.childCount > 1)
+            propertyValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        if (!extraStageInfo && transform.childCount > 2)
+            extraStageInfo = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
 
         StringBuilder[] allStats = GetProperties(
             BindingFlags.Public | BindingFlags.Instance,
@@ -42,8 +45,10 @@ public class UISceneDataDisplay : UIPropertyDisplay
         Type enemyStats = typeof(EnemyStats.Stats);
         ProcessValue(data.enemyModifier.maxHealth, allStats[1], enemyStats.GetField("maxHealth"));
 
-        if (propertyNames) propertyNames.text = allStats[0].ToString();
-        if (propertyValues) propertyValues.text = allStats[1].ToString();
+        if (propertyNames)
+            propertyNames.text = allStats[0].ToString();
+        if (propertyValues)
+            propertyValues.text = allStats[1].ToString();
     }
 
     protected override bool IsFieldShown(FieldInfo field)
@@ -65,7 +70,8 @@ public class UISceneDataDisplay : UIPropertyDisplay
 
     protected override StringBuilder ProcessName(string name, StringBuilder output, FieldInfo field)
     {
-        if (field.Name == "extraNotes") return output;
+        if (field.Name == "extraNotes")
+            return output;
         return base.ProcessName(name, output, field);
     }
 
@@ -84,7 +90,8 @@ public class UISceneDataDisplay : UIPropertyDisplay
                 {
                     string minutes = Mathf.FloorToInt(floatValue / 60).ToString();
                     string seconds = (floatValue % 60).ToString();
-                    if (floatValue % 60 < 10) seconds = "0" + seconds;
+                    if (floatValue % 60 < 10)
+                        seconds = "0" + seconds;
                     output.Append(minutes).Append(':').Append(seconds).Append('\n');
                 }
                 return output;
@@ -107,21 +114,24 @@ public class UISceneDataDisplay : UIPropertyDisplay
                 }
                 else
                 {
-                    if (percentage > 0) output.Append('+');
+                    if (percentage > 0)
+                        output.Append('+');
                     output.Append(percentage).Append('%').Append('\n');
                 }
                 return output;
 
             case "extraNotes":
-                if (value == null) return output;
+                if (value == null)
+                    return output;
                 string message = value.ToString();
-                if (extraStageInfo) extraStageInfo.text = string.IsNullOrWhiteSpace(message) ? DASH : message;
+                if (extraStageInfo)
+                    extraStageInfo.text = string.IsNullOrWhiteSpace(message) ? DASH : message;
                 return output;
         }
 
         return base.ProcessValue(value, output, field);
     }
-    
+
     void Reset()
     {
         levelSelector = FindAnyObjectByType<UILevelSelector>();

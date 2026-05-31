@@ -21,9 +21,12 @@ public class FloatingTextSpawner : MonoBehaviour
 
     public void Show(string text, Transform target, float duration = 1f, float speed = 1f)
     {
-        if (!damageTextCanvas) return;
-        if (!referenceCamera) referenceCamera = Camera.main;
-        if (!referenceCamera) return;
+        if (!damageTextCanvas)
+            return;
+        if (!referenceCamera)
+            referenceCamera = Camera.main;
+        if (!referenceCamera)
+            return;
 
         StartCoroutine(GenerateFloatingTextCoroutine(text, target, duration, speed));
     }

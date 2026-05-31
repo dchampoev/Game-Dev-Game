@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using UnityEngine.TestTools;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.TestTools;
+using UnityEngine.UI;
 
 [ExcludeFromCoverage]
 public class GameManager : MonoBehaviour
@@ -75,7 +75,8 @@ public class GameManager : MonoBehaviour
 
     public static float GetCumulativeCurse()
     {
-        if (!instance) return 1;
+        if (!instance)
+            return 1;
 
         float totalCurse = 0;
         foreach (PlayerStats player in instance.players)
@@ -87,7 +88,8 @@ public class GameManager : MonoBehaviour
 
     public static int GetCumulativeLevels()
     {
-        if (!instance) return 1;
+        if (!instance)
+            return 1;
 
         int totalLevel = 0;
         foreach (PlayerStats player in instance.players)
@@ -223,9 +225,12 @@ public class GameManager : MonoBehaviour
 
     void DisableScreens()
     {
-        if (pauseMenu) pauseMenu.SetActive(false);
-        if (resultsScreen) resultsScreen.SetActive(false);
-        if (levelUpScreen) levelUpScreen.SetActive(false);
+        if (pauseMenu)
+            pauseMenu.SetActive(false);
+        if (resultsScreen)
+            resultsScreen.SetActive(false);
+        if (levelUpScreen)
+            levelUpScreen.SetActive(false);
     }
 
     public void GameOver(int levelReached)
@@ -243,12 +248,14 @@ public class GameManager : MonoBehaviour
 
     public void AssignLevelReachedUI(int levelReached)
     {
-        if (levelReachedDisplay) levelReachedDisplay.text = levelReached.ToString();
+        if (levelReachedDisplay)
+            levelReachedDisplay.text = levelReached.ToString();
     }
 
     public void SaveRunCoins()
     {
-        if (runCoinsSaved) return;
+        if (runCoinsSaved)
+            return;
 
         runCoinsSaved = true;
         if (players == null || players.Length == 0)
@@ -259,32 +266,38 @@ public class GameManager : MonoBehaviour
         bool savedFromPlayer = false;
         foreach (PlayerStats player in players)
         {
-            if (!player) continue;
+            if (!player)
+                continue;
 
             PlayerCollector collector = player.GetComponentInChildren<PlayerCollector>();
-            if (!collector) continue;
+            if (!collector)
+                continue;
 
             collector.SaveCoinsToStash();
             savedFromPlayer = true;
         }
 
-        if (savedFromPlayer) return;
+        if (savedFromPlayer)
+            return;
 
         PlayerCollector[] collectors = FindObjectsByType<PlayerCollector>(FindObjectsSortMode.None);
         foreach (PlayerCollector collector in collectors)
         {
-            if (collector) collector.SaveCoinsToStash();
+            if (collector)
+                collector.SaveCoinsToStash();
         }
     }
 
     public Vector2 GetRandomPlayerLocation()
     {
-        if (players == null || players.Length == 0) return transform.position;
+        if (players == null || players.Length == 0)
+            return transform.position;
 
         for (int i = 0; i < players.Length; i++)
         {
             PlayerStats player = players[Random.Range(0, players.Length)];
-            if (player) return player.transform.position;
+            if (player)
+                return player.transform.position;
         }
 
         return transform.position;
@@ -292,7 +305,8 @@ public class GameManager : MonoBehaviour
 
     void EndRunByTimeLimit()
     {
-        if (levelEnded) return;
+        if (levelEnded)
+            return;
 
         levelEnded = true;
         StopSpawning();
@@ -303,10 +317,12 @@ public class GameManager : MonoBehaviour
     void StopSpawning()
     {
         SpawnManager spawnManager = FindFirstObjectByType<SpawnManager>();
-        if (spawnManager) spawnManager.gameObject.SetActive(false);
+        if (spawnManager)
+            spawnManager.gameObject.SetActive(false);
 
         EventManager eventManager = FindFirstObjectByType<EventManager>();
-        if (eventManager) eventManager.gameObject.SetActive(false);
+        if (eventManager)
+            eventManager.gameObject.SetActive(false);
     }
 
     void KillRemainingEnemies()
@@ -314,16 +330,19 @@ public class GameManager : MonoBehaviour
         EnemyStats[] enemies = FindObjectsByType<EnemyStats>(FindObjectsSortMode.None);
         foreach (EnemyStats enemy in enemies)
         {
-            if (enemy) enemy.Kill();
+            if (enemy)
+                enemy.Kill();
         }
     }
 
     void SpawnReaper()
     {
-        if (!reaperPrefab) return;
+        if (!reaperPrefab)
+            return;
 
         Vector2 reaperOffset = Random.insideUnitCircle.normalized * reaperSpawnDistance;
-        if (reaperOffset == Vector2.zero) reaperOffset = Vector2.right * reaperSpawnDistance;
+        if (reaperOffset == Vector2.zero)
+            reaperOffset = Vector2.right * reaperSpawnDistance;
 
         Vector2 spawnPosition = GetRandomPlayerLocation() + reaperOffset;
         Instantiate(reaperPrefab, spawnPosition, Quaternion.identity);
@@ -335,17 +354,20 @@ public class GameManager : MonoBehaviour
 
         StopPlayerMovement();
 
-        if (levelUpScreen.activeSelf) stackedLevelUps++;
+        if (levelUpScreen.activeSelf)
+            stackedLevelUps++;
         else
         {
             levelUpScreen.SetActive(true);
             Time.timeScale = 0f;
             foreach (PlayerStats player in players)
             {
-                if (!player) continue;
+                if (!player)
+                    continue;
 
                 PlayerInventory inventory = player.GetComponent<PlayerInventory>();
-                if (inventory) inventory.RemoveAndApplyUpgrades();
+                if (inventory)
+                    inventory.RemoveAndApplyUpgrades();
             }
 
             SelectFirstLevelUpButton();
@@ -374,7 +396,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (PlayerStats player in players)
         {
-            if (player == null) continue;
+            if (player == null)
+                continue;
 
             PlayerMovement movement = player.GetComponent<PlayerMovement>();
             if (movement != null)
@@ -389,10 +412,12 @@ public class GameManager : MonoBehaviour
 
     void SelectFirstButton(GameObject root)
     {
-        if (!root || !EventSystem.current) return;
+        if (!root || !EventSystem.current)
+            return;
 
         Button firstButton = root.GetComponentInChildren<Button>();
-        if (!firstButton) return;
+        if (!firstButton)
+            return;
 
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(firstButton.gameObject);
@@ -400,8 +425,10 @@ public class GameManager : MonoBehaviour
 
     public static void GenerateFloatingText(string text, Transform target, float duration = 1f, float speed = 1f)
     {
-        if (instance == null) return;
-        if (!instance.floatingTextSpawner) return;
+        if (instance == null)
+            return;
+        if (!instance.floatingTextSpawner)
+            return;
 
         instance.floatingTextSpawner.Show(text, target, duration, speed);
     }

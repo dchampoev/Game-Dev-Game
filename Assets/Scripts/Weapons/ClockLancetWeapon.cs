@@ -9,11 +9,11 @@ public class ClockLancetWeapon : ProjectileWeapon
 
     protected override bool Attack(int attackCount = 1)
     {
-        if(base.Attack(1))
+        if (base.Attack(1))
         {
             currentAngle += turnAngle;
 
-            if(Mathf.Abs(currentAngle) > 180f)
+            if (Mathf.Abs(currentAngle) > 180f)
                 currentAngle = -Mathf.Sign(currentAngle) * (360f - Mathf.Abs(currentAngle));
 
             return true;

@@ -35,7 +35,8 @@ public abstract class EntityStats : MonoBehaviour
             nextTick = buffStats.tickInterval;
             this.variant = variant;
 
-            if (buffStats.effect) effect = Instantiate(buffStats.effect, owner.transform);
+            if (buffStats.effect)
+                effect = Instantiate(buffStats.effect, owner.transform);
             if (buffStats.tint.a > 0)
             {
                 tint = buffStats.tint;
@@ -65,18 +66,21 @@ public abstract class EntityStats : MonoBehaviour
     protected virtual void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
-        if (sprite) originalColor = sprite.color;
+        if (sprite)
+            originalColor = sprite.color;
         animator = GetComponent<Animator>();
     }
 
     public virtual void ApplyAnimationMultiplier(float factor)
     {
-        if (animator) animator.speed *= GetSafeAnimationFactor(factor);
+        if (animator)
+            animator.speed *= GetSafeAnimationFactor(factor);
     }
 
     public virtual void RemoveAnimationMultiplier(float factor)
     {
-        if (animator) animator.speed /= GetSafeAnimationFactor(factor);
+        if (animator)
+            animator.speed /= GetSafeAnimationFactor(factor);
     }
 
     static float GetSafeAnimationFactor(float factor)
@@ -98,7 +102,8 @@ public abstract class EntityStats : MonoBehaviour
 
     protected virtual void UpdateColor()
     {
-        if (!sprite) return;
+        if (!sprite)
+            return;
 
         Color targetedColor = originalColor;
         float totalWeight = 1f;
@@ -130,7 +135,8 @@ public abstract class EntityStats : MonoBehaviour
             {
                 if (variant >= 0)
                 {
-                    if (buff.variant == variant) return buff;
+                    if (buff.variant == variant)
+                        return buff;
                 }
                 else
                 {
@@ -198,7 +204,8 @@ public abstract class EntityStats : MonoBehaviour
             {
                 if (variant >= 0)
                 {
-                    if (buff.variant == variant) buffsToRemove.Add(buff);
+                    if (buff.variant == variant)
+                        buffsToRemove.Add(buff);
                 }
                 else
                 {
@@ -211,8 +218,10 @@ public abstract class EntityStats : MonoBehaviour
         {
             foreach (Buff buff in buffsToRemove)
             {
-                if (buff.effect) Destroy(buff.effect.gameObject);
-                if (buff.tint.a > 0) RemoveTint(buff.tint);
+                if (buff.effect)
+                    Destroy(buff.effect.gameObject);
+                if (buff.tint.a > 0)
+                    RemoveTint(buff.tint);
                 RemoveAnimationMultiplier(buff.animationSpeed);
                 activeBuffs.Remove(buff);
             }
@@ -241,22 +250,28 @@ public abstract class EntityStats : MonoBehaviour
             if (buff.nextTick < 0)
             {
                 float tickDamage = buff.data.GetTickDamage(buff.variant);
-                if (tickDamage > 0) TakeDamage(tickDamage);
+                if (tickDamage > 0)
+                    TakeDamage(tickDamage);
                 float tickHeal = buff.data.GetTickHeal(buff.variant);
-                if (tickHeal > 0) RestoreHealth(tickHeal);
+                if (tickHeal > 0)
+                    RestoreHealth(tickHeal);
                 buff.nextTick = stats.tickInterval;
             }
 
-            if (stats.duration <= 0) continue;
+            if (stats.duration <= 0)
+                continue;
 
             buff.remainingDuration -= Time.deltaTime;
-            if (buff.remainingDuration < 0) expired.Add(buff);
+            if (buff.remainingDuration < 0)
+                expired.Add(buff);
         }
 
         foreach (Buff buff in expired)
         {
-            if (buff.effect) Destroy(buff.effect.gameObject);
-            if (buff.tint.a > 0) RemoveTint(buff.tint);
+            if (buff.effect)
+                Destroy(buff.effect.gameObject);
+            if (buff.tint.a > 0)
+                RemoveTint(buff.tint);
             RemoveAnimationMultiplier(buff.animationSpeed);
             activeBuffs.Remove(buff);
         }

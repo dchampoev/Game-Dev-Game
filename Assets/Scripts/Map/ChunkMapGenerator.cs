@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.TestTools;
 
 [ExcludeFromCoverage]
@@ -108,11 +108,15 @@ public class ChunkMapGenerator : MonoBehaviour
         {
             if (!checkWithoutDelta)
             {
-                if (moveDelta.x > 0 && vp.x < 0.5f) continue;
-                else if (moveDelta.x < 0 && vp.x > 0.5f) continue;
+                if (moveDelta.x > 0 && vp.x < 0.5f)
+                    continue;
+                else if (moveDelta.x < 0 && vp.x > 0.5f)
+                    continue;
 
-                if (moveDelta.y > 0 && vp.y < 0.5f) continue;
-                else if (moveDelta.y < 0 && vp.y > 0.5f) continue;
+                if (moveDelta.y > 0 && vp.y < 0.5f)
+                    continue;
+                else if (moveDelta.y < 0 && vp.y > 0.5f)
+                    continue;
             }
 
             Vector3 checkedPosition = SnapToChunkGrid(vp);
@@ -135,7 +139,8 @@ public class ChunkMapGenerator : MonoBehaviour
 
     PropRandomizer SpawnChunk(Vector3 spawnPosition, int variant = -1)
     {
-        if (chunkPrefabs.Length < 1) return null;
+        if (chunkPrefabs.Length < 1)
+            return null;
         int rand = variant < 0 ? Random.Range(0, chunkPrefabs.Length) : variant;
         PropRandomizer chunk = Instantiate(chunkPrefabs[rand], transform);
         chunk.transform.position = spawnPosition;

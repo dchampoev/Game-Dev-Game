@@ -80,9 +80,21 @@ public class CharacterData : ScriptableObject
     }
     public Stats stats = new Stats
     {
-        maxHealth = 100, recovery = 0, armor =0, moveSpeed = 1,
-        might = 1, area = 1, speed = 1, duration = 1,
-        amount = 0, cooldown = 1, luck = 1, greed = 1,
-        growth = 1, curse = 0, magnet = 1, revival = 0
+        maxHealth = 100,
+        recovery = 0,
+        armor = 0,
+        moveSpeed = 1,
+        might = 1,
+        area = 1,
+        speed = 1,
+        duration = 1,
+        amount = 0,
+        cooldown = 1,
+        luck = 1,
+        greed = 1,
+        growth = 1,
+        curse = 0,
+        magnet = 1,
+        revival = 0
     };
 }

@@ -27,7 +27,8 @@ public class Passive : Item
 
     public override bool DoLevelUp(bool updateUI = true)
     {
-        if (!base.DoLevelUp(updateUI)) return false;
+        if (!base.DoLevelUp(updateUI))
+            return false;
 
         if (!CanLevelUp())
         {
@@ -35,7 +36,7 @@ public class Passive : Item
             return false;
         }
 
-        currentBoosts += ((Modifier) data.GetLevelData(++currentLevel)).boosts;
+        currentBoosts += ((Modifier)data.GetLevelData(++currentLevel)).boosts;
         return true;
     }
 }

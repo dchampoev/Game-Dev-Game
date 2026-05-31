@@ -28,7 +28,8 @@ public class RingEventData : EventData
                 }
 
                 GameObject spawned = Instantiate(gameObject, spawnPosition, Quaternion.identity);
-                if (lifespan > 0) Destroy(spawned, lifespan);
+                if (lifespan > 0)
+                    Destroy(spawned, lifespan);
 
                 currentAngle += angleOffset;
             }

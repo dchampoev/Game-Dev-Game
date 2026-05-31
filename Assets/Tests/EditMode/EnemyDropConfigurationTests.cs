@@ -69,7 +69,8 @@ public class EnemyDropConfigurationTests
     {
         foreach (DropRateManager.Drops drop in drops)
         {
-            if (drop.dropName == dropName) return drop;
+            if (drop.dropName == dropName)
+                return drop;
         }
 
         return null;

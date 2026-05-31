@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class UIUpgradeWindowTests
 {
@@ -23,7 +23,7 @@ public class UIUpgradeWindowTests
 
     private class TestItem : Item
     {
-        public ItemData data;
+        public new ItemData data;
 
         public override void Initialize(ItemData data)
         {

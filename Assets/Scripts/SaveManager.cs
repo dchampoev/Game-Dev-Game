@@ -22,7 +22,8 @@ public class SaveManager
     {
         get
         {
-            if (lastLoadedGameData == null) Load();
+            if (lastLoadedGameData == null)
+                Load();
             return lastLoadedGameData;
         }
     }
@@ -34,9 +35,10 @@ public class SaveManager
 
     public static void Save(GameData data = null)
     {
-        if(data==null)
+        if (data == null)
         {
-            if(lastLoadedGameData==null) Load();
+            if (lastLoadedGameData == null)
+                Load();
             data = lastLoadedGameData;
         }
         File.WriteAllText(GetSavePath(), JsonUtility.ToJson(data));
@@ -44,17 +46,18 @@ public class SaveManager
 
     public static GameData Load(bool usePreviousLoadIfAvailable = false)
     {
-        if(usePreviousLoadIfAvailable && lastLoadedGameData != null)
+        if (usePreviousLoadIfAvailable && lastLoadedGameData != null)
         {
             return lastLoadedGameData;
         }
 
         string savePath = GetSavePath();
-        if(File.Exists(savePath))
+        if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
             lastLoadedGameData = JsonUtility.FromJson<GameData>(json);
-            if (lastLoadedGameData == null) lastLoadedGameData = new GameData();
+            if (lastLoadedGameData == null)
+                lastLoadedGameData = new GameData();
         }
         else
         {

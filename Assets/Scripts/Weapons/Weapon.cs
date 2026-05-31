@@ -85,7 +85,8 @@ public abstract class Weapon : Item
 
     public override bool DoLevelUp(bool updateUI = true)
     {
-        if (!base.DoLevelUp(updateUI)) return false;
+        if (!base.DoLevelUp(updateUI))
+            return false;
 
         if (!CanLevelUp())
         {
@@ -99,7 +100,8 @@ public abstract class Weapon : Item
 
     public virtual bool CanAttack()
     {
-        if(Mathf.Approximately(owner.Stats.might, 0f)) return false;
+        if (Mathf.Approximately(owner.Stats.might, 0f))
+            return false;
         return currentCooldown <= 0f;
     }
 
@@ -159,7 +161,8 @@ public abstract class Weapon : Item
 
     public virtual bool ActivateCooldown(bool strict = false)
     {
-        if (strict && currentCooldown > 0) return false;
+        if (strict && currentCooldown > 0)
+            return false;
 
         float actualCooldown = currentStats.cooldown * Owner.Stats.cooldown;
         currentCooldown = Mathf.Min(actualCooldown, currentCooldown + actualCooldown);
@@ -169,16 +172,19 @@ public abstract class Weapon : Item
     public void ApplyBuffs(EntityStats entity)
     {
         Stats stats = GetStats();
-        if (stats == null) return;
+        if (stats == null)
+            return;
 
         EntityStats.BuffInfo[] appliedBuffs = stats.appliedBuffs;
-        if (appliedBuffs == null) return;
+        if (appliedBuffs == null)
+            return;
 
         float durationMultiplier = owner ? owner.Actual.duration : 1f;
-        foreach(EntityStats.BuffInfo buff in appliedBuffs)
+        foreach (EntityStats.BuffInfo buff in appliedBuffs)
         {
-            if (buff == null || buff.data == null) continue;
-            entity.ApplyBuff(buff, durationMultiplier);    
+            if (buff == null || buff.data == null)
+                continue;
+            entity.ApplyBuff(buff, durationMultiplier);
         }
     }
 }

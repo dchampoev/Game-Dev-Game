@@ -1,6 +1,6 @@
+using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
-using System.Reflection;
 
 public class EnemyStatsTests
 {
@@ -34,7 +34,8 @@ public class EnemyStatsTests
         while (type != null)
         {
             FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field != null) return field;
+            if (field != null)
+                return field;
             type = type.BaseType;
         }
 

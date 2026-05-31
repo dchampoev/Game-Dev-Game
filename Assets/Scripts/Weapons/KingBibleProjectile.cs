@@ -103,7 +103,7 @@ public class KingBibleProjectile : Projectile
                         affectedTargets[pair.Key] = hitDelay;
                         pair.Key.TakeDamage(GetDamage(), source, stats.knockback);
 
-                        weapon.ApplyBuffs(pair.Key); 
+                        weapon.ApplyBuffs(pair.Key);
 
                         if (stats.hitEffect)
                         {
@@ -132,7 +132,8 @@ public class KingBibleProjectile : Projectile
             transform.localScale = new Vector3(currentScale.x - t / transitionTime, currentScale.y - t / transitionTime, 1f);
         }
 
-        if (!weapon) Destroy(gameObject);
+        if (!weapon)
+            Destroy(gameObject);
     }
 
     public IEnumerator BibleGrow()
@@ -177,6 +178,7 @@ public class KingBibleProjectile : Projectile
                 Destroy(Instantiate(stats.hitEffect, transform.position, Quaternion.identity).gameObject, 5f);
             }
         }
-        if (piercing <= 0) Destroy(gameObject);
+        if (piercing <= 0)
+            Destroy(gameObject);
     }
 }

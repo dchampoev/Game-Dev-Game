@@ -20,7 +20,8 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        if (instance) Debug.LogWarning("There is more than one Spawn Manager in the scene! Please remove the extra Spawn Managers.");
+        if (instance)
+            Debug.LogWarning("There is more than one Spawn Manager in the scene! Please remove the extra Spawn Managers.");
         instance = this;
     }
 
@@ -54,7 +55,8 @@ public class SpawnManager : MonoBehaviour
 
             foreach (GameObject prefab in spawns)
             {
-                if (!CanSpawn()) continue;
+                if (!CanSpawn())
+                    continue;
 
                 Instantiate(prefab, GeneratePosition(), Quaternion.identity);
                 currentWaveSpawnCount++;
@@ -79,7 +81,8 @@ public class SpawnManager : MonoBehaviour
 
     public void ActiveCooldown()
     {
-        if (!TryGetCurrentWave(out WaveData currentWave)) return;
+        if (!TryGetCurrentWave(out WaveData currentWave))
+            return;
 
         float curseBoost = boostedByCurse ? GameManager.GetCumulativeCurse() : 1;
         spawnTimer += currentWave.GetSpawnInterval() / curseBoost;
@@ -87,9 +90,11 @@ public class SpawnManager : MonoBehaviour
 
     public bool CanSpawn()
     {
-        if (HasExceededTotalSpawns()) return false;
+        if (HasExceededTotalSpawns())
+            return false;
 
-        if (!TryGetCurrentWave(out WaveData currentWave)) return false;
+        if (!TryGetCurrentWave(out WaveData currentWave))
+            return false;
 
         if (currentWaveSpawnCount >= currentWave.totalSpawns)
             return false;
@@ -99,23 +104,28 @@ public class SpawnManager : MonoBehaviour
 
     public static bool HasExceededTotalSpawns()
     {
-        if (!instance) return false;
-        if (EnemyStats.count > instance.maxEnemiesAllowed) return true;
+        if (!instance)
+            return false;
+        if (EnemyStats.count > instance.maxEnemiesAllowed)
+            return true;
         return false;
     }
 
     public bool HasWaveEnded()
     {
-        if (!TryGetCurrentWave(out WaveData currentWave)) return true;
+        if (!TryGetCurrentWave(out WaveData currentWave))
+            return true;
 
         if ((currentWave.exitConditions & WaveData.ExitCondition.waveDuration) > 0)
         {
-            if (currentWaveDuration < currentWave.duration) return false;
+            if (currentWaveDuration < currentWave.duration)
+                return false;
         }
 
         if ((currentWave.exitConditions & WaveData.ExitCondition.reachedTotalSpawns) > 0)
         {
-            if (currentWaveSpawnCount < currentWave.totalSpawns) return false;
+            if (currentWaveSpawnCount < currentWave.totalSpawns)
+                return false;
         }
 
         if (currentWave.mustKillAllEnemies && EnemyStats.count > 0)
@@ -135,8 +145,10 @@ public class SpawnManager : MonoBehaviour
     {
         currentWave = null;
 
-        if (data == null || data.Length == 0) return false;
-        if (currentWaveIndex < 0 || currentWaveIndex >= data.Length) return false;
+        if (data == null || data.Length == 0)
+            return false;
+        if (currentWaveIndex < 0 || currentWaveIndex >= data.Length)
+            return false;
 
         currentWave = data[currentWaveIndex];
         return currentWave != null;
@@ -145,7 +157,8 @@ public class SpawnManager : MonoBehaviour
     public static Vector3 GeneratePosition()
     {
         Camera camera = GetSpawnCamera();
-        if (!camera) return Vector3.zero;
+        if (!camera)
+            return Vector3.zero;
 
         float x = Random.Range(0f, 1f);
         float y = Random.Range(0f, 1f);
@@ -170,14 +183,18 @@ public class SpawnManager : MonoBehaviour
 
     public static bool IsWithinBoundaries(Transform checkedObj)
     {
-        if (!checkedObj) return false;
+        if (!checkedObj)
+            return false;
 
         Camera camera = GetSpawnCamera();
-        if (!camera) return false;
+        if (!camera)
+            return false;
 
         Vector2 viewport = camera.WorldToViewportPoint(checkedObj.position);
-        if (viewport.x < 0f || viewport.x > 1f) return false;
-        if (viewport.y < 0f || viewport.y > 1f) return false;
+        if (viewport.x < 0f || viewport.x > 1f)
+            return false;
+        if (viewport.y < 0f || viewport.y > 1f)
+            return false;
         return true;
     }
 

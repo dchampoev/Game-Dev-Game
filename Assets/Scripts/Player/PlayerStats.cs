@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class PlayerStats : EntityStats
 {
@@ -94,14 +94,15 @@ public class PlayerStats : EntityStats
 
         baseStats = actualStats = characterData.stats;
         health = actualStats.maxHealth;
-        if (collector) collector.SetRadius(actualStats.magnet);
+        if (collector)
+            collector.SetRadius(actualStats.magnet);
     }
 
     protected override void Start()
     {
         base.Start();
 
-        if(UILevelSelector.globalBuff && !UILevelSelector.globalBuffAffectsPlayer)
+        if (UILevelSelector.globalBuff && !UILevelSelector.globalBuffAffectsPlayer)
         {
             ApplyBuff(UILevelSelector.globalBuff);
         }
@@ -109,7 +110,8 @@ public class PlayerStats : EntityStats
         inventory.Add(characterData.StartingWeapon);
         experienceCap = GetExperienceCapIncreaseForCurrentLevel();
 
-        if (GameManager.instance) GameManager.instance.AssignChosenCharacterUI(characterData);
+        if (GameManager.instance)
+            GameManager.instance.AssignChosenCharacterUI(characterData);
 
         UpdateHealthBar();
         UpdateExpBar();
@@ -125,10 +127,12 @@ public class PlayerStats : EntityStats
 
     void UpdateInvincibilityTimer()
     {
-        if (iFrameTimer <= 0) return;
+        if (iFrameTimer <= 0)
+            return;
 
         iFrameTimer -= Time.deltaTime;
-        if (iFrameTimer <= 0) isInvincible = false;
+        if (iFrameTimer <= 0)
+            isInvincible = false;
     }
 
     public override void RecalculateStats()
@@ -145,9 +149,22 @@ public class PlayerStats : EntityStats
 
         CharacterData.Stats multiplier = new CharacterData.Stats
         {
-            maxHealth = 1f, recovery = 1f, armor = 1f, moveSpeed = 1f, might = 1f,
-            area = 1f, speed = 1f, duration = 1f, amount = 1, cooldown = 1f,
-            luck = 1f, growth = 1f, greed = 1f, curse = 1f, magnet = 1f, revival = 1
+            maxHealth = 1f,
+            recovery = 1f,
+            armor = 1f,
+            moveSpeed = 1f,
+            might = 1f,
+            area = 1f,
+            speed = 1f,
+            duration = 1f,
+            amount = 1,
+            cooldown = 1f,
+            luck = 1f,
+            growth = 1f,
+            greed = 1f,
+            curse = 1f,
+            magnet = 1f,
+            revival = 1
         };
 
         foreach (Buff buff in activeBuffs)
@@ -167,7 +184,8 @@ public class PlayerStats : EntityStats
         actualStats *= multiplier;
 
         actualStats.revival = Mathf.Max(0, actualStats.revival - revivesUsed);
-        if (collector) collector.SetRadius(actualStats.magnet);
+        if (collector)
+            collector.SetRadius(actualStats.magnet);
     }
 
     public void IncreaseExperience(int amount)
@@ -219,7 +237,8 @@ public class PlayerStats : EntityStats
 
     int GetExperienceCapIncreaseForCurrentLevel()
     {
-        if (levelRanges == null) return 0;
+        if (levelRanges == null)
+            return 0;
 
         foreach (LevelRange range in levelRanges)
         {
@@ -240,7 +259,8 @@ public class PlayerStats : EntityStats
             {
                 CurrentHealth -= damage;
 
-                if (damageEffect) Destroy(Instantiate(damageEffect, transform.position, Quaternion.identity), 5f);
+                if (damageEffect)
+                    Destroy(Instantiate(damageEffect, transform.position, Quaternion.identity), 5f);
 
                 if (CurrentHealth <= 0)
                 {
@@ -249,7 +269,8 @@ public class PlayerStats : EntityStats
             }
             else
             {
-                if (blockedEffect) Destroy(Instantiate(blockedEffect, transform.position, Quaternion.identity), 5f);
+                if (blockedEffect)
+                    Destroy(Instantiate(blockedEffect, transform.position, Quaternion.identity), 5f);
             }
 
             iFrameTimer = iFrameDuration;
@@ -297,7 +318,8 @@ public class PlayerStats : EntityStats
 
     public override void RestoreHealth(float amount)
     {
-        if (characterData == null) return;
+        if (characterData == null)
+            return;
         if (CurrentHealth < actualStats.maxHealth)
         {
             CurrentHealth += amount;

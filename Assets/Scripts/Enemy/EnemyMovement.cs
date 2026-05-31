@@ -84,20 +84,24 @@ public class EnemyMovement : Sortable
                     break;
             }
         }
-        else spawnedOutOfFrame = false;
+        else
+            spawnedOutOfFrame = false;
     }
 
     public virtual void Knockback(Vector2 velocity, float duration)
     {
-        if (knockbackDuration > 0) return;
+        if (knockbackDuration > 0)
+            return;
 
-        if (knockbackVariance == 0) return;
+        if (knockbackVariance == 0)
+            return;
 
         float pow = 1;
         bool reducesVelocity = (knockbackVariance & KnockbackVariance.velocity) > 0,
              reducesDuration = (knockbackVariance & KnockbackVariance.duration) > 0;
 
-        if (reducesVelocity && reducesDuration) pow = 0.5f;
+        if (reducesVelocity && reducesDuration)
+            pow = 0.5f;
 
         knockbackVelocity = velocity * (reducesVelocity ? Mathf.Pow(stats.Actual.knockbackMultiplier, pow) : 1);
         knockbackDuration = duration * (reducesDuration ? Mathf.Pow(stats.Actual.knockbackMultiplier, pow) : 1);

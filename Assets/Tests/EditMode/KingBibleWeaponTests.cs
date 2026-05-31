@@ -181,7 +181,8 @@ public class KingBibleWeaponTests
 
         foreach (TestProjectile projectile in projectiles)
         {
-            if (projectile == projectilePrefab) continue;
+            if (projectile == projectilePrefab)
+                continue;
 
             spawnedCount++;
             Assert.AreSame(owner, projectile.owner);

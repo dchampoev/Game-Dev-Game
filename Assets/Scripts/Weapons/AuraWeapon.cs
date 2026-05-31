@@ -10,7 +10,8 @@ public class AuraWeapon : Weapon
     {
         if (currentStats.auraPrefab)
         {
-            if (currentAura) Destroy(currentAura);
+            if (currentAura)
+                Destroy(currentAura);
             currentAura = Instantiate(currentStats.auraPrefab, transform);
             currentAura.weapon = this;
             currentAura.owner = owner;
@@ -22,12 +23,14 @@ public class AuraWeapon : Weapon
 
     public override void OnUnequip()
     {
-        if (currentAura) Destroy(currentAura);
+        if (currentAura)
+            Destroy(currentAura);
     }
 
     public override bool DoLevelUp(bool updateUI = true)
     {
-        if (!base.DoLevelUp(updateUI)) return false;
+        if (!base.DoLevelUp(updateUI))
+            return false;
 
         OnEquip();
 

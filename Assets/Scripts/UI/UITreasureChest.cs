@@ -91,14 +91,17 @@ public class UITreasureChest : MonoBehaviour
             return;
         }
 
-        if (GameManager.instance) GameManager.instance.StartTreasureChest();
+        if (GameManager.instance)
+            GameManager.instance.StartTreasureChest();
         instance.gameObject.SetActive(true);
     }
 
     public static void NotifyItemReceived(Sprite icon)
     {
-        if (instance) instance.icons.Add(icon);
-        else Debug.LogWarning("UITreasureChest instance not found to receive item notification.");
+        if (instance)
+            instance.icons.Add(icon);
+        else
+            Debug.LogWarning("UITreasureChest instance not found to receive item notification.");
     }
 
     private IEnumerator FlashWhite(Image image, int times, float flashDuration = 0.2f)
@@ -144,7 +147,8 @@ public class UITreasureChest : MonoBehaviour
 
     private void SetupBeam(int index)
     {
-        if (index < 0 || index >= items.Count || index >= icons.Count) return;
+        if (index < 0 || index >= items.Count || index >= icons.Count)
+            return;
 
         items[index].weaponBeam.SetActive(true);
         items[index].beam.SetActive(true);
@@ -174,7 +178,8 @@ public class UITreasureChest : MonoBehaviour
         if (icon)
         {
             GameObject background = icon.transform.parent ? icon.transform.parent.gameObject : null;
-            if (background) ApplyCanvasSorting(background, sortingLayerId);
+            if (background)
+                ApplyCanvasSorting(background, sortingLayerId);
 
             icon.transform.SetAsLastSibling();
             ApplyCanvasSorting(icon.gameObject, sortingLayerId);
@@ -189,7 +194,8 @@ public class UITreasureChest : MonoBehaviour
     private void ApplyCanvasSorting(GameObject target, int sortingLayerId, int sortingOrder)
     {
         Canvas canvas = target.GetComponent<Canvas>();
-        if (!canvas) canvas = target.AddComponent<Canvas>();
+        if (!canvas)
+            canvas = target.AddComponent<Canvas>();
 
         canvas.overrideSorting = true;
         canvas.sortingLayerID = sortingLayerId;
@@ -198,7 +204,8 @@ public class UITreasureChest : MonoBehaviour
 
     private int GetRewardSortingLayerId(GameObject rewardRoot)
     {
-        if (!rewardRoot) return SortingLayer.NameToID("Default");
+        if (!rewardRoot)
+            return SortingLayer.NameToID("Default");
 
         ParticleSystemRenderer renderer = rewardRoot.GetComponentInChildren<ParticleSystemRenderer>(true);
         return renderer ? renderer.sortingLayerID : SortingLayer.NameToID("Default");
@@ -207,7 +214,8 @@ public class UITreasureChest : MonoBehaviour
     private void SendRewardVfxBehindItem(int index)
     {
         GameObject rewardRoot = items[index].sprite;
-        if (!rewardRoot) return;
+        if (!rewardRoot)
+            return;
 
         ParticleSystemRenderer[] renderers = rewardRoot.GetComponentsInChildren<ParticleSystemRenderer>(true);
         foreach (ParticleSystemRenderer renderer in renderers)
@@ -239,7 +247,8 @@ public class UITreasureChest : MonoBehaviour
             SetupBeam(i);
         }
 
-        if (dropProfile.delayedBeams > 0) StartCoroutine(ShowDelayedBeams(delayedStartIndex, beamCount));
+        if (dropProfile.delayedBeams > 0)
+            StartCoroutine(ShowDelayedBeams(delayedStartIndex, beamCount));
 
         StartCoroutine(DisplayItems(beamCount));
     }
@@ -283,7 +292,8 @@ public class UITreasureChest : MonoBehaviour
 
     private float GetRewardRevealDuration(int itemCount)
     {
-        if (itemCount <= 0) return 0f;
+        if (itemCount <= 0)
+            return 0f;
         return itemCount == 5 ? RewardRevealDelay * 3f : RewardRevealDelay * itemCount;
     }
 
@@ -299,7 +309,8 @@ public class UITreasureChest : MonoBehaviour
 
         isAnimating = true;
 
-        if (dropProfile.hasCurvedBeams) StartCoroutine(ActivateCurvedBeams(dropProfile.curveBeamsSpawnTime));
+        if (dropProfile.hasCurvedBeams)
+            StartCoroutine(ActivateCurvedBeams(dropProfile.curveBeamsSpawnTime));
 
         int itemCount = Mathf.Min(dropProfile.numberOfItems, items.Count, icons.Count);
         float animationDuration = Mathf.Max(0.01f, dropProfile.animationDuration);
@@ -331,7 +342,8 @@ public class UITreasureChest : MonoBehaviour
 
     private void SkipToRewards()
     {
-        if (chestSequenceCoroutine != null) StopCoroutine(chestSequenceCoroutine);
+        if (chestSequenceCoroutine != null)
+            StopCoroutine(chestSequenceCoroutine);
 
         StopAllCoroutines();
 
@@ -364,7 +376,8 @@ public class UITreasureChest : MonoBehaviour
     private void Update()
     {
         Keyboard keyboard = Keyboard.current;
-        if (keyboard == null) return;
+        if (keyboard == null)
+            return;
 
         if (isAnimating && (keyboard.escapeKey.wasPressedThisFrame || keyboard.spaceKey.wasPressedThisFrame))
         {
@@ -392,7 +405,8 @@ public class UITreasureChest : MonoBehaviour
 
     public void CloseUI()
     {
-        if (collector) collector.AddCoins(coins);
+        if (collector)
+            collector.AddCoins(coins);
 
         chestCover.SetActive(true);
         chestButton.SetActive(true);
@@ -404,12 +418,15 @@ public class UITreasureChest : MonoBehaviour
         curvedBeams.SetActive(false);
         ResetDisplay();
 
-        if (pickUpSound) AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
+        if (pickUpSound)
+            AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
 
         isAnimating = false;
 
-        if (GameManager.instance) GameManager.instance.EndTreasureChest();
-        if (currentChest) currentChest.NotifyComplete();
+        if (GameManager.instance)
+            GameManager.instance.EndTreasureChest();
+        if (currentChest)
+            currentChest.NotifyComplete();
     }
 
     private void ResetDisplay()

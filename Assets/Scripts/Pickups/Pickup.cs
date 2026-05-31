@@ -17,7 +17,7 @@ public class Pickup : Sortable
     public BobbingAnimation bobbingAnimation = new BobbingAnimation
     {
         frequency = 2f,
-        direction = new Vector2(0,0.3f)
+        direction = new Vector2(0, 0.3f)
     };
 
     [Header("Bonuses")]
@@ -53,7 +53,8 @@ public class Pickup : Sortable
         {
             this.target = target;
             this.speed = speed;
-            if (lifespan > 0) this.lifespan = lifespan;
+            if (lifespan > 0)
+                this.lifespan = lifespan;
             Destroy(gameObject, Mathf.Max(0.01f, this.lifespan));
             return true;
         }
@@ -62,8 +63,11 @@ public class Pickup : Sortable
 
     protected virtual void OnDestroy()
     {
-        if (!target) return;
-        if (experience != 0) target.IncreaseExperience(experience);
-        if(health != 0) target.RestoreHealth(health);
+        if (!target)
+            return;
+        if (experience != 0)
+            target.IncreaseExperience(experience);
+        if (health != 0)
+            target.RestoreHealth(health);
     }
 }

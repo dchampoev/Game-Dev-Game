@@ -11,7 +11,8 @@ public class EnemyStats : EntityStats
 
         public static Resistances operator *(Resistances r, float multiplier)
         {
-            if (r == null) return new Resistances();
+            if (r == null)
+                return new Resistances();
             r.freeze = Mathf.Min(1, r.freeze * multiplier);
             r.kill = Mathf.Min(1, r.kill * multiplier);
             r.debuff = Mathf.Min(1, r.debuff * multiplier);
@@ -20,8 +21,10 @@ public class EnemyStats : EntityStats
 
         public static Resistances operator +(Resistances r, Resistances r2)
         {
-            if (r == null) r = new Resistances();
-            if (r2 == null) return r;
+            if (r == null)
+                r = new Resistances();
+            if (r2 == null)
+                return r;
             r.freeze += r2.freeze;
             r.kill = r2.kill;
             r.debuff = r2.debuff;
@@ -30,8 +33,10 @@ public class EnemyStats : EntityStats
 
         public static Resistances operator *(Resistances r1, Resistances r2)
         {
-            if (r1 == null) r1 = new Resistances { freeze = 1f, kill = 1f, debuff = 1f };
-            if (r2 == null) return r1;
+            if (r1 == null)
+                r1 = new Resistances { freeze = 1f, kill = 1f, debuff = 1f };
+            if (r2 == null)
+                return r1;
             r1.freeze = Mathf.Min(1, r1.freeze * r2.freeze);
             r1.kill = Mathf.Min(1, r1.kill * r2.kill);
             r1.debuff = Mathf.Min(1, r1.debuff * r2.debuff);
@@ -52,11 +57,16 @@ public class EnemyStats : EntityStats
 
         private static Stats Boost(Stats s1, float factor, Boostable boostable)
         {
-            if ((boostable & Boostable.health) != 0) s1.maxHealth *= factor;
-            if ((boostable & Boostable.moveSpeed) != 0) s1.moveSpeed *= factor;
-            if ((boostable & Boostable.damage) != 0) s1.damage *= factor;
-            if ((boostable & Boostable.knockback) != 0) s1.knockbackMultiplier /= factor;
-            if ((boostable & Boostable.resistances) != 0 && s1.resistances != null) s1.resistances *= factor;
+            if ((boostable & Boostable.health) != 0)
+                s1.maxHealth *= factor;
+            if ((boostable & Boostable.moveSpeed) != 0)
+                s1.moveSpeed *= factor;
+            if ((boostable & Boostable.damage) != 0)
+                s1.damage *= factor;
+            if ((boostable & Boostable.knockback) != 0)
+                s1.knockbackMultiplier /= factor;
+            if ((boostable & Boostable.resistances) != 0 && s1.resistances != null)
+                s1.resistances *= factor;
             return s1;
         }
 
@@ -127,14 +137,16 @@ public class EnemyStats : EntityStats
     {
         if ((data.type & BuffData.Type.freeze) > 0)
         {
-            if (Random.value <= Actual.resistances.freeze) return false;
+            if (Random.value <= Actual.resistances.freeze)
+                return false;
         }
 
         if ((data.type & BuffData.Type.debuff) > 0)
         {
-            if (Random.value <= Actual.resistances.debuff) return false;
+            if (Random.value <= Actual.resistances.debuff)
+                return false;
         }
-        
+
         return base.ApplyBuff(data, variant, durationMultiplier);
     }
 
@@ -178,7 +190,8 @@ public class EnemyStats : EntityStats
     {
         if (damage == actualStats.maxHealth)
         {
-            if (Random.value < actualStats.resistances.kill) return;
+            if (Random.value < actualStats.resistances.kill)
+                return;
         }
 
         health -= damage;
@@ -197,7 +210,8 @@ public class EnemyStats : EntityStats
 
     public void TakeDamage(float damage, Vector2 sourcePosition, float knockbackForce = 5f, float knockbackDuration = 0.2f)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
         TakeDamage(damage);
 
@@ -213,24 +227,29 @@ public class EnemyStats : EntityStats
         if (health < actualStats.maxHealth)
         {
             health += amount;
-            if(health > actualStats.maxHealth) health = actualStats.maxHealth;
+            if (health > actualStats.maxHealth)
+                health = actualStats.maxHealth;
         }
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (isDead) return;
+        if (isDead)
+            return;
 
-        if (Mathf.Approximately(Actual.damage, 0)) return;
+        if (Mathf.Approximately(Actual.damage, 0))
+            return;
 
         if (collision.collider.TryGetComponent(out PlayerStats player))
         {
             player.TakeDamage(Actual.damage);
-            if (attackEffects == null) return;
+            if (attackEffects == null)
+                return;
 
-            foreach(BuffInfo buff in attackEffects)
+            foreach (BuffInfo buff in attackEffects)
             {
-                if (buff == null || buff.data == null) continue;
+                if (buff == null || buff.data == null)
+                    continue;
                 player.ApplyBuff(buff);
             }
         }
@@ -243,7 +262,8 @@ public class EnemyStats : EntityStats
 
     public override void Kill()
     {
-        if (isDead) return;
+        if (isDead)
+            return;
         isDead = true;
 
         foreach (Collider2D collider in GetComponents<Collider2D>())
@@ -253,25 +273,26 @@ public class EnemyStats : EntityStats
             enemyMovement.enabled = false;
 
         DropRateManager drops = GetComponent<DropRateManager>();
-        if (drops) drops.active = true;
+        if (drops)
+            drops.active = true;
 
         StartCoroutine(KillFade());
     }
 
     IEnumerator DamageFlash()
     {
-        if(sprite == null)
+        if (sprite == null)
             yield break;
-        
+
         sprite.color = damageColor;
         yield return new WaitForSeconds(damageFlashDuration);
-        if(sprite != null && !isDead)
+        if (sprite != null && !isDead)
             UpdateColor();
     }
 
     IEnumerator KillFade()
     {
-        if (sprite== null)
+        if (sprite == null)
         {
             Destroy(gameObject);
             yield break;

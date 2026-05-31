@@ -58,19 +58,23 @@ public class TreasureChest : MonoBehaviour
                 List<(int index, TreasureChestDropProfile profile, float weight)> weightedProfiles = new List<(int, TreasureChestDropProfile, float)>();
                 for (int i = 0; i < dropProfiles.Length; i++)
                 {
-                    if (!dropProfiles[i]) continue;
+                    if (!dropProfiles[i])
+                        continue;
 
                     float weight = dropProfiles[i].baseDropChance * (1 + dropProfiles[i].luckScaling * (playerLuck - 1));
                     weightedProfiles.Add((i, dropProfiles[i], weight));
                 }
 
-                if (weightedProfiles.Count == 0) break;
+                if (weightedProfiles.Count == 0)
+                    break;
 
                 weightedProfiles.Sort((a, b) => a.weight.CompareTo(b.weight));
 
                 float totalWeight = 0f;
-                foreach (var entry in weightedProfiles) totalWeight += entry.weight;
-                if (totalWeight <= 0f) break;
+                foreach (var entry in weightedProfiles)
+                    totalWeight += entry.weight;
+                if (totalWeight <= 0f)
+                    break;
 
                 float randomValue = Random.Range(0f, totalWeight);
                 float cumulativeWeight = 0f;
@@ -92,21 +96,25 @@ public class TreasureChest : MonoBehaviour
     private int GetRewardCount()
     {
         TreasureChestDropProfile profile = GetNextDropProfile();
-        if (profile) return profile.numberOfItems;
+        if (profile)
+            return profile.numberOfItems;
         return 1;
     }
 
     bool CanAwardEvolution()
     {
-        if (evolvedWeaponThisChest) return false;
-        if (!GameManager.instance) return evolutionUnlockTime <= 0f;
+        if (evolvedWeaponThisChest)
+            return false;
+        if (!GameManager.instance)
+            return evolutionUnlockTime <= 0f;
 
         return GameManager.instance.GetElapsedTime() >= evolutionUnlockTime;
     }
 
     T TryEvolve<T>(PlayerInventory inventory, bool updateUI = true) where T : Item
     {
-        if (!CanAwardEvolution()) return null;
+        if (!CanAwardEvolution())
+            return null;
 
         T[] evolvables = inventory.GetEvolvables<T>();
         foreach (T item in evolvables)
@@ -114,7 +122,8 @@ public class TreasureChest : MonoBehaviour
             ItemData.Evolution[] possibleEvolutions = item.CanEvolve(0);
             foreach (ItemData.Evolution evolution in possibleEvolutions)
             {
-                if (evolution.condition != ItemData.Evolution.Condition.treasureChest) continue;
+                if (evolution.condition != ItemData.Evolution.Condition.treasureChest)
+                    continue;
 
                 if (item.AttemptEvolution(evolution, 0, updateUI))
                 {
@@ -130,7 +139,8 @@ public class TreasureChest : MonoBehaviour
     T TryUpgrade<T>(PlayerInventory inventory, bool updateUI = true) where T : Item
     {
         T[] upgradables = inventory.GetUpgradables<T>();
-        if (upgradables.Length == 0) return null;
+        if (upgradables.Length == 0)
+            return null;
 
         T t = upgradables[Random.Range(0, upgradables.Length)];
         inventory.LevelUp(t, updateUI);
@@ -140,10 +150,12 @@ public class TreasureChest : MonoBehaviour
 
     T TryGive<T>(PlayerInventory inventory, bool updateUI = true) where T : ItemData
     {
-        if (inventory.GetSlotsLeftFor<T>() <= 0) return null;
+        if (inventory.GetSlotsLeftFor<T>() <= 0)
+            return null;
 
         T[] possibilities = inventory.GetUnowned<T>();
-        if (possibilities.Length == 0) return null;
+        if (possibilities.Length == 0)
+            return null;
 
         T t = possibilities[Random.Range(0, possibilities.Length)];
         inventory.Add(t, updateUI);
@@ -153,10 +165,13 @@ public class TreasureChest : MonoBehaviour
 
     public void NotifyComplete()
     {
-        if (!recipient) return;
+        if (!recipient)
+            return;
 
-        if (recipient.weaponUI) recipient.weaponUI.Refresh();
-        if (recipient.passiveUI) recipient.passiveUI.Refresh();
+        if (recipient.weaponUI)
+            recipient.weaponUI.Refresh();
+        if (recipient.passiveUI)
+            recipient.passiveUI.Refresh();
     }
 
     public void OpenTreasureChest(PlayerInventory inventory, bool updateUI = true)
@@ -166,14 +181,21 @@ public class TreasureChest : MonoBehaviour
 
     void Open(PlayerInventory inventory, bool updateUI = true)
     {
-        if (inventory == null) return;
+        if (inventory == null)
+            return;
 
-        if (possibleDrops.HasFlag(DropType.Evolution) && TryEvolve<Weapon>(inventory, updateUI)) return;
-        if (possibleDrops.HasFlag(DropType.UpgradeWeapon) && TryUpgrade<Weapon>(inventory, updateUI)) return;
-        if (possibleDrops.HasFlag(DropType.UpgradePassive) && TryUpgrade<Passive>(inventory, updateUI)) return;
-        if (possibleDrops.HasFlag(DropType.NewWeapon) && TryGive<WeaponData>(inventory, updateUI)) return;
-        if (possibleDrops.HasFlag(DropType.NewPassive) && TryGive<PassiveData>(inventory, updateUI)) return;
-        if (defaultDropSprite) UITreasureChest.NotifyItemReceived(defaultDropSprite);
+        if (possibleDrops.HasFlag(DropType.Evolution) && TryEvolve<Weapon>(inventory, updateUI))
+            return;
+        if (possibleDrops.HasFlag(DropType.UpgradeWeapon) && TryUpgrade<Weapon>(inventory, updateUI))
+            return;
+        if (possibleDrops.HasFlag(DropType.UpgradePassive) && TryUpgrade<Passive>(inventory, updateUI))
+            return;
+        if (possibleDrops.HasFlag(DropType.NewWeapon) && TryGive<WeaponData>(inventory, updateUI))
+            return;
+        if (possibleDrops.HasFlag(DropType.NewPassive) && TryGive<PassiveData>(inventory, updateUI))
+            return;
+        if (defaultDropSprite)
+            UITreasureChest.NotifyItemReceived(defaultDropSprite);
         return;
     }
 
@@ -185,7 +207,8 @@ public class TreasureChest : MonoBehaviour
             evolvedWeaponThisChest = false;
 
             int rewardCount = GetRewardCount();
-            for (int i = 0; i < rewardCount; i++) Open(player, false);
+            for (int i = 0; i < rewardCount; i++)
+                Open(player, false);
             gameObject.SetActive(false);
 
             UITreasureChest.Activate(player.GetComponentInChildren<PlayerCollector>(), this);

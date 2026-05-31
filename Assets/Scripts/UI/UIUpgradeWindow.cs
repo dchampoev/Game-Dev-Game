@@ -123,7 +123,8 @@ public class UIUpgradeWindow : MonoBehaviour
 
                 activeOptions++;
             }
-            else option.gameObject.SetActive(false);
+            else
+                option.gameObject.SetActive(false);
         }
 
         RecalculateLayout();
@@ -151,7 +152,8 @@ public class UIUpgradeWindow : MonoBehaviour
 
         foreach (RectTransform option in upgradeOptions)
         {
-            if (!option.gameObject.activeSelf) continue;
+            if (!option.gameObject.activeSelf)
+                continue;
             option.sizeDelta = new Vector2(option.sizeDelta.x, optionHeight);
         }
     }
@@ -168,8 +170,10 @@ public class UIUpgradeWindow : MonoBehaviour
     void Awake()
     {
         verticalLayout = GetComponentInChildren<VerticalLayoutGroup>();
-        if (tooltipTemplate) tooltipTemplate.gameObject.SetActive(false);
-        if (upgradeOptionTemplate) upgradeOptions.Add(upgradeOptionTemplate);
+        if (tooltipTemplate)
+            tooltipTemplate.gameObject.SetActive(false);
+        if (upgradeOptionTemplate)
+            upgradeOptions.Add(upgradeOptionTemplate);
 
         rectTransform = (RectTransform)transform;
     }

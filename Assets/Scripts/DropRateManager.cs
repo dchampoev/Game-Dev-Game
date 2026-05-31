@@ -16,7 +16,8 @@ public class DropRateManager : MonoBehaviour
 
     void OnDestroy()
     {
-        if(!active) return;
+        if (!active)
+            return;
         if (!gameObject.scene.isLoaded)
         {
             return;

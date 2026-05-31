@@ -20,7 +20,8 @@ public class Projectile : WeaponEffect
         rigidBody = GetComponent<Rigidbody2D>();
         Weapon.Stats stats = weapon.GetStats();
 
-        if (hasAutoAim) AcquireAutoAimFacing();
+        if (hasAutoAim)
+            AcquireAutoAimFacing();
 
         if (rigidBody && rigidBody.bodyType == RigidbodyType2D.Dynamic)
         {
@@ -29,7 +30,8 @@ public class Projectile : WeaponEffect
         }
 
         area = weapon.GetArea();
-        if (area <= 0) area = 1;
+        if (area <= 0)
+            area = 1;
         transform.localScale = new Vector3(
             area * Mathf.Sign(transform.localScale.x),
             area * Mathf.Sign(transform.localScale.y),
@@ -38,9 +40,11 @@ public class Projectile : WeaponEffect
 
         piercing = stats.piercing;
 
-        if (weapon.GetLifespan() > 0) Destroy(gameObject, weapon.GetLifespan());
+        if (weapon.GetLifespan() > 0)
+            Destroy(gameObject, weapon.GetLifespan());
 
-        if (stats.lifespan > 0) Destroy(gameObject, stats.lifespan);
+        if (stats.lifespan > 0)
+            Destroy(gameObject, stats.lifespan);
 
     }
     public virtual void AcquireAutoAimFacing()
@@ -106,6 +110,7 @@ public class Projectile : WeaponEffect
             }
         }
 
-        if (piercing <= 0) Destroy(gameObject);
+        if (piercing <= 0)
+            Destroy(gameObject);
     }
 }

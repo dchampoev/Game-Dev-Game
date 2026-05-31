@@ -77,7 +77,8 @@ public class PlayerInventory : MonoBehaviour
 
     public bool Remove(WeaponData data, bool removeUpgradeAvailability = false)
     {
-        if (removeUpgradeAvailability) availableWeapons.Remove(data);
+        if (removeUpgradeAvailability)
+            availableWeapons.Remove(data);
 
         for (int i = 0; i < weaponSlots.Count; i++)
         {
@@ -95,7 +96,8 @@ public class PlayerInventory : MonoBehaviour
 
     public bool Remove(PassiveData data, bool removeUpgradeAvailability = false)
     {
-        if (removeUpgradeAvailability) availablePassives.Remove(data);
+        if (removeUpgradeAvailability)
+            availablePassives.Remove(data);
 
         for (int i = 0; i < passiveSlots.Count; i++)
         {
@@ -134,7 +136,8 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        if (slotIndex < 0) return slotIndex;
+        if (slotIndex < 0)
+            return slotIndex;
 
         Type weaponType = Type.GetType(data.behaviour);
 
@@ -150,7 +153,8 @@ public class PlayerInventory : MonoBehaviour
             weaponSlots[slotIndex].Assign(spawnedWeapon);
             RefreshInventoryUI(updateUI);
 
-            if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
+            if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
+                GameManager.instance.EndLevelUp();
 
             return slotIndex;
         }
@@ -174,7 +178,8 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        if (slotIndex < 0) return slotIndex;
+        if (slotIndex < 0)
+            return slotIndex;
 
 
         GameObject gameObject = new GameObject(data.baseStats.name + " Passive");
@@ -186,9 +191,11 @@ public class PlayerInventory : MonoBehaviour
         passiveSlots[slotIndex].Assign(spawnedPassive);
         RefreshInventoryUI(updateUI);
 
-        if (GameManager.instance != null && GameManager.instance.choosingUpgrade) GameManager.instance.EndLevelUp();
+        if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
+            GameManager.instance.EndLevelUp();
 
-        if (player) player.RecalculateStats();
+        if (player)
+            player.RecalculateStats();
 
         return slotIndex;
     }
@@ -206,7 +213,8 @@ public class PlayerInventory : MonoBehaviour
     public bool LevelUp(ItemData data, bool updateUI = true)
     {
         Item item = Get(data);
-        if (item) return LevelUp(item, updateUI);
+        if (item)
+            return LevelUp(item, updateUI);
         return false;
     }
 
@@ -226,7 +234,8 @@ public class PlayerInventory : MonoBehaviour
         if (GameManager.instance != null && GameManager.instance.choosingUpgrade)
             GameManager.instance.EndLevelUp();
 
-        if (item is Passive && player) player.RecalculateStats();
+        if (item is Passive && player)
+            player.RecalculateStats();
 
         return true;
     }
@@ -318,10 +327,13 @@ public class PlayerInventory : MonoBehaviour
 
     void RefreshInventoryUI(bool updateUI)
     {
-        if (!updateUI) return;
+        if (!updateUI)
+            return;
 
-        if (weaponUI) weaponUI.Refresh();
-        if (passiveUI) passiveUI.Refresh();
+        if (weaponUI)
+            weaponUI.Refresh();
+        if (passiveUI)
+            passiveUI.Refresh();
     }
 
     public int GetSlotsLeft<T>() where T : Item
@@ -404,7 +416,8 @@ public class PlayerInventory : MonoBehaviour
     {
         var available = GetAvailable<T>();
 
-        if (available == null || available.Length == 0) return new T[0];
+        if (available == null || available.Length == 0)
+            return new T[0];
 
         List<T> list = new List<T>(available);
 
@@ -426,11 +439,13 @@ public class PlayerInventory : MonoBehaviour
     {
         List<T> result = new List<T>();
         Slot[] slots = GetSlots<T>();
-        if (slots == null) return result.ToArray();
+        if (slots == null)
+            return result.ToArray();
 
         foreach (Slot s in slots)
         {
-            if (s?.item is T t && t.CanEvolve(0).Length > 0) result.Add(t);
+            if (s?.item is T t && t.CanEvolve(0).Length > 0)
+                result.Add(t);
         }
         return result.ToArray();
     }
@@ -439,11 +454,13 @@ public class PlayerInventory : MonoBehaviour
     {
         List<T> result = new List<T>();
         Slot[] slots = GetSlots<T>();
-        if (slots == null) return result.ToArray();
+        if (slots == null)
+            return result.ToArray();
 
         foreach (Slot s in slots)
         {
-            if (s?.item is T t && t.CanLevelUp()) result.Add(t);
+            if (s?.item is T t && t.CanLevelUp())
+                result.Add(t);
         }
         return result.ToArray();
     }

@@ -12,9 +12,32 @@ permissions:
   pull-requests: write
 
 jobs:
+  quality:
+    name: Code quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Validate runtime code formatting
+        run: dotnet format GameStats.csproj --verify-no-changes --no-restore --verbosity minimal
+
+      - name: Validate EditMode test formatting
+        run: dotnet format EditModeTests.csproj --verify-no-changes --no-restore --verbosity minimal
+
+      - name: Validate PlayMode test formatting
+        run: dotnet format PlayModeTests.csproj --verify-no-changes --no-restore --verbosity minimal
+
   test:
     name: Run Unity tests
     runs-on: ubuntu-latest
+    needs: quality
 
     steps:
       - name: Checkout repository

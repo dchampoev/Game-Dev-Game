@@ -32,7 +32,8 @@ public class KingBibleWeapon : ProjectileWeapon
             return false;
         }
 
-        if (!CanAttack()) return false;
+        if (!CanAttack())
+            return false;
 
         SpawnRing(owner);
 
@@ -52,7 +53,8 @@ public class KingBibleWeapon : ProjectileWeapon
 
     public override bool ActivateCooldown(bool strict = false)
     {
-        if (strict && currentCooldown > 0) return false;
+        if (strict && currentCooldown > 0)
+            return false;
 
         float actualCooldown = (currentStats.lifespan + currentStats.cooldown) * Owner.Stats.cooldown;
 
@@ -62,7 +64,8 @@ public class KingBibleWeapon : ProjectileWeapon
 
     public override bool DoLevelUp(bool updateUI = true)
     {
-        if (!base.DoLevelUp(updateUI)) return false;
+        if (!base.DoLevelUp(updateUI))
+            return false;
 
         SpawnRing(owner);
         ActivateCooldown(false);

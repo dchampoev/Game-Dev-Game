@@ -14,7 +14,8 @@ public class WhipWeapon : ProjectileWeapon
             return false;
         }
 
-        if (!CanAttack()) return false;
+        if (!CanAttack())
+            return false;
 
         if (currentCooldown <= 0f)
         {

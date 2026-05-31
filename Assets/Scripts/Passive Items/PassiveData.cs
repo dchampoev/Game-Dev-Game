@@ -8,7 +8,8 @@ public class PassiveData : ItemData
 
     public override Item.LevelData GetLevelData(int level)
     {
-        if (level <= 1) return baseStats;
+        if (level <= 1)
+            return baseStats;
 
         if (level - 2 < growth.Length)
         {

@@ -37,7 +37,8 @@ public class UICharacterSelector : MonoBehaviour
 
     void Start()
     {
-        if (!startButton) startButton = FindStartButton();
+        if (!startButton)
+            startButton = FindStartButton();
 
         SetupToggleNavigation();
         SetupFocusOutlines();
@@ -72,7 +73,8 @@ public class UICharacterSelector : MonoBehaviour
             if (assetPath.EndsWith(".asset"))
             {
                 CharacterData character = AssetDatabase.LoadAssetAtPath<CharacterData>(assetPath);
-                if (character) characters.Add(character);
+                if (character)
+                    characters.Add(character);
             }
         }
 #else
@@ -83,11 +85,13 @@ public class UICharacterSelector : MonoBehaviour
 
     public static CharacterData GetData()
     {
-        if (selected) return selected;
+        if (selected)
+            return selected;
         else
         {
             CharacterData[] characters = GetAllCharacterDataAssets();
-            if (characters.Length > 0) return characters[Random.Range(0, characters.Length)];
+            if (characters.Length > 0)
+                return characters[Random.Range(0, characters.Length)];
         }
         return null;
     }
@@ -114,8 +118,10 @@ public class UICharacterSelector : MonoBehaviour
         for (int i = 0; i < selectableToggles.Count; i++)
         {
             Toggle toggle = selectableToggles[i];
-            if (!toggle) continue;
-            if (group && !toggle.group) toggle.group = group;
+            if (!toggle)
+                continue;
+            if (group && !toggle.group)
+                toggle.group = group;
 
             Navigation navigation = toggle.navigation;
             navigation.mode = Navigation.Mode.Explicit;
@@ -131,10 +137,12 @@ public class UICharacterSelector : MonoBehaviour
 
     Toggle GetToggleAt(int index, int requiredRow = -1)
     {
-        if (index < 0 || index >= selectableToggles.Count) return null;
+        if (index < 0 || index >= selectableToggles.Count)
+            return null;
 
         Toggle toggle = selectableToggles[index];
-        if (!toggle || !toggle.gameObject.activeInHierarchy || !toggle.interactable) return null;
+        if (!toggle || !toggle.gameObject.activeInHierarchy || !toggle.interactable)
+            return null;
 
         if (requiredRow >= 0)
         {
@@ -143,7 +151,8 @@ public class UICharacterSelector : MonoBehaviour
                 ? Mathf.Max(1, grid.constraintCount)
                 : Mathf.Max(1, selectableToggles.Count);
 
-            if (index / columns != requiredRow) return null;
+            if (index / columns != requiredRow)
+                return null;
         }
 
         return toggle;
@@ -156,9 +165,12 @@ public class UICharacterSelector : MonoBehaviour
 
         foreach (Button button in buttons)
         {
-            if (!button || !button.gameObject.scene.IsValid()) continue;
-            if (!fallback) fallback = button;
-            if (button.name.Contains("Character Select")) return button;
+            if (!button || !button.gameObject.scene.IsValid())
+                continue;
+            if (!fallback)
+                fallback = button;
+            if (button.name.Contains("Character Select"))
+                return button;
         }
 
         return fallback;
@@ -166,7 +178,8 @@ public class UICharacterSelector : MonoBehaviour
 
     void UpdateStartButtonNavigation()
     {
-        if (!startButton) return;
+        if (!startButton)
+            return;
 
         Toggle selectedToggle = GetSelectedCharacterToggle();
         Toggle fallbackToggle = null;
@@ -192,11 +205,13 @@ public class UICharacterSelector : MonoBehaviour
 
         foreach (Toggle toggle in selectableToggles)
         {
-            if (!toggle || !toggle.targetGraphic) continue;
+            if (!toggle || !toggle.targetGraphic)
+                continue;
 
             GameObject graphicObject = toggle.targetGraphic.gameObject;
             Outline outline = graphicObject.GetComponent<Outline>();
-            if (!outline) outline = graphicObject.AddComponent<Outline>();
+            if (!outline)
+                outline = graphicObject.AddComponent<Outline>();
 
             outline.effectColor = keyboardFocusColor;
             outline.effectDistance = keyboardFocusDistance;
@@ -211,7 +226,8 @@ public class UICharacterSelector : MonoBehaviour
         {
             GameObject graphicObject = startButton.targetGraphic.gameObject;
             startButtonFocusOutline = graphicObject.GetComponent<Outline>();
-            if (!startButtonFocusOutline) startButtonFocusOutline = graphicObject.AddComponent<Outline>();
+            if (!startButtonFocusOutline)
+                startButtonFocusOutline = graphicObject.AddComponent<Outline>();
 
             startButtonFocusOutline.effectColor = keyboardFocusColor;
             startButtonFocusOutline.effectDistance = keyboardFocusDistance;
@@ -224,17 +240,23 @@ public class UICharacterSelector : MonoBehaviour
     {
         foreach (Toggle toggle in selectableToggles)
         {
-            if (!toggle) continue;
-            if (toggle.isOn) return toggle;
+            if (!toggle)
+                continue;
+            if (toggle.isOn)
+                return toggle;
         }
 
-        if (!selected) return null;
+        if (!selected)
+            return null;
 
         foreach (Toggle toggle in selectableToggles)
         {
-            if (!toggle) continue;
-            if (toggle.onValueChanged.GetPersistentEventCount() == 0) continue;
-            if (toggle.gameObject.name == selected.Name) return toggle;
+            if (!toggle)
+                continue;
+            if (toggle.onValueChanged.GetPersistentEventCount() == 0)
+                continue;
+            if (toggle.gameObject.name == selected.Name)
+                return toggle;
         }
 
         return null;
@@ -242,7 +264,8 @@ public class UICharacterSelector : MonoBehaviour
 
     void SelectToggle(Toggle toggle)
     {
-        if (!toggle) return;
+        if (!toggle)
+            return;
 
         toggle.isOn = true;
         if (EventSystem.current)
@@ -261,7 +284,8 @@ public class UICharacterSelector : MonoBehaviour
             Toggle toggle = pair.Key;
             Outline outline = pair.Value;
 
-            if (!toggle || !outline) continue;
+            if (!toggle || !outline)
+                continue;
             outline.enabled = toggle.gameObject == focusedObject;
         }
 

@@ -88,7 +88,7 @@ public class LightningRingWeaponPlayModeTests
         CallStart(enemy);
 
         yield return new WaitForFixedUpdate();
-        
+
         weapon.CallDamageArea(Vector2.zero, 5f, 3f);
 
         yield return null;

@@ -4,7 +4,8 @@ public class UnholyVespersWeapon : KingBibleWeapon
 {
     public override bool ActivateCooldown(bool strict = false)
     {
-        if (strict && currentCooldown > 0) return false;
+        if (strict && currentCooldown > 0)
+            return false;
 
         float actualCooldown = (currentStats.lifespan) * Owner.Stats.cooldown;
 

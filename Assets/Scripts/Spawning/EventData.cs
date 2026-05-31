@@ -17,14 +17,17 @@ public abstract class EventData : SpawnData
 
     public bool isActive()
     {
-        if (!GameManager.instance) return false;
-        if (GameManager.instance.GetElapsedTime() > activeAfter) return true;
+        if (!GameManager.instance)
+            return false;
+        if (GameManager.instance.GetElapsedTime() > activeAfter)
+            return true;
         return false;
     }
 
     public bool CheckIfWillHappen(PlayerStats player)
     {
-        if (probability >= 1) return true;
+        if (probability >= 1)
+            return true;
 
         if (probability / Mathf.Max(1, (player.Stats.luck * luckFactor)) >= Random.Range(0f, 1f))
         {

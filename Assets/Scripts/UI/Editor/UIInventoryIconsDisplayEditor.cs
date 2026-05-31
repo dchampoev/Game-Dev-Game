@@ -48,7 +48,8 @@ public class UIInventoryIconsDisplayEditor : Editor
             display.targetedItemList = itemListOptions[targetedItemListIndex].ToString();
             EditorUtility.SetDirty(display);
         }
-        if (GUILayout.Button("Generate Icons")) RegenerateIcons();
+        if (GUILayout.Button("Generate Icons"))
+            RegenerateIcons();
     }
 
     void RegenerateIcons()
@@ -61,20 +62,24 @@ public class UIInventoryIconsDisplayEditor : Editor
         {
             foreach (GameObject g in display.slots)
             {
-                if (!g) continue;
+                if (!g)
+                    continue;
 
-                if (g != display.slotTemplate) Undo.DestroyObjectImmediate(g);
+                if (g != display.slotTemplate)
+                    Undo.DestroyObjectImmediate(g);
             }
         }
 
         for (int i = 0; i < display.transform.childCount; i++)
         {
-            if (display.transform.GetChild(i).gameObject == display.slotTemplate) continue;
+            if (display.transform.GetChild(i).gameObject == display.slotTemplate)
+                continue;
             Undo.DestroyObjectImmediate(display.transform.GetChild(i).gameObject);
             i--;
         }
 
-        if (display.maxSlots <= 0) return;
+        if (display.maxSlots <= 0)
+            return;
 
         display.slots = new GameObject[display.maxSlots];
         display.slots[0] = display.slotTemplate;

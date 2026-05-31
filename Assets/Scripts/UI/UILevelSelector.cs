@@ -43,8 +43,10 @@ public class UILevelSelector : MonoBehaviour
 
     void Start()
     {
-        if (!selectLevelButton) selectLevelButton = FindButton("Select Level");
-        if (!backButton) backButton = FindButton("Back to Character Select");
+        if (!selectLevelButton)
+            selectLevelButton = FindButton("Select Level");
+        if (!backButton)
+            backButton = FindButton("Back to Character Select");
 
         ConfigureToggleCallbacks();
         SetupToggleNavigation();
@@ -91,7 +93,8 @@ public class UILevelSelector : MonoBehaviour
             get
             {
 #if UNITY_EDITOR
-                if (scene) return scene.name;
+                if (scene)
+                    return scene.name;
 #endif
                 return sceneName;
             }
@@ -143,10 +146,12 @@ public class UILevelSelector : MonoBehaviour
 
     public void Select(int sceneIndex)
     {
-        if (sceneIndex < 0 || sceneIndex >= levels.Count) return;
+        if (sceneIndex < 0 || sceneIndex >= levels.Count)
+            return;
 
         selectedLevel = sceneIndex;
-        if (statsUI) statsUI.UpdateFields();
+        if (statsUI)
+            statsUI.UpdateFields();
         globalBuff = GenerateGlobalBuffData();
         globalBuffAffectsPlayer = globalBuff && isModifierEmpty(globalBuff.variations[0].playerModifier);
         globalBuffAffectsEnemies = globalBuff && isModifierEmpty(globalBuff.variations[0].enemyModifier);
@@ -172,8 +177,10 @@ public class UILevelSelector : MonoBehaviour
         foreach (FieldInfo field in fields)
         {
             object value = field.GetValue(obj);
-            if (value is int) sum += (int)value;
-            else if (value is float) sum += (float)value;
+            if (value is int)
+                sum += (int)value;
+            else if (value is float)
+                sum += (float)value;
         }
 
         return Mathf.Approximately(sum, 0);
@@ -184,13 +191,15 @@ public class UILevelSelector : MonoBehaviour
         for (int i = 0; i < selectableToggles.Count; i++)
         {
             Toggle toggle = selectableToggles[i];
-            if (!toggle) continue;
+            if (!toggle)
+                continue;
 
             int levelIndex = i;
             toggle.onValueChanged.RemoveAllListeners();
             toggle.onValueChanged.AddListener(isOn =>
             {
-                if (isOn) Select(levelIndex);
+                if (isOn)
+                    Select(levelIndex);
             });
         }
     }
@@ -206,8 +215,10 @@ public class UILevelSelector : MonoBehaviour
         for (int i = 0; i < selectableToggles.Count; i++)
         {
             Toggle toggle = selectableToggles[i];
-            if (!toggle) continue;
-            if (group && !toggle.group) toggle.group = group;
+            if (!toggle)
+                continue;
+            if (group && !toggle.group)
+                toggle.group = group;
 
             Navigation navigation = toggle.navigation;
             navigation.mode = Navigation.Mode.Explicit;
@@ -221,10 +232,12 @@ public class UILevelSelector : MonoBehaviour
 
     Toggle GetToggleAt(int index, int requiredRow = -1)
     {
-        if (index < 0 || index >= selectableToggles.Count) return null;
+        if (index < 0 || index >= selectableToggles.Count)
+            return null;
 
         Toggle toggle = selectableToggles[index];
-        if (!toggle || !toggle.gameObject.activeInHierarchy || !toggle.interactable) return null;
+        if (!toggle || !toggle.gameObject.activeInHierarchy || !toggle.interactable)
+            return null;
 
         if (requiredRow >= 0)
         {
@@ -233,7 +246,8 @@ public class UILevelSelector : MonoBehaviour
                 ? Mathf.Max(1, grid.constraintCount)
                 : Mathf.Max(1, selectableToggles.Count);
 
-            if (index / columns != requiredRow) return null;
+            if (index / columns != requiredRow)
+                return null;
         }
 
         return toggle;
@@ -270,13 +284,16 @@ public class UILevelSelector : MonoBehaviour
         if (selectedLevel >= 0 && selectedLevel < selectableToggles.Count)
         {
             Toggle toggle = selectableToggles[selectedLevel];
-            if (toggle) return toggle;
+            if (toggle)
+                return toggle;
         }
 
         foreach (Toggle toggle in selectableToggles)
         {
-            if (!toggle) continue;
-            if (toggle.isOn) return toggle;
+            if (!toggle)
+                continue;
+            if (toggle.isOn)
+                return toggle;
         }
 
         return null;
@@ -286,7 +303,8 @@ public class UILevelSelector : MonoBehaviour
     {
         for (int i = selectableToggles.Count - 1; i >= 0; i--)
         {
-            if (selectableToggles[i]) return selectableToggles[i];
+            if (selectableToggles[i])
+                return selectableToggles[i];
         }
 
         return null;
@@ -294,10 +312,12 @@ public class UILevelSelector : MonoBehaviour
 
     void SelectToggle(Toggle toggle)
     {
-        if (!toggle) return;
+        if (!toggle)
+            return;
 
         int index = selectableToggles.IndexOf(toggle);
-        if (index >= 0) Select(index);
+        if (index >= 0)
+            Select(index);
 
         toggle.isOn = true;
         if (EventSystem.current)
@@ -313,7 +333,8 @@ public class UILevelSelector : MonoBehaviour
 
         foreach (Toggle toggle in selectableToggles)
         {
-            if (!toggle || !toggle.targetGraphic) continue;
+            if (!toggle || !toggle.targetGraphic)
+                continue;
 
             Outline outline = GetOrCreateFocusOutline(toggle.targetGraphic.gameObject);
             focusOutlines[toggle] = outline;
@@ -331,7 +352,8 @@ public class UILevelSelector : MonoBehaviour
     Outline GetOrCreateFocusOutline(GameObject graphicObject)
     {
         Outline outline = graphicObject.GetComponent<Outline>();
-        if (!outline) outline = graphicObject.AddComponent<Outline>();
+        if (!outline)
+            outline = graphicObject.AddComponent<Outline>();
 
         outline.effectColor = keyboardFocusColor;
         outline.effectDistance = keyboardFocusDistance;
@@ -349,7 +371,8 @@ public class UILevelSelector : MonoBehaviour
             Toggle toggle = pair.Key;
             Outline outline = pair.Value;
 
-            if (!toggle || !outline) continue;
+            if (!toggle || !outline)
+                continue;
             outline.enabled = toggle.gameObject == focusedObject;
         }
 
@@ -369,11 +392,14 @@ public class UILevelSelector : MonoBehaviour
         Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (Button button in buttons)
         {
-            if (!button || !button.gameObject.scene.IsValid()) continue;
-            if (button.name.Contains(buttonName)) return button;
+            if (!button || !button.gameObject.scene.IsValid())
+                continue;
+            if (button.name.Contains(buttonName))
+                return button;
 
             TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>(true);
-            if (label && label.text.Contains(buttonName)) return button;
+            if (label && label.text.Contains(buttonName))
+                return button;
         }
 
         return null;

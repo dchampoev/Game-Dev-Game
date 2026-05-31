@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class ItemTests
 {

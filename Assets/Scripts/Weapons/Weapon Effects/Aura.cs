@@ -59,7 +59,7 @@ public class Aura : WeaponEffect
 
     void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out EnemyStats enemy))
+        if (collision.TryGetComponent(out EnemyStats enemy))
         {
             if (affectedEnemies.ContainsKey(enemy))
             {

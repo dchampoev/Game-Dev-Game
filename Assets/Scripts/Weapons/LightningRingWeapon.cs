@@ -14,7 +14,8 @@ public class LightningRingWeapon : ProjectileWeapon
             return false;
         }
 
-        if (!CanAttack()) return false;
+        if (!CanAttack())
+            return false;
 
         if (currentCooldown <= 0f)
         {

@@ -22,7 +22,8 @@ public class PlayerCollector : MonoBehaviour
 
     public void SetRadius(float radius)
     {
-        if (!detector) detector = GetComponent<CircleCollider2D>();
+        if (!detector)
+            detector = GetComponent<CircleCollider2D>();
         detector.radius = radius;
     }
     public float GetCoins() { return coins; }
@@ -36,7 +37,8 @@ public class PlayerCollector : MonoBehaviour
 
     public void SaveCoinsToStash()
     {
-        if (Mathf.Approximately(coins, 0f)) return;
+        if (Mathf.Approximately(coins, 0f))
+            return;
 
         SaveManager.LastLoadedGameData.coins += coins;
         coins = 0;
@@ -46,7 +48,8 @@ public class PlayerCollector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent(out Pickup pickup)){
+        if (collision.TryGetComponent(out Pickup pickup))
+        {
             pickup.Collect(player, pullSpeed);
         }
     }

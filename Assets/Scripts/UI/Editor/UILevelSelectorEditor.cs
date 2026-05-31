@@ -53,8 +53,10 @@ public class UILevelSelectorEditor : Editor
                 string mapLabel = "Level", mapName = "New Map";
                 if (m.Success)
                 {
-                    if (m.Groups.Count > 1) mapLabel = m.Groups[1].Value;
-                    if (m.Groups.Count > 2) mapName = m.Groups[2].Value;
+                    if (m.Groups.Count > 1)
+                        mapLabel = m.Groups[1].Value;
+                    if (m.Groups.Count > 2)
+                        mapName = m.Groups[2].Value;
                 }
 
                 selector.levels.Add(new UILevelSelector.SceneData
@@ -84,7 +86,8 @@ public class UILevelSelectorEditor : Editor
         for (int i = selector.toggleTemplate.transform.parent.childCount - 1; i >= 0; i--)
         {
             Toggle toggle = selector.toggleTemplate.transform.parent.GetChild(i).GetComponent<Toggle>();
-            if (toggle == selector.toggleTemplate) continue;
+            if (toggle == selector.toggleTemplate)
+                continue;
             Undo.DestroyObjectImmediate(toggle.gameObject);
         }
 

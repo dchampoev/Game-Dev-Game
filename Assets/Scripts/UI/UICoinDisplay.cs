@@ -15,14 +15,17 @@ public class UICoinDisplay : MonoBehaviour
     {
         displayTarget = GetComponentInChildren<TextMeshProUGUI>();
         UpdateDisplay();
-        if (collector != null) collector.onCoinCollected += UpdateDisplay;
+        if (collector != null)
+            collector.onCoinCollected += UpdateDisplay;
     }
 
     public void UpdateDisplay()
     {
-        if (!displayTarget) return;
+        if (!displayTarget)
+            return;
 
-        if (collector != null) displayTarget.text = Mathf.RoundToInt(collector.GetCoins()).ToString();
+        if (collector != null)
+            displayTarget.text = Mathf.RoundToInt(collector.GetCoins()).ToString();
         else
         {
             float coins = SaveManager.LastLoadedGameData.coins;

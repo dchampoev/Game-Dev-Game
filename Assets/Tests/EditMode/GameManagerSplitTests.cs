@@ -31,7 +31,8 @@ public class GameManagerSplitTests
     Button CreateButton(string name, Transform parent = null)
     {
         GameObject buttonObject = new GameObject(name);
-        if (parent) buttonObject.transform.SetParent(parent, false);
+        if (parent)
+            buttonObject.transform.SetParent(parent, false);
 
         buttonObject.AddComponent<RectTransform>();
         Image image = buttonObject.AddComponent<Image>();
@@ -146,7 +147,8 @@ public class GameManagerSplitTests
         int reaperCloneCount = 0;
         foreach (GameObject obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
-            if (obj.name == "ReaperPrefab(Clone)") reaperCloneCount++;
+            if (obj.name == "ReaperPrefab(Clone)")
+                reaperCloneCount++;
         }
 
         Assert.IsFalse(spawnManagerObject.activeSelf);

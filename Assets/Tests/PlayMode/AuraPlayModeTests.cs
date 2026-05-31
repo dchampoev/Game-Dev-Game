@@ -57,7 +57,8 @@ public class AuraPlayModeTests
         while (type != null)
         {
             FieldInfo field = type.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (field != null) return field;
+            if (field != null)
+                return field;
             type = type.BaseType;
         }
 
@@ -209,7 +210,7 @@ public class AuraPlayModeTests
             knockbackMultiplier = 1f,
             resistances = new EnemyStats.Resistances()
         };
-        
+
         SetPrivateField(enemy, "health", 10f);
         SetPrivateField(enemy, "sprite", spriteRenderer);
         SetPrivateField(enemy, "originalColor", Color.white);

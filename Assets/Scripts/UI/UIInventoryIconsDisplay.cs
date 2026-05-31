@@ -67,11 +67,13 @@ public class UIInventoryIconsDisplay : MonoBehaviour
             {
                 Image icon = iconObj.GetComponent<Image>();
 
-                if (!item) icon.color = new Color(1, 1, 1, 0);
+                if (!item)
+                    icon.color = new Color(1, 1, 1, 0);
                 else
                 {
                     icon.color = new Color(1, 1, 1, 1);
-                    if (icon) icon.sprite = item.data.icon;
+                    if (icon)
+                        icon.sprite = item.data.icon;
                 }
             }
 
@@ -81,8 +83,10 @@ public class UIInventoryIconsDisplay : MonoBehaviour
                 TextMeshProUGUI levelText = levelObj.GetComponentInChildren<TextMeshProUGUI>();
                 if (levelText)
                 {
-                    if(!item || !showLevels) levelText.text = "";
-                    else levelText.text = item.currentLevel.ToString();
+                    if (!item || !showLevels)
+                        levelText.text = "";
+                    else
+                        levelText.text = item.currentLevel.ToString();
                 }
             }
         }

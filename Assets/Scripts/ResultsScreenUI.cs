@@ -37,16 +37,21 @@ public class ResultsScreenUI : MonoBehaviour
 
     public void SetChosenCharacter(CharacterData chosenCharacter)
     {
-        if (!chosenCharacter) return;
+        if (!chosenCharacter)
+            return;
 
-        if (chosenCharacterImage) chosenCharacterImage.sprite = chosenCharacter.Icon;
-        if (chosenCharacterName) chosenCharacterName.text = chosenCharacter.Name;
+        if (chosenCharacterImage)
+            chosenCharacterImage.sprite = chosenCharacter.Icon;
+        if (chosenCharacterName)
+            chosenCharacterName.text = chosenCharacter.Name;
     }
 
     public void Show(string survivedTimeText)
     {
-        if (timeSurvivedDisplay) timeSurvivedDisplay.text = survivedTimeText;
-        if (resultsScreen) resultsScreen.SetActive(true);
+        if (timeSurvivedDisplay)
+            timeSurvivedDisplay.text = survivedTimeText;
+        if (resultsScreen)
+            resultsScreen.SetActive(true);
     }
 
     public void ShowWithLeaderboardPrompt(int levelReached, float survivedTime, string survivedTimeText)
@@ -54,14 +59,16 @@ public class ResultsScreenUI : MonoBehaviour
         pendingLeaderboardLevel = levelReached;
         pendingLeaderboardTime = survivedTime;
 
-        if (levelReachedDisplay) levelReachedDisplay.text = levelReached.ToString();
+        if (levelReachedDisplay)
+            levelReachedDisplay.text = levelReached.ToString();
         Show(survivedTimeText);
         ShowLeaderboardNamePrompt();
     }
 
     void ShowLeaderboardNamePrompt()
     {
-        if (!resultsScreen) return;
+        if (!resultsScreen)
+            return;
 
         if (leaderboardNamePrompt == null)
             CreateLeaderboardNamePrompt();

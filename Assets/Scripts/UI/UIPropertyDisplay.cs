@@ -18,13 +18,15 @@ public abstract class UIPropertyDisplay : MonoBehaviour
 
     protected virtual StringBuilder ProcessName(string name, StringBuilder output, FieldInfo field)
     {
-        if (!IsFieldShown(field)) return output;
+        if (!IsFieldShown(field))
+            return output;
         return output.AppendLine(name);
     }
 
     protected virtual StringBuilder ProcessValue(object value, StringBuilder output, FieldInfo field)
     {
-        if (!IsFieldShown(field)) return output;
+        if (!IsFieldShown(field))
+            return output;
 
         float floatValue = value is int ? (int)value : value is float ? (float)value : 0f;
 
@@ -39,7 +41,8 @@ public abstract class UIPropertyDisplay : MonoBehaviour
             }
             else
             {
-                if (percentage > 0) output.Append('+');
+                if (percentage > 0)
+                    output.Append('+');
                 output.Append(percentage).Append('%').Append('\n');
             }
         }
@@ -61,7 +64,8 @@ public abstract class UIPropertyDisplay : MonoBehaviour
         StringBuilder names = new StringBuilder();
         StringBuilder values = new StringBuilder();
 
-        if (targetType == null) return new StringBuilder[2] { PrettifyNames(names), values };
+        if (targetType == null)
+            return new StringBuilder[2] { PrettifyNames(names), values };
 
         object readObject = GetReadObject();
         FieldInfo[] fields = targetType.GetFields(flags);
@@ -78,7 +82,8 @@ public abstract class UIPropertyDisplay : MonoBehaviour
 
     public static StringBuilder PrettifyNames(StringBuilder input)
     {
-        if (input.Length <= 0) return new StringBuilder();
+        if (input.Length <= 0)
+            return new StringBuilder();
 
         StringBuilder result = new StringBuilder();
         char last = '\0';

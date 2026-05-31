@@ -27,7 +27,8 @@ public class EventManager : MonoBehaviour
 
     void Start()
     {
-        if (instance) Debug.LogWarning("There is more than one Event Manager in the scene! Please remove the extra Event Managers.");
+        if (instance)
+            Debug.LogWarning("There is more than one Event Manager in the scene! Please remove the extra Event Managers.");
         instance = this;
         currentEventCooldown = firstTriggerDelay > 0 ? firstTriggerDelay : triggerInterval;
         allPlayers = FindObjectsByType<PlayerStats>(FindObjectsSortMode.None);
@@ -74,13 +75,15 @@ public class EventManager : MonoBehaviour
 
     public EventData GetRandomEvent()
     {
-        if (events.Length <= 0) return null;
+        if (events.Length <= 0)
+            return null;
 
         List<EventData> possibleEvents = new List<EventData>(events);
 
         foreach (EventData e in events)
         {
-            if (e.isActive()) possibleEvents.Add(e);
+            if (e.isActive())
+                possibleEvents.Add(e);
         }
         if (possibleEvents.Count > 0)
         {

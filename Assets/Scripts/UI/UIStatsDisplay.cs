@@ -12,8 +12,10 @@ public class UIStatsDisplay : UIPropertyDisplay
 
     public override object GetReadObject()
     {
-        if(player) return player.Stats;
-        else if (character) return character.stats;
+        if (player)
+            return player.Stats;
+        else if (character)
+            return character.stats;
         return new CharacterData.Stats();
     }
 
@@ -30,21 +32,25 @@ public class UIStatsDisplay : UIPropertyDisplay
             return output.Append(DASH).Append('\n');
         }
 
-        if (percentage > 0) output.Append('+');
+        if (percentage > 0)
+            output.Append('+');
         return output.Append(percentage).Append('%').Append('\n');
     }
 
     public override void UpdateFields()
     {
-        if (!player && !character) return;
+        if (!player && !character)
+            return;
 
         StringBuilder[] allStats = GetProperties(
             BindingFlags.Public | BindingFlags.Instance,
             typeof(CharacterData.Stats)
         );
 
-        if (!propertyNames && transform.childCount > 0) propertyNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
-        if (!propertyValues && transform.childCount > 1) propertyValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        if (!propertyNames && transform.childCount > 0)
+            propertyNames = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        if (!propertyValues && transform.childCount > 1)
+            propertyValues = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
         if (displayCurrentHealth)
         {
@@ -52,10 +58,13 @@ public class UIStatsDisplay : UIPropertyDisplay
             allStats[1].Insert(0, (player ? player.CurrentHealth.ToString() : DASH) + "\n");
         }
 
-        if (propertyNames) propertyNames.text = allStats[0].ToString();
-        if (propertyValues) propertyValues.text = allStats[1].ToString();
+        if (propertyNames)
+            propertyNames.text = allStats[0].ToString();
+        if (propertyValues)
+            propertyValues.text = allStats[1].ToString();
 
-        if (propertyNames && propertyValues) propertyValues.fontSize = propertyNames.fontSize;
+        if (propertyNames && propertyValues)
+            propertyValues.fontSize = propertyNames.fontSize;
     }
 
     void Reset()
