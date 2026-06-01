@@ -8,31 +8,46 @@ public class Aura : WeaponEffect
 {
     Dictionary<EnemyStats, float> affectedEnemies = new Dictionary<EnemyStats, float>();
     List<EnemyStats> targetsToUnaffect = new List<EnemyStats>();
+    readonly List<EnemyStats> affectedEnemiesSnapshot = new List<EnemyStats>();
 
     void Update()
     {
-        Dictionary<EnemyStats, float> affectedEnemiesCopy = new Dictionary<EnemyStats, float>(affectedEnemies);
-        foreach (KeyValuePair<EnemyStats, float> pair in affectedEnemiesCopy)
+        affectedEnemiesSnapshot.Clear();
+        foreach (EnemyStats enemy in affectedEnemies.Keys)
         {
-            affectedEnemies[pair.Key] -= Time.deltaTime;
-            if (pair.Value <= 0)
+            affectedEnemiesSnapshot.Add(enemy);
+        }
+
+        foreach (EnemyStats enemy in affectedEnemiesSnapshot)
+        {
+            if (!enemy)
             {
-                if (targetsToUnaffect.Contains(pair.Key))
+                affectedEnemies.Remove(enemy);
+                targetsToUnaffect.Remove(enemy);
+                continue;
+            }
+
+            float remainingTime = affectedEnemies[enemy];
+            affectedEnemies[enemy] = remainingTime - Time.deltaTime;
+
+            if (remainingTime <= 0)
+            {
+                if (targetsToUnaffect.Contains(enemy))
                 {
-                    affectedEnemies.Remove(pair.Key);
-                    targetsToUnaffect.Remove(pair.Key);
+                    affectedEnemies.Remove(enemy);
+                    targetsToUnaffect.Remove(enemy);
                 }
                 else
                 {
                     Weapon.Stats stats = weapon.GetStats();
-                    affectedEnemies[pair.Key] = stats.cooldown * Owner.Stats.cooldown;
-                    pair.Key.TakeDamage(GetDamage(), transform.position, stats.knockback);
+                    affectedEnemies[enemy] = stats.cooldown * Owner.Stats.cooldown;
+                    enemy.TakeDamage(GetDamage(), transform.position, stats.knockback);
 
-                    weapon.ApplyBuffs(pair.Key);
+                    weapon.ApplyBuffs(enemy);
 
                     if (stats.hitEffect)
                     {
-                        Destroy(Instantiate(stats.hitEffect, pair.Key.transform.position, Quaternion.identity), 5f);
+                        Destroy(Instantiate(stats.hitEffect, enemy.transform.position, Quaternion.identity), 5f);
                     }
                 }
             }
@@ -63,7 +78,8 @@ public class Aura : WeaponEffect
         {
             if (affectedEnemies.ContainsKey(enemy))
             {
-                targetsToUnaffect.Add(enemy);
+                if (!targetsToUnaffect.Contains(enemy))
+                    targetsToUnaffect.Add(enemy);
             }
         }
     }

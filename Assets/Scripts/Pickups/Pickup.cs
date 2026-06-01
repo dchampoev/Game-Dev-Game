@@ -2,11 +2,35 @@ using UnityEngine;
 
 public class Pickup : Sortable
 {
+    public const int MaxExperienceGemsOnMap = 400;
+
+    static int activeExperienceGemCount;
+
     public float lifespan = 0.5f;
     protected PlayerStats target;
     protected float speed;
     Vector2 initialPosition;
     float initialOffset;
+    bool countedAsExperienceGem;
+
+    public static int ActiveExperienceGemCount
+    {
+        get { return activeExperienceGemCount; }
+    }
+
+    public static bool CanSpawnExperienceGem()
+    {
+        return activeExperienceGemCount < MaxExperienceGemsOnMap;
+    }
+
+    public static bool CanSpawnPrefab(GameObject prefab)
+    {
+        if (!prefab)
+            return false;
+
+        Pickup pickup = prefab.GetComponent<Pickup>();
+        return !pickup || pickup.experience <= 0 || CanSpawnExperienceGem();
+    }
 
     [System.Serializable]
     public struct BobbingAnimation
@@ -27,8 +51,18 @@ public class Pickup : Sortable
     protected override void Start()
     {
         base.Start();
+        RegisterExperienceGem();
         initialPosition = transform.position;
         initialOffset = Random.Range(0, bobbingAnimation.frequency);
+    }
+
+    void RegisterExperienceGem()
+    {
+        if (countedAsExperienceGem || experience <= 0)
+            return;
+
+        countedAsExperienceGem = true;
+        activeExperienceGemCount++;
     }
 
     protected virtual void Update()
@@ -63,6 +97,12 @@ public class Pickup : Sortable
 
     protected virtual void OnDestroy()
     {
+        if (countedAsExperienceGem)
+        {
+            activeExperienceGemCount = Mathf.Max(0, activeExperienceGemCount - 1);
+            countedAsExperienceGem = false;
+        }
+
         if (!target)
             return;
         if (experience != 0)

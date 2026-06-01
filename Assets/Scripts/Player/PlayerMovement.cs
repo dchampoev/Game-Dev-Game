@@ -26,10 +26,13 @@ public sealed class PlayerMovement : Sortable
 
     public void OnMove(InputValue value)
     {
-        if (GameManager.instance.currentState != GameManager.GameState.Gameplay)
+        if (GameManager.instance && GameManager.instance.currentState != GameManager.GameState.Gameplay)
         {
             return;
         }
+
+        if (value == null)
+            return;
 
         movementInput = value.Get<Vector2>();
 
@@ -44,13 +47,15 @@ public sealed class PlayerMovement : Sortable
         movementInput = Vector2.zero;
         lastMoveDirection = Vector2.zero;
 
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        if (rb != null)
-            rb.linearVelocity = Vector2.zero;
+        if (rigidBody != null)
+            rigidBody.linearVelocity = Vector2.zero;
     }
 
     void FixedUpdate()
     {
+        if (!rigidBody || !player)
+            return;
+
         rigidBody.linearVelocity = movementInput.normalized * DEFAULT_MOVE_SPEED * player.Stats.moveSpeed;
     }
 }

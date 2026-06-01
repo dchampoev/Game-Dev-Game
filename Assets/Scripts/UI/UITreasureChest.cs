@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -40,6 +41,14 @@ public class UITreasureChest : MonoBehaviour
     private List<Sprite> icons = new List<Sprite>();
     private bool isAnimating = false;
     private Coroutine chestSequenceCoroutine;
+    private Button chestButtonComponent;
+    private Button doneButtonComponent;
+    private Outline chestButtonFocusOutline;
+    private Outline doneButtonFocusOutline;
+
+    [Header("Keyboard Focus")]
+    public Color keyboardFocusColor = new Color(1f, 0.86f, 0.25f, 1f);
+    public Vector2 keyboardFocusDistance = new Vector2(5f, -5f);
 
     private AudioSource audioSource;
     public AudioClip pickUpSound;
@@ -66,6 +75,12 @@ public class UITreasureChest : MonoBehaviour
         }
 
         instance = this;
+    }
+
+    private void OnEnable()
+    {
+        CacheButtons();
+        SelectButton(chestButtonComponent);
     }
 
     public static void Activate(PlayerCollector collector, TreasureChest chest)
@@ -143,6 +158,7 @@ public class UITreasureChest : MonoBehaviour
         yield return new WaitForSecondsRealtime(RewardReadyDelay);
         coinText.gameObject.SetActive(false);
         doneButton.gameObject.SetActive(true);
+        SelectButton(doneButtonComponent);
     }
 
     private void SetupBeam(int index)
@@ -359,6 +375,7 @@ public class UITreasureChest : MonoBehaviour
         coinText.text = coins.ToString("F2");
         coinText.gameObject.SetActive(false);
         doneButton.gameObject.SetActive(true);
+        SelectButton(doneButtonComponent);
         openingVFX.SetActive(false);
         isAnimating = false;
         chestPanel.color = originalColor;
@@ -376,6 +393,8 @@ public class UITreasureChest : MonoBehaviour
     private void Update()
     {
         Keyboard keyboard = Keyboard.current;
+        RefreshButtonFocusOutlines();
+
         if (keyboard == null)
             return;
 
@@ -395,12 +414,69 @@ public class UITreasureChest : MonoBehaviour
     {
         if (buttonObject && buttonObject.activeInHierarchy)
         {
-            Button button = buttonObject.GetComponent<Button>();
+            Button button = GetCachedButton(buttonObject);
             if (button != null && button.interactable)
             {
                 button.onClick.Invoke();
             }
         }
+    }
+
+    private Button GetCachedButton(GameObject buttonObject)
+    {
+        if (buttonObject == chestButton)
+            return chestButtonComponent;
+        if (buttonObject == doneButton)
+            return doneButtonComponent;
+        return buttonObject.GetComponent<Button>();
+    }
+
+    private void CacheButtons()
+    {
+        if (!chestButtonComponent && chestButton)
+            chestButtonComponent = chestButton.GetComponent<Button>();
+        if (!doneButtonComponent && doneButton)
+            doneButtonComponent = doneButton.GetComponent<Button>();
+
+        chestButtonFocusOutline = GetOrCreateFocusOutline(chestButtonComponent);
+        doneButtonFocusOutline = GetOrCreateFocusOutline(doneButtonComponent);
+    }
+
+    private void SelectButton(Button button)
+    {
+        if (!button || !button.gameObject.activeInHierarchy || !button.interactable || !EventSystem.current)
+            return;
+
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(button.gameObject);
+        RefreshButtonFocusOutlines();
+    }
+
+    private Outline GetOrCreateFocusOutline(Button button)
+    {
+        if (!button || !button.targetGraphic)
+            return null;
+
+        Outline outline = button.targetGraphic.GetComponent<Outline>();
+        if (!outline)
+            outline = button.targetGraphic.gameObject.AddComponent<Outline>();
+
+        outline.effectColor = keyboardFocusColor;
+        outline.effectDistance = keyboardFocusDistance;
+        outline.useGraphicAlpha = false;
+        outline.enabled = false;
+        return outline;
+    }
+
+    private void RefreshButtonFocusOutlines()
+    {
+        GameObject focusedObject = EventSystem.current ? EventSystem.current.currentSelectedGameObject : null;
+
+        if (chestButtonFocusOutline && chestButton)
+            chestButtonFocusOutline.enabled = chestButton.activeInHierarchy && chestButton == focusedObject;
+
+        if (doneButtonFocusOutline && doneButton)
+            doneButtonFocusOutline.enabled = doneButton.activeInHierarchy && doneButton == focusedObject;
     }
 
     public void CloseUI()
@@ -414,6 +490,7 @@ public class UITreasureChest : MonoBehaviour
         beamVFX.SetActive(false);
         gameObject.SetActive(false);
         doneButton.gameObject.SetActive(false);
+        RefreshButtonFocusOutlines();
         fireworks.SetActive(false);
         curvedBeams.SetActive(false);
         ResetDisplay();

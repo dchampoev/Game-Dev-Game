@@ -29,7 +29,7 @@ public class LightningRingWeapon : ProjectileWeapon
         {
             DamageArea(target.transform.position, GetArea(), GetDamage());
 
-            Instantiate(currentStats.hitEffect, target.transform.position, Quaternion.identity);
+            Destroy(Instantiate(currentStats.hitEffect, target.transform.position, Quaternion.identity).gameObject, 5f);
         }
 
         if (currentStats.procEffect)

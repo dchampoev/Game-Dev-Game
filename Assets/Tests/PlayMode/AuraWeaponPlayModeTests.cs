@@ -112,7 +112,9 @@ public class AuraWeaponPlayModeTests
 
         yield return null;
 
+        Assert.IsTrue(auraObject == null);
         Assert.IsTrue(aura == null);
+        Assert.IsTrue(weapon.GetCurrentAura() == null);
     }
 
     [UnityTest]

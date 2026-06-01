@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class EnemyMovement : Sortable
 {
+    static PlayerMovement[] cachedPlayers;
+
     protected EnemyStats stats;
     protected Transform player;
     protected Rigidbody2D rigidBody;
@@ -18,16 +20,27 @@ public class EnemyMovement : Sortable
 
     protected bool spawnedOutOfFrame = false;
 
+    protected virtual void Awake()
+    {
+        CacheComponents();
+    }
+
     protected override void Start()
     {
         base.Start();
 
-        rigidBody = GetComponent<Rigidbody2D>();
+        CacheComponents();
         spawnedOutOfFrame = !SpawnManager.IsWithinBoundaries(transform);
-        stats = GetComponent<EnemyStats>();
 
-        PlayerMovement[] allPlayers = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
-        player = allPlayers[Random.Range(0, allPlayers.Length)].transform;
+        player = GetRandomPlayer();
+    }
+
+    void CacheComponents()
+    {
+        if (!rigidBody)
+            rigidBody = GetComponent<Rigidbody2D>();
+        if (!stats)
+            stats = GetComponent<EnemyStats>();
     }
 
     protected virtual void Update()
@@ -90,6 +103,10 @@ public class EnemyMovement : Sortable
 
     public virtual void Knockback(Vector2 velocity, float duration)
     {
+        CacheComponents();
+        if (!stats)
+            return;
+
         if (knockbackDuration > 0)
             return;
 
@@ -114,6 +131,15 @@ public class EnemyMovement : Sortable
 
     protected virtual void Move(float deltaTime)
     {
+        CacheComponents();
+        if (!stats)
+            return;
+
+        if (!player)
+            player = GetRandomPlayer();
+        if (!player)
+            return;
+
         if (rigidBody)
         {
             Vector2 direction = ((Vector2)player.position - rigidBody.position).normalized;
@@ -127,5 +153,39 @@ public class EnemyMovement : Sortable
                 stats.Actual.moveSpeed * deltaTime
             );
         }
+    }
+
+    static Transform GetRandomPlayer()
+    {
+        if (!HasCachedPlayer())
+            cachedPlayers = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
+
+        if (cachedPlayers == null || cachedPlayers.Length == 0)
+            return null;
+
+        int startIndex = Random.Range(0, cachedPlayers.Length);
+        for (int i = 0; i < cachedPlayers.Length; i++)
+        {
+            PlayerMovement candidate = cachedPlayers[(startIndex + i) % cachedPlayers.Length];
+            if (candidate)
+                return candidate.transform;
+        }
+
+        cachedPlayers = null;
+        return null;
+    }
+
+    static bool HasCachedPlayer()
+    {
+        if (cachedPlayers == null || cachedPlayers.Length == 0)
+            return false;
+
+        foreach (PlayerMovement playerMovement in cachedPlayers)
+        {
+            if (playerMovement)
+                return true;
+        }
+
+        return false;
     }
 }

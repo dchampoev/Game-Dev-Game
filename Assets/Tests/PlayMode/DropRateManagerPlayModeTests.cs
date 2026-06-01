@@ -76,4 +76,46 @@ public class DropRateManagerPlayModeTests
 
         Assert.AreEqual(before, after);
     }
+
+    [UnityTest]
+    public IEnumerator OnDestroy_WhenExperienceGemCapReached_ShouldNotInstantiateExperienceDrop()
+    {
+        for (int i = 0; i < Pickup.MaxExperienceGemsOnMap; i++)
+        {
+            Pickup existingGem = new GameObject("Existing Experience Gem").AddComponent<Pickup>();
+            existingGem.experience = 1;
+        }
+
+        yield return null;
+
+        GameObject managerObject = new GameObject("DropManager");
+        DropRateManager manager = managerObject.AddComponent<DropRateManager>();
+        manager.active = true;
+
+        GameObject dropPrefab = new GameObject("ExperienceDropPrefab");
+        Pickup pickup = dropPrefab.AddComponent<Pickup>();
+        pickup.experience = 5;
+        dropPrefab.AddComponent<TestDropMarker>();
+        dropPrefab.SetActive(false);
+
+        manager.drops = new List<DropRateManager.Drops>
+        {
+            new DropRateManager.Drops
+            {
+                dropName = "ExperienceDrop",
+                dropPrefab = dropPrefab,
+                dropRate = 100f
+            }
+        };
+
+        int before = Object.FindObjectsByType<TestDropMarker>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+
+        Object.Destroy(managerObject);
+        yield return null;
+
+        int after = Object.FindObjectsByType<TestDropMarker>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+
+        Assert.AreEqual(Pickup.MaxExperienceGemsOnMap, Pickup.ActiveExperienceGemCount);
+        Assert.AreEqual(before, after);
+    }
 }

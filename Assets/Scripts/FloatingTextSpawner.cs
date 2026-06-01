@@ -6,6 +6,8 @@ using UnityEngine.TestTools;
 [ExcludeFromCoverage]
 public class FloatingTextSpawner : MonoBehaviour
 {
+    const int DamageTextSortingOrder = -1000;
+
     Canvas damageTextCanvas;
     float textFontSize;
     TMP_FontAsset damageTextFont;
@@ -17,6 +19,7 @@ public class FloatingTextSpawner : MonoBehaviour
         textFontSize = fontSize;
         damageTextFont = font;
         referenceCamera = camera;
+        ConfigureDamageTextCanvas();
     }
 
     public void Show(string text, Transform target, float duration = 1f, float speed = 1f)
@@ -80,5 +83,14 @@ public class FloatingTextSpawner : MonoBehaviour
 
         if (floatingTextObj)
             Destroy(floatingTextObj);
+    }
+
+    void ConfigureDamageTextCanvas()
+    {
+        if (!damageTextCanvas)
+            return;
+
+        damageTextCanvas.overrideSorting = true;
+        damageTextCanvas.sortingOrder = DamageTextSortingOrder;
     }
 }

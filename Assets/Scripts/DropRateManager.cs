@@ -28,7 +28,7 @@ public class DropRateManager : MonoBehaviour
 
         foreach (Drops drop in drops)
         {
-            if (randomNumber <= drop.dropRate)
+            if (randomNumber <= drop.dropRate && Pickup.CanSpawnPrefab(drop.dropPrefab))
             {
                 possibleDrops.Add(drop);
             }

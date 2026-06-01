@@ -59,6 +59,21 @@ public class FloatingTextSpawnerPlayModeTests
     }
 
     [UnityTest]
+    public IEnumerator Initialize_ShouldRenderDamageTextCanvasBehindModalUi()
+    {
+        Canvas canvas = CreateCanvas();
+        Camera camera = CreateCamera();
+        FloatingTextSpawner spawner = new GameObject("Spawner").AddComponent<FloatingTextSpawner>();
+
+        spawner.Initialize(canvas, 24f, null, camera);
+
+        yield return null;
+
+        Assert.IsTrue(canvas.overrideSorting);
+        Assert.Less(canvas.sortingOrder, 0);
+    }
+
+    [UnityTest]
     public IEnumerator Show_WhenDurationEnds_ShouldDestroyFloatingText()
     {
         Canvas canvas = CreateCanvas();

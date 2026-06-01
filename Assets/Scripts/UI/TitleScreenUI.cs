@@ -11,18 +11,19 @@ public class TitleScreenUI : MonoBehaviour
     public Button firstButton;
 
     GameObject instructionsScreen;
+    Button instructionsButton;
     bool wasInstructionsOpen;
 
     void Start()
     {
-        instructionsScreen = GameObject.Find(InstructionsScreenName);
+        ResolveInstructionsScreen();
         SelectButton(firstButton);
     }
 
     void Update()
     {
         if (!instructionsScreen)
-            instructionsScreen = GameObject.Find(InstructionsScreenName);
+            ResolveInstructionsScreen();
 
         bool instructionsOpen = instructionsScreen && instructionsScreen.activeInHierarchy;
 
@@ -47,7 +48,13 @@ public class TitleScreenUI : MonoBehaviour
         if (selectedObject && selectedObject.activeInHierarchy && selectedObject.transform.IsChildOf(instructionsScreen.transform))
             return;
 
-        SelectButton(instructionsScreen.GetComponentInChildren<Button>());
+        SelectButton(instructionsButton);
+    }
+
+    void ResolveInstructionsScreen()
+    {
+        instructionsScreen = GameObject.Find(InstructionsScreenName);
+        instructionsButton = instructionsScreen ? instructionsScreen.GetComponentInChildren<Button>(true) : null;
     }
 
     bool HasCurrentSelection()

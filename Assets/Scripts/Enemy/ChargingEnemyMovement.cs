@@ -7,7 +7,8 @@ public class ChargingEnemyMovement : EnemyMovement
     protected override void Start()
     {
         base.Start();
-        chargeDirection = ((Vector2)player.position - rigidBody.position).normalized;
+        if (player && rigidBody)
+            chargeDirection = ((Vector2)player.position - rigidBody.position).normalized;
     }
 
     protected override void Move(float deltaTime)

@@ -6,6 +6,7 @@ public class KingBibleProjectile : Projectile
 {
     readonly Dictionary<EnemyStats, float> affectedTargets = new Dictionary<EnemyStats, float>();
     readonly List<EnemyStats> targetsToUnaffect = new List<EnemyStats>();
+    readonly List<EnemyStats> affectedTargetsSnapshot = new List<EnemyStats>();
 
     public float hitDelay = 1.7f;
 
@@ -82,38 +83,47 @@ public class KingBibleProjectile : Projectile
 
     public void HitDelay()
     {
-        Dictionary<EnemyStats, float> affectedTargsCopy = new Dictionary<EnemyStats, float>(affectedTargets);
-
-        foreach (KeyValuePair<EnemyStats, float> pair in affectedTargsCopy)
+        affectedTargetsSnapshot.Clear();
+        foreach (EnemyStats target in affectedTargets.Keys)
         {
-            if (pair.Key)
+            affectedTargetsSnapshot.Add(target);
+        }
+
+        foreach (EnemyStats target in affectedTargetsSnapshot)
+        {
+            if (!target)
             {
-                Vector3 source = damageSource == DamageSource.owner && owner ? owner.transform.position : transform.position;
-                affectedTargets[pair.Key] -= Time.deltaTime;
-                if (pair.Value <= 0)
-                {
-                    if (targetsToUnaffect.Contains(pair.Key))
-                    {
-                        affectedTargets.Remove(pair.Key);
-                        targetsToUnaffect.Remove(pair.Key);
-                    }
-                    else
-                    {
-                        Weapon.Stats stats = weapon.GetStats();
-                        affectedTargets[pair.Key] = hitDelay;
-                        pair.Key.TakeDamage(GetDamage(), source, stats.knockback);
-
-                        weapon.ApplyBuffs(pair.Key);
-
-                        if (stats.hitEffect)
-                        {
-                            Destroy(Instantiate(stats.hitEffect, pair.Key.transform.position, Quaternion.identity).gameObject, 5f);
-                        }
-                        piercing--;
-                    }
-                }
+                affectedTargets.Remove(target);
+                targetsToUnaffect.Remove(target);
+                continue;
             }
 
+            Vector3 source = damageSource == DamageSource.owner && owner ? owner.transform.position : transform.position;
+            float remainingTime = affectedTargets[target];
+            affectedTargets[target] = remainingTime - Time.deltaTime;
+
+            if (remainingTime <= 0)
+            {
+                if (targetsToUnaffect.Contains(target))
+                {
+                    affectedTargets.Remove(target);
+                    targetsToUnaffect.Remove(target);
+                }
+                else
+                {
+                    Weapon.Stats stats = weapon.GetStats();
+                    affectedTargets[target] = hitDelay;
+                    target.TakeDamage(GetDamage(), source, stats.knockback);
+
+                    weapon.ApplyBuffs(target);
+
+                    if (stats.hitEffect)
+                    {
+                        Destroy(Instantiate(stats.hitEffect, target.transform.position, Quaternion.identity).gameObject, 5f);
+                    }
+                    piercing--;
+                }
+            }
         }
     }
 

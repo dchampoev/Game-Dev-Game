@@ -54,6 +54,7 @@ public abstract class EntityStats : MonoBehaviour
     }
 
     protected List<Buff> activeBuffs = new List<Buff>();
+    readonly List<Buff> expiredBuffs = new List<Buff>();
 
     [System.Serializable]
     public class BuffInfo
@@ -241,7 +242,7 @@ public abstract class EntityStats : MonoBehaviour
 
     protected virtual void Update()
     {
-        List<Buff> expired = new List<Buff>();
+        expiredBuffs.Clear();
         foreach (Buff buff in activeBuffs)
         {
             BuffData.Stats stats = buff.data.Get(buff.variant);
@@ -263,10 +264,10 @@ public abstract class EntityStats : MonoBehaviour
 
             buff.remainingDuration -= Time.deltaTime;
             if (buff.remainingDuration < 0)
-                expired.Add(buff);
+                expiredBuffs.Add(buff);
         }
 
-        foreach (Buff buff in expired)
+        foreach (Buff buff in expiredBuffs)
         {
             if (buff.effect)
                 Destroy(buff.effect.gameObject);

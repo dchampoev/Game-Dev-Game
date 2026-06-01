@@ -80,10 +80,7 @@ public class Projectile : WeaponEffect
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        EnemyStats enemies = collision.GetComponent<EnemyStats>();
-        BreakableProps props = collision.GetComponent<BreakableProps>();
-
-        if (enemies)
+        if (collision.TryGetComponent(out EnemyStats enemies))
         {
             Vector3 source = damageSource == DamageSource.owner && owner ? owner.transform.position : transform.position;
 
@@ -98,7 +95,7 @@ public class Projectile : WeaponEffect
                 Destroy(Instantiate(stats.hitEffect, transform.position, Quaternion.identity), 5f);
             }
         }
-        else if (props)
+        else if (collision.TryGetComponent(out BreakableProps props))
         {
             props.TakeDamage(GetDamage());
             piercing--;
