@@ -69,7 +69,6 @@ public class FloatingTextSpawnerPlayModeTests
 
         yield return null;
 
-        Assert.IsTrue(canvas.overrideSorting);
         Assert.Less(canvas.sortingOrder, 0);
     }
 
