@@ -1,8 +1,10 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[ExcludeFromCodeCoverage]
 [RequireComponent(typeof(VerticalLayoutGroup))]
 public class UIUpgradeWindow : MonoBehaviour
 {

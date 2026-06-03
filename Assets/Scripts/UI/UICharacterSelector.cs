@@ -15,6 +15,7 @@ public class UICharacterSelector : MonoBehaviour
     public static CharacterData selected;
     public UIStatsDisplay statsUI;
     public Button startButton;
+    public Button backButton;
     public bool selectFirstToggleOnStart = true;
     public Color keyboardFocusColor = new Color(1f, 0.86f, 0.25f, 1f);
     public Vector2 keyboardFocusDistance = new Vector2(5f, -5f);
@@ -34,11 +35,14 @@ public class UICharacterSelector : MonoBehaviour
 
     readonly Dictionary<Toggle, Outline> focusOutlines = new Dictionary<Toggle, Outline>();
     Outline startButtonFocusOutline;
+    Outline backButtonFocusOutline;
 
     void Start()
     {
         if (!startButton)
             startButton = FindStartButton();
+        if (!backButton)
+            backButton = FindButton("Back");
 
         SetupToggleNavigation();
         SetupFocusOutlines();
@@ -160,27 +164,11 @@ public class UICharacterSelector : MonoBehaviour
 
     Button FindStartButton()
     {
-        Button fallback = null;
-        Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
-        foreach (Button button in buttons)
-        {
-            if (!button || !button.gameObject.scene.IsValid())
-                continue;
-            if (!fallback)
-                fallback = button;
-            if (button.name.Contains("Character Select"))
-                return button;
-        }
-
-        return fallback;
+        return FindButton("Character Select");
     }
 
     void UpdateStartButtonNavigation()
     {
-        if (!startButton)
-            return;
-
         Toggle selectedToggle = GetSelectedCharacterToggle();
         Toggle fallbackToggle = null;
 
@@ -193,10 +181,27 @@ public class UICharacterSelector : MonoBehaviour
             }
         }
 
-        Navigation navigation = startButton.navigation;
-        navigation.mode = Navigation.Mode.Explicit;
-        navigation.selectOnUp = selectedToggle ? selectedToggle : fallbackToggle;
-        startButton.navigation = navigation;
+        Selectable upperTarget = selectedToggle ? selectedToggle : fallbackToggle;
+
+        if (startButton)
+        {
+            Navigation navigation = startButton.navigation;
+            navigation.mode = Navigation.Mode.Explicit;
+            navigation.selectOnLeft = backButton;
+            navigation.selectOnRight = null;
+            navigation.selectOnUp = upperTarget;
+            startButton.navigation = navigation;
+        }
+
+        if (backButton)
+        {
+            Navigation navigation = backButton.navigation;
+            navigation.mode = Navigation.Mode.Explicit;
+            navigation.selectOnLeft = startButton;
+            navigation.selectOnRight = startButton;
+            navigation.selectOnUp = upperTarget;
+            backButton.navigation = navigation;
+        }
     }
 
     void SetupFocusOutlines()
@@ -225,15 +230,28 @@ public class UICharacterSelector : MonoBehaviour
         if (startButton && startButton.targetGraphic)
         {
             GameObject graphicObject = startButton.targetGraphic.gameObject;
-            startButtonFocusOutline = graphicObject.GetComponent<Outline>();
-            if (!startButtonFocusOutline)
-                startButtonFocusOutline = graphicObject.AddComponent<Outline>();
-
-            startButtonFocusOutline.effectColor = keyboardFocusColor;
-            startButtonFocusOutline.effectDistance = keyboardFocusDistance;
-            startButtonFocusOutline.useGraphicAlpha = false;
-            startButtonFocusOutline.enabled = false;
+            startButtonFocusOutline = GetOrCreateFocusOutline(graphicObject);
         }
+
+        backButtonFocusOutline = null;
+        if (backButton && backButton.targetGraphic)
+        {
+            GameObject graphicObject = backButton.targetGraphic.gameObject;
+            backButtonFocusOutline = GetOrCreateFocusOutline(graphicObject);
+        }
+    }
+
+    Outline GetOrCreateFocusOutline(GameObject graphicObject)
+    {
+        Outline outline = graphicObject.GetComponent<Outline>();
+        if (!outline)
+            outline = graphicObject.AddComponent<Outline>();
+
+        outline.effectColor = keyboardFocusColor;
+        outline.effectDistance = keyboardFocusDistance;
+        outline.useGraphicAlpha = false;
+        outline.enabled = false;
+        return outline;
     }
 
     Toggle GetSelectedCharacterToggle()
@@ -293,5 +311,32 @@ public class UICharacterSelector : MonoBehaviour
         {
             startButtonFocusOutline.enabled = startButton.gameObject == focusedObject;
         }
+
+        if (backButtonFocusOutline && backButton)
+        {
+            backButtonFocusOutline.enabled = backButton.gameObject == focusedObject;
+        }
+    }
+
+    Button FindButton(string buttonName)
+    {
+        Button fallback = null;
+        Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        foreach (Button button in buttons)
+        {
+            if (!button || !button.gameObject.scene.IsValid())
+                continue;
+            if (!fallback)
+                fallback = button;
+            if (button.name.Contains(buttonName, System.StringComparison.OrdinalIgnoreCase))
+                return button;
+
+            TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (label && label.text.Contains(buttonName, System.StringComparison.OrdinalIgnoreCase))
+                return button;
+        }
+
+        return fallback;
     }
 }

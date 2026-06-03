@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -6,7 +7,6 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
 [DisallowMultipleComponent]
 [CustomEditor(typeof(UILevelSelector))]

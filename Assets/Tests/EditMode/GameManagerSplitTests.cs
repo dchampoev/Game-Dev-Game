@@ -41,6 +41,14 @@ public class GameManagerSplitTests
         return button;
     }
 
+    SaveManager CreateSaveManager(float totalCoins = 0f)
+    {
+        SaveManager saveManager = new GameObject("SaveManager").AddComponent<SaveManager>();
+        saveManager.saveID = "TestSaveManager";
+        saveManager.Load(new SaveManager.SaveData { totalCoins = totalCoins });
+        return saveManager;
+    }
+
     EventSystem CreateEventSystem()
     {
         EventSystem eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
@@ -169,13 +177,13 @@ public class GameManagerSplitTests
         PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
         collector.AddCoins(25f);
 
-        SaveManager.LastLoadedGameData.coins = 100f;
+        SaveManager saveManager = CreateSaveManager(100f);
         SetPrivateField(manager, "players", new[] { player });
 
         manager.SaveRunCoins();
         manager.SaveRunCoins();
 
-        Assert.AreEqual(125f, SaveManager.LastLoadedGameData.coins);
+        Assert.AreEqual(125f, saveManager.GetTotalCoins());
         Assert.AreEqual(0f, collector.GetCoins());
     }
 
@@ -188,12 +196,12 @@ public class GameManagerSplitTests
         PlayerCollector collector = collectorObject.AddComponent<PlayerCollector>();
         collector.AddCoins(1f);
 
-        SaveManager.LastLoadedGameData.coins = 0f;
+        SaveManager saveManager = CreateSaveManager();
         SetPrivateField(manager, "players", new PlayerStats[0]);
 
         manager.SaveRunCoins();
 
-        Assert.AreEqual(1f, SaveManager.LastLoadedGameData.coins);
+        Assert.AreEqual(1f, saveManager.GetTotalCoins());
         Assert.AreEqual(0f, collector.GetCoins());
     }
 
@@ -286,5 +294,22 @@ public class GameManagerSplitTests
         CallPrivateMethod(titleScreen, "Update");
 
         Assert.AreSame(firstButton.gameObject, EventSystem.current.currentSelectedGameObject);
+    }
+
+    [Test]
+    public void TitleScreenUI_WhenQuitMovesDown_ShouldSelectFirstButton()
+    {
+        CreateEventSystem();
+
+        Button firstButton = CreateButton("Start");
+        Button quitButton = CreateButton("Quit");
+
+        TitleScreenUI titleScreen = new GameObject("Title Screen UI").AddComponent<TitleScreenUI>();
+        titleScreen.firstButton = firstButton;
+        titleScreen.quitButton = quitButton;
+
+        CallPrivateMethod(titleScreen, "Start");
+
+        Assert.AreSame(firstButton, quitButton.navigation.selectOnDown);
     }
 }

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Title Screen.unity
     guid: ec44af710ea3b4945b47f6bea1e07838
   - enabled: 1
+    path: Assets/Scenes/Power Up Screen.unity
+    guid: dc4cc57c53e944392bd27ead2e7c95df
+  - enabled: 1
     path: Assets/Scenes/Character Select.unity
     guid: 42998483678e34061a7556c1f5d813e8
   - enabled: 1

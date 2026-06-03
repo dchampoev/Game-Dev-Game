@@ -24,6 +24,14 @@ public class UICoinDisplayTests
         return display;
     }
 
+    SaveManager CreateSaveManager(float totalCoins)
+    {
+        SaveManager saveManager = new GameObject("SaveManager").AddComponent<SaveManager>();
+        saveManager.saveID = "TestSaveManager";
+        saveManager.Load(new SaveManager.SaveData { totalCoins = totalCoins });
+        return saveManager;
+    }
+
     [TearDown]
     public void TearDown()
     {
@@ -36,7 +44,7 @@ public class UICoinDisplayTests
     [Test]
     public void Start_WhenCollectorIsNull_ShouldDisplaySavedTotalCoins()
     {
-        SaveManager.LastLoadedGameData.coins = 42f;
+        CreateSaveManager(42f);
         UICoinDisplay display = CreateDisplay(out TextMeshProUGUI text);
 
         CallStart(display);

@@ -27,18 +27,35 @@ public static class LeaderboardManager
         SortByScoreDescending(list.entries);
         TrimToMaxLimit(list.entries);
 
+        SaveManager saveManager = SaveManager.Instance;
+        if (saveManager)
+        {
+            saveManager.SetLeaderboard(list);
+            saveManager.SaveToDisk();
+            return;
+        }
+
         PlayerPrefs.SetString(Key, JsonUtility.ToJson(list));
         PlayerPrefs.Save();
     }
 
     public static EntryList Load()
     {
+        SaveManager saveManager = SaveManager.Instance;
+        if (saveManager)
+        {
+            EntryList savedLeaderboard = saveManager.GetLeaderboard();
+            if (savedLeaderboard.entries.Count > 0)
+                return Copy(savedLeaderboard);
+        }
+
         string json = PlayerPrefs.GetString(Key, "");
 
         if (string.IsNullOrEmpty(json))
             return new EntryList();
 
-        return JsonUtility.FromJson<EntryList>(json);
+        EntryList playerPrefsLeaderboard = JsonUtility.FromJson<EntryList>(json);
+        return playerPrefsLeaderboard ?? new EntryList();
     }
 
     private static Entry CreateEntry(string characterName, int score, float survivedTime)
@@ -62,5 +79,22 @@ public static class LeaderboardManager
             return;
 
         entries.RemoveRange(MaxLeaderboardEntries, entries.Count - MaxLeaderboardEntries);
+    }
+
+    private static EntryList Copy(EntryList source)
+    {
+        EntryList copy = new EntryList();
+        if (source?.entries == null)
+            return copy;
+
+        foreach (Entry entry in source.entries)
+        {
+            if (entry == null)
+                continue;
+
+            copy.entries.Add(CreateEntry(entry.characterName, entry.score, entry.survivedTime));
+        }
+
+        return copy;
     }
 }

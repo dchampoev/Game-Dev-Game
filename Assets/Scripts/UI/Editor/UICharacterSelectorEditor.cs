@@ -1,10 +1,10 @@
+#if UNITY_EDITOR
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
 [DisallowMultipleComponent]
 [CustomEditor(typeof(UICharacterSelector))]

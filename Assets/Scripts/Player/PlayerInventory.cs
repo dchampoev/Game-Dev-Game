@@ -23,11 +23,13 @@ public class PlayerInventory : MonoBehaviour
     }
     public List<Slot> weaponSlots = new List<Slot>(6);
     public List<Slot> passiveSlots = new List<Slot>(6);
+    public List<PowerUp> powerUps = new List<PowerUp>();
     public UIInventoryIconsDisplay weaponUI, passiveUI;
 
     [Header("UI Elements")]
     public List<WeaponData> availableWeapons = new List<WeaponData>();
     public List<PassiveData> availablePassives = new List<PassiveData>();
+    public List<PowerUpData> availablePowerUps = new List<PowerUpData>();
     public UIUpgradeWindow upgradeWindow;
 
     PlayerStats player;
@@ -35,6 +37,28 @@ public class PlayerInventory : MonoBehaviour
     void Start()
     {
         player = GetComponent<PlayerStats>();
+
+        SaveManager saveManager = SaveManager.Instance;
+        if (saveManager == null || saveManager.SavedData.powerUps.Count == 0)
+            return;
+
+        foreach (PowerUp.Data data in saveManager.SavedData.powerUps)
+        {
+            PowerUpData powerUpData = FindPowerUpData(data.name);
+            if (powerUpData)
+                Add(powerUpData, data.level);
+        }
+    }
+
+    PowerUpData FindPowerUpData(string powerUpName)
+    {
+        foreach (PowerUpData powerUp in availablePowerUps)
+        {
+            if (powerUp && powerUp.name == powerUpName)
+                return powerUp;
+        }
+
+        return null;
     }
 
     public bool Has(ItemData type) => Get(type) != null;
@@ -44,13 +68,29 @@ public class PlayerInventory : MonoBehaviour
         return type switch
         {
             WeaponData weaponData => Get(weaponData),
+            PowerUpData powerUpData => Get(powerUpData),
             PassiveData passiveData => Get(passiveData),
             _ => null
         };
     }
 
+    public PowerUp Get(PowerUpData type)
+    {
+        foreach (PowerUp p in powerUps)
+        {
+            if (p && p.data == type)
+            {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public Passive Get(PassiveData type)
     {
+        if (type is PowerUpData powerUpData)
+            return Get(powerUpData);
+
         foreach (Slot s in passiveSlots)
         {
             Passive p = s.item as Passive;
@@ -96,6 +136,9 @@ public class PlayerInventory : MonoBehaviour
 
     public bool Remove(PassiveData data, bool removeUpgradeAvailability = false)
     {
+        if (data is PowerUpData powerUpData)
+            return Remove(powerUpData);
+
         if (removeUpgradeAvailability)
             availablePassives.Remove(data);
 
@@ -113,10 +156,28 @@ public class PlayerInventory : MonoBehaviour
         return false;
     }
 
+    public bool Remove(PowerUpData data)
+    {
+        for (int i = 0; i < powerUps.Count; i++)
+        {
+            PowerUp powerUp = powerUps[i];
+            if (powerUp && powerUp.data == data)
+            {
+                powerUps.RemoveAt(i);
+                powerUp.OnUnequip();
+                Destroy(powerUp.gameObject);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool Remove(ItemData data, bool removeUpgradeAvailability = false)
     {
         return data switch
         {
+            PowerUpData powerUpData => Remove(powerUpData, removeUpgradeAvailability),
             WeaponData weaponData => Remove(weaponData, removeUpgradeAvailability),
             PassiveData passiveData => Remove(passiveData, removeUpgradeAvailability),
             _ => false
@@ -167,6 +228,9 @@ public class PlayerInventory : MonoBehaviour
 
     public int Add(PassiveData data, bool updateUI = true)
     {
+        if (data is PowerUpData powerUpData)
+            return Add(powerUpData, 1);
+
         int slotIndex = -1;
 
         for (int i = 0; i < passiveSlots.Count; i++)
@@ -200,11 +264,48 @@ public class PlayerInventory : MonoBehaviour
         return slotIndex;
     }
 
+    public int Add(PowerUpData data, int level = 1)
+    {
+        if (!data)
+            return -1;
+
+        GameObject gameObject = new GameObject(data.baseStats.name + " Power Up");
+        PowerUp power = gameObject.AddComponent<PowerUp>();
+        power.Initialize(data);
+        power.transform.SetParent(transform);
+        power.transform.localPosition = Vector2.zero;
+        for (int i = 1; i < level; i++)
+            power.DoLevelUp(false);
+        powerUps.Add(power);
+
+        if (player)
+            player.RecalculateStats();
+
+        return powerUps.Count;
+    }
+
+    public bool Add(PowerUp.Data saveData)
+    {
+        if (saveData == null)
+            return false;
+
+        foreach (PowerUpData data in availablePowerUps)
+        {
+            if (data && data.name == saveData.name)
+            {
+                Add(data, saveData.level);
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int Add(ItemData data, bool updateUI = true)
     {
         return data switch
         {
             WeaponData weaponData => Add(weaponData, updateUI),
+            PowerUpData powerUpData => Add(powerUpData, 1),
             PassiveData passiveData => Add(passiveData, updateUI),
             _ => -1
         };
@@ -360,6 +461,11 @@ public class PlayerInventory : MonoBehaviour
             return weaponSlots.ToArray();
         }
 
+        if (typeof(T) == typeof(PowerUp))
+        {
+            return null;
+        }
+
         if (typeof(T) == typeof(Item))
         {
             List<Slot> allSlots = new List<Slot>(passiveSlots);
@@ -373,7 +479,11 @@ public class PlayerInventory : MonoBehaviour
 
     public Slot[] GetSlotsFor<T>() where T : ItemData
     {
-        if (typeof(T) == typeof(PassiveData))
+        if (typeof(T) == typeof(PowerUpData))
+        {
+            return null;
+        }
+        else if (typeof(T) == typeof(PassiveData))
         {
             return passiveSlots.ToArray();
         }
@@ -393,7 +503,11 @@ public class PlayerInventory : MonoBehaviour
 
     public T[] GetAvailable<T>() where T : ItemData
     {
-        if (typeof(T) == typeof(PassiveData))
+        if (typeof(T) == typeof(PowerUpData))
+        {
+            return availablePowerUps.ToArray() as T[];
+        }
+        else if (typeof(T) == typeof(PassiveData))
         {
             return availablePassives.ToArray() as T[];
         }

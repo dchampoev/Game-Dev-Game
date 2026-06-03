@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bb5af280027a8584782691e3d4a7bbd3
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 334468
+  packageName: Bench Universal Save System
+  packageVersion: 0.2.2
+  assetPath: Assets/Bench Universal Save System/Scripts/Editor/BenchEditorWindow.cs
+  uploadId: 897322

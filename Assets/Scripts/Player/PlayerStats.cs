@@ -147,6 +147,12 @@ public class PlayerStats : EntityStats
             }
         }
 
+        foreach (PowerUp powerUp in inventory.powerUps)
+        {
+            if (powerUp)
+                actualStats += powerUp.GetBoosts();
+        }
+
         CharacterData.Stats multiplier = new CharacterData.Stats
         {
             maxHealth = 1f,

@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-[System.Obsolete("This is an obsolete class. It will be replaced by UILevelSelect")]
 [ExcludeFromCoverage]
 public class SceneController : MonoBehaviour
 {

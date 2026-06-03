@@ -15,8 +15,21 @@ public class LeaderboardManagerTests
     [TearDown]
     public void TearDown()
     {
+        foreach (GameObject obj in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        {
+            Object.DestroyImmediate(obj);
+        }
+
         PlayerPrefs.DeleteKey(Key);
         PlayerPrefs.Save();
+    }
+
+    SaveManager CreateSaveManager()
+    {
+        SaveManager saveManager = new GameObject("SaveManager").AddComponent<SaveManager>();
+        saveManager.saveID = "TestSaveManager";
+        saveManager.Load(new SaveManager.SaveData());
+        return saveManager;
     }
 
     [Test]
@@ -102,5 +115,46 @@ public class LeaderboardManagerTests
 
         Assert.AreEqual(10, result.entries.Count);
         Assert.False(result.entries.Exists(entry => entry.characterName == "TooLow"));
+    }
+
+    [Test]
+    public void SaveScore_WhenSaveManagerExists_ShouldStoreEntryInSaveData()
+    {
+        SaveManager saveManager = CreateSaveManager();
+
+        LeaderboardManager.SaveScore("Hero", 100, 45f);
+
+        LeaderboardManager.EntryList savedLeaderboard = saveManager.GetLeaderboard();
+        Assert.AreEqual(1, savedLeaderboard.entries.Count);
+        Assert.AreEqual("Hero", savedLeaderboard.entries[0].characterName);
+        Assert.AreEqual(100, savedLeaderboard.entries[0].score);
+        Assert.AreEqual(45f, savedLeaderboard.entries[0].survivedTime);
+        Assert.IsFalse(PlayerPrefs.HasKey(Key));
+    }
+
+    [Test]
+    public void Load_WhenSaveManagerHasScores_ShouldPreferSaveDataOverPlayerPrefs()
+    {
+        SaveManager saveManager = CreateSaveManager();
+        saveManager.SetLeaderboard(new LeaderboardManager.EntryList
+        {
+            entries = new System.Collections.Generic.List<LeaderboardManager.Entry>
+            {
+                new LeaderboardManager.Entry { characterName = "Saved", score = 200, survivedTime = 20f }
+            }
+        });
+
+        PlayerPrefs.SetString(Key, JsonUtility.ToJson(new LeaderboardManager.EntryList
+        {
+            entries = new System.Collections.Generic.List<LeaderboardManager.Entry>
+            {
+                new LeaderboardManager.Entry { characterName = "Prefs", score = 100, survivedTime = 10f }
+            }
+        }));
+
+        LeaderboardManager.EntryList result = LeaderboardManager.Load();
+
+        Assert.AreEqual(1, result.entries.Count);
+        Assert.AreEqual("Saved", result.entries[0].characterName);
     }
 }

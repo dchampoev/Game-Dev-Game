@@ -9,6 +9,7 @@ public class TitleScreenUI : MonoBehaviour
     const string InstructionsScreenName = "Instructions Screen";
 
     public Button firstButton;
+    public Button quitButton;
 
     GameObject instructionsScreen;
     Button instructionsButton;
@@ -17,6 +18,8 @@ public class TitleScreenUI : MonoBehaviour
     void Start()
     {
         ResolveInstructionsScreen();
+        ResolveQuitButton();
+        SetupQuitNavigation();
         SelectButton(firstButton);
     }
 
@@ -55,6 +58,33 @@ public class TitleScreenUI : MonoBehaviour
     {
         instructionsScreen = GameObject.Find(InstructionsScreenName);
         instructionsButton = instructionsScreen ? instructionsScreen.GetComponentInChildren<Button>(true) : null;
+    }
+
+    void ResolveQuitButton()
+    {
+        if (quitButton)
+            return;
+
+        Button[] buttons = FindObjectsByType<Button>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Button button in buttons)
+        {
+            if (button && button.gameObject.scene.IsValid() && button.name.Contains("Quit", System.StringComparison.OrdinalIgnoreCase))
+            {
+                quitButton = button;
+                return;
+            }
+        }
+    }
+
+    void SetupQuitNavigation()
+    {
+        if (!quitButton || !firstButton)
+            return;
+
+        Navigation navigation = quitButton.navigation;
+        navigation.mode = Navigation.Mode.Explicit;
+        navigation.selectOnDown = firstButton;
+        quitButton.navigation = navigation;
     }
 
     bool HasCurrentSelection()

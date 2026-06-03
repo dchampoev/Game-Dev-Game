@@ -4273,7 +4273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 5820967069168118558}
   maxSlots: 6
-  showLevels: 0
+  showLevels: 1
   inventory: {fileID: 0}
   slots:
   - {fileID: 5820967069168118558}
@@ -8870,7 +8870,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.3
+  m_fontSize: 43.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -11604,7 +11604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::UIInventoryIconsDisplay
   slotTemplate: {fileID: 6711014083621959265}
   maxSlots: 6
-  showLevels: 0
+  showLevels: 1
   inventory: {fileID: 0}
   slots:
   - {fileID: 6711014083621959265}

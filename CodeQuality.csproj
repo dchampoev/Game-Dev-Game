@@ -9,5 +9,6 @@
   <ItemGroup>
     <Compile Include="Assets/Scripts/**/*.cs" />
     <Compile Include="Assets/Tests/**/*.cs" />
+    <Compile Remove="Assets/Scripts/Bench Save System/**/*.cs" />
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+using Terresquall;
 using UnityEngine;
 using UnityEngine.TestTools;
 
@@ -35,14 +36,29 @@ public class PlayerCollector : MonoBehaviour
         return coins;
     }
 
-    public void SaveCoinsToStash()
+    public void SaveCoinsToStash(bool async)
     {
         if (Mathf.Approximately(coins, 0f))
             return;
 
-        SaveManager.LastLoadedGameData.coins += coins;
+        SaveManager saveManager = SaveManager.Instance;
+        saveManager.AddCoins(coins);
+        ResetRunCoins();
+
+        if (async)
+            Bench.SaveGameAsync();
+        else
+            Bench.SaveGame();
+    }
+
+    public void SaveCoinsToStash()
+    {
+        SaveCoinsToStash(false);
+    }
+
+    public void ResetRunCoins()
+    {
         coins = 0;
-        SaveManager.Save();
         onCoinCollected?.Invoke();
     }
 

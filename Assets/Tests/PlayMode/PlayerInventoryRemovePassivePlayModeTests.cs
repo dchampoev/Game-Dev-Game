@@ -17,6 +17,16 @@ public class PlayerInventoryRemovePassivePlayModeTests
         }
     }
 
+    private class TestPowerUp : PowerUp
+    {
+        public bool unequipped;
+
+        public override void OnUnequip()
+        {
+            unequipped = true;
+        }
+    }
+
     private PlayerInventory CreateInventory()
     {
         GameObject go = new GameObject("Inventory");
@@ -42,6 +52,20 @@ public class PlayerInventoryRemovePassivePlayModeTests
         return data;
     }
 
+    private PowerUpData CreatePowerUpData(string name)
+    {
+        PowerUpData data = ScriptableObject.CreateInstance<PowerUpData>();
+        data.name = name;
+        data.maxLevel = 5;
+        data.baseStats = new Passive.Modifier
+        {
+            name = name,
+            description = name + "_Description"
+        };
+        data.growth = new Passive.Modifier[0];
+        return data;
+    }
+
     [UnityTearDown]
     public IEnumerator TearDown()
     {
@@ -52,6 +76,7 @@ public class PlayerInventoryRemovePassivePlayModeTests
 
         yield return null;
         TestScriptableObjectCleanup.DestroyRuntimeObjects<PassiveData>();
+        TestScriptableObjectCleanup.DestroyRuntimeObjects<PowerUpData>();
     }
 
     [UnityTest]
@@ -115,5 +140,26 @@ public class PlayerInventoryRemovePassivePlayModeTests
         yield return null;
 
         Assert.IsFalse(result);
+    }
+
+    [UnityTest]
+    public IEnumerator RemovePowerUp_WhenPowerUpExists_ShouldRemoveFromPowerUps_CallOnUnequip_AndDestroyObject()
+    {
+        PlayerInventory inventory = CreateInventory();
+        PowerUpData powerUpData = CreatePowerUpData("Might");
+
+        GameObject powerUpObject = new GameObject("Power Up");
+        TestPowerUp powerUp = powerUpObject.AddComponent<TestPowerUp>();
+        powerUp.data = powerUpData;
+        inventory.powerUps.Add(powerUp);
+
+        bool result = inventory.Remove(powerUpData);
+
+        yield return null;
+
+        Assert.IsTrue(result);
+        Assert.IsTrue(powerUp.unequipped);
+        Assert.IsEmpty(inventory.powerUps);
+        Assert.IsTrue(powerUpObject == null);
     }
 }

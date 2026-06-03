@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
@@ -11,6 +12,7 @@ using TMPro;
 using UnityEditor;
 #endif
 
+[ExcludeFromCodeCoverage]
 public class UILevelSelector : MonoBehaviour
 {
     public UISceneDataDisplay statsUI;
