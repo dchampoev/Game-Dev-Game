@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab39000a1972a4bf19a087695f8f6938, type: 3}
+  m_Name: Thunder Loop
+  m_EditorClassIdentifier: GameStats::WeaponData
+  icon: {fileID: 21300000, guid: 2b755ca1663eb4d4aaddb0eb9b1ceb6e, type: 3}
+  maxLevel: 1
+  evolutionData: []
+  behaviour: ThunderLoopWeapon
+  baseStats:
+    name: Thunder Loop
+    description: Evolved Lightning Ring. Projectiles strike more often.
+    projectilePrefab: {fileID: 0}
+    auraPrefab: {fileID: 0}
+    hitEffect: {fileID: 2088290040530904280, guid: 68ee69f364b6641a9840bc57967de449, type: 3}
+    procEffect: {fileID: 6402298526098160439, guid: 5dbd8dd85d7e840d7a24e16d5321c4c0, type: 3}
+    spawnVariance:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    lifespan: 0
+    damage: 65
+    damageVariance: 0
+    area: 4
+    speed: 0
+    cooldown: 4.5
+    projectileInterval: 0.02
+    knockback: 1
+    critChance: 0
+    number: 6
+    piercing: 100
+    maxInstances: 70
+    appliedBuffs: []
+  linearGrowth: []
+  randomGrowth: []

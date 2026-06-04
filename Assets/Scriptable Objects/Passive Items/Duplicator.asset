@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameStats::PassiveData
   icon: {fileID: 21300000, guid: 9b1e05d3d333a43b5961d404856ff43b, type: 3}
   maxLevel: 2
-  evolutionData: []
+  evolutionData:
+  - name: Thunder Loop
+    condition: 1
+    consumes: 2
+    evolutionLevel: 2
+    catalysts:
+    - itemType: {fileID: 11400000, guid: 68889beceb8144a8caa25ef41e10ed69, type: 2}
+      level: 8
+    outcome:
+      itemType: {fileID: 11400000, guid: 4825c1ee56aa64845a62a0ddd55b5b33, type: 2}
+      level: 1
   baseStats:
     name: Duplicator
     description: Weapons fire more projectiles.

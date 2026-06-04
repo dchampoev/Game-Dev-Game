@@ -37,6 +37,7 @@ MonoBehaviour:
     cooldown: 2
     projectileInterval: 0.1
     knockback: 1
+    critChance: 0
     number: 1
     piercing: 99
     maxInstances: 99
@@ -62,6 +63,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
@@ -86,6 +88,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
@@ -110,6 +113,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 1
     piercing: 0
     maxInstances: 0
@@ -134,6 +138,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
@@ -158,6 +163,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
@@ -182,6 +188,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 1
     piercing: 0
     maxInstances: 0
@@ -206,6 +213,7 @@ MonoBehaviour:
     cooldown: 0
     projectileInterval: 0
     knockback: 0
+    critChance: 0
     number: 0
     piercing: 0
     maxInstances: 0
