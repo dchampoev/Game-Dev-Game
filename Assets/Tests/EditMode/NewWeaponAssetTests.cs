@@ -14,6 +14,11 @@ public class NewWeaponAssetTests
         new object[] { "Unholy Vespers", "UnholyVespersWeapon", typeof(KingBibleProjectile), false }
     };
 
+    private static readonly object[] AreaWeaponCases =
+    {
+        new object[] { "Thunder Loop", "ThunderLoopWeapon" }
+    };
+
     [TestCaseSource(nameof(NewWeaponCases))]
     public void NewWeaponAssets_ShouldResolveBehaviourAndHaveDamageProjectileSetup(
         string weaponName,
@@ -50,6 +55,28 @@ public class NewWeaponAssetTests
         {
             Assert.IsTrue(projectilePrefab.hasAutoAim);
         }
+    }
+
+    [TestCaseSource(nameof(AreaWeaponCases))]
+    public void AreaWeaponAssets_ShouldResolveBehaviourAndHaveHitEffectSetup(
+        string weaponName,
+        string expectedBehaviour)
+    {
+        WeaponData data = AssetDatabase.LoadAssetAtPath<WeaponData>(
+            $"Assets/Scriptable Objects/Weapons/{weaponName}.asset"
+        );
+
+        Assert.NotNull(data, $"{weaponName} asset is missing.");
+        Assert.AreEqual(expectedBehaviour, data.behaviour);
+
+        Type behaviourType = typeof(Weapon).Assembly.GetType(data.behaviour);
+        Assert.NotNull(behaviourType, $"{weaponName} behaviour does not resolve in the gameplay assembly.");
+        Assert.IsTrue(typeof(Weapon).IsAssignableFrom(behaviourType));
+
+        Assert.NotNull(data.baseStats.hitEffect, $"{weaponName} needs a hit VFX prefab.");
+        Assert.Greater(data.baseStats.damage, 0f, $"{weaponName} should deal damage.");
+        Assert.Greater(data.baseStats.area, 0f, $"{weaponName} should have an area radius.");
+        Assert.Greater(data.baseStats.number, 0, $"{weaponName} should strike at least once.");
     }
 }
 #endif

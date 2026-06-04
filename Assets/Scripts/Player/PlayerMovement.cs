@@ -1,8 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInput))]
 public sealed class PlayerMovement : Sortable

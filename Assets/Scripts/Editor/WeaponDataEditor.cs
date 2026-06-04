@@ -1,10 +1,10 @@
+#if UNITY_EDITOR
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEditor;
 
-#if UNITY_EDITOR
 [ExcludeFromCodeCoverage]
 [CustomEditor(typeof(WeaponData))]
 public class WeaponDataEditor : Editor

@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;

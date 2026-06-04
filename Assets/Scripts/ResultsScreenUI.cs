@@ -1,10 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.TestTools;
 using UnityEngine.UI;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class ResultsScreenUI : MonoBehaviour
 {
     const int CharacterLimit = 16;

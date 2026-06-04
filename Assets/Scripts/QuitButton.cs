@@ -1,7 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class QuitButton : MonoBehaviour
 {
     public void QuitGame()

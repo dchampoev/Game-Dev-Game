@@ -1,8 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class SceneController : MonoBehaviour
 {
     public void SceneChange(string sceneName)

@@ -22,12 +22,17 @@ public class DropRateManager : MonoBehaviour
         {
             return;
         }
+        if (drops == null || drops.Count == 0)
+            return;
 
         float randomNumber = Random.Range(0f, 100f);
         List<Drops> possibleDrops = new List<Drops>();
 
         foreach (Drops drop in drops)
         {
+            if (drop == null || !drop.dropPrefab)
+                continue;
+
             if (randomNumber <= drop.dropRate && Pickup.CanSpawnPrefab(drop.dropPrefab))
             {
                 possibleDrops.Add(drop);

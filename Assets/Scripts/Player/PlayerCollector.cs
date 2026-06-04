@@ -1,8 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using Terresquall;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 [RequireComponent(typeof(CircleCollider2D))]
 public class PlayerCollector : MonoBehaviour
 {

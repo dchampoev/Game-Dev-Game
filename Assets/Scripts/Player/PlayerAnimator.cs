@@ -1,7 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class PlayerAnimator : MonoBehaviour
 {
     Animator animator;

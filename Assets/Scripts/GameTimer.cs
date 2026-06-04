@@ -1,9 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class GameTimer : MonoBehaviour
 {
     float elapsedTime;

@@ -1,9 +1,9 @@
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TestTools;
 
-[ExcludeFromCoverage]
+[ExcludeFromCodeCoverage]
 public class FloatingTextSpawner : MonoBehaviour
 {
     const int DamageTextSortingOrder = -1000;

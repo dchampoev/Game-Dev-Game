@@ -32,6 +32,7 @@ public class TreasureChest : MonoBehaviour
             return null;
         }
 
+        currentDropProfileIndex = Mathf.Clamp(currentDropProfileIndex, 0, dropProfiles.Length - 1);
         return dropProfiles[currentDropProfileIndex];
     }
 
